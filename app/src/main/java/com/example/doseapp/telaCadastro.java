@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,13 +43,10 @@ public class telaCadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_cadastro);
         inicializarComponentes();
-
+        //et_cadSenha.setBackgroundResource(android.R.color.transparent);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.cadastrar);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-
-
 
         btn_cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
