@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "23317922042",
+    "project_id": "doseapp-ff65f",
+    "storage_bucket": "doseapp-ff65f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23317922042:android:8052fbdfda6662aa7e4943",
+        "android_client_info": {
+          "package_name": "com.example.doseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23317922042-uk5fq36lj0cfaadi89tm6cie3s1g7pnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS5A4hwWmVZ0RZS1hYlbdqt7orz-n8Z3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "23317922042-uk5fq36lj0cfaadi89tm6cie3s1g7pnv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

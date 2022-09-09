@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@color/light_blue"
+    android:orientation="horizontal"
+    android:layout_marginTop="10dp"
+    android:elevation="@dimen/cardview_compat_inset_shadow"
+    >
+
+
+    <ImageButton
+        android:id="@+id/imgBtn_editar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/light_blue"
+        app:srcCompat="@drawable/ic_baseline_person_outline_24" />
+
+    <TextView
+        android:id="@+id/tv_nomeIdoso"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/imgBtn_editar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imgBtn_compartilhar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/light_blue"
+        app:srcCompat="@drawable/ic_share" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imgBtn_excluir"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/light_blue"
+        app:srcCompat="@drawable/ic_delete"/>
+
+    <!--androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imgBtn_excluir"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:backgroundTint="@color/light_blue"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_delete" /!-->
+
+
+</LinearLayout>

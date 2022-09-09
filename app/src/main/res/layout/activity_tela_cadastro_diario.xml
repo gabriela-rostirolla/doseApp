@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".telaCadastroDiarioALimentacao"
+    android:background="@color/light_blue"
+    android:orientation="vertical"
+    >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/tv_diaDiario"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/turno"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rg_turno"
+        android:layout_marginLeft="20dp"
+        >
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/manha"
+            android:textColor="@color/light_grey"
+            android:textSize="20sp"
+            android:id="@+id/rb_manha"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tarde"
+            android:textColor="@color/light_grey"
+            android:textSize="20sp"
+            android:id="@+id/rb_tarde"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/noite"
+            android:textColor="@color/light_grey"
+            android:textSize="20sp"
+            android:id="@+id/rb_noite"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/madrugada"
+            android:textColor="@color/light_grey"
+            android:textSize="20sp"
+            android:id="@+id/rb_madrugada"
+            />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="O que você deseja registrar?"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rg_registro"
+        android:layout_marginLeft="20dp"
+        >
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alimentação"
+            android:textColor="@color/light_grey"
+            android:textSize="20sp"
+            android:id="@+id/rb_refeicao"
+            />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Atividades"
+            android:textColor="@color/light_grey"
+            android:textSize="20sp"
+            android:id="@+id/rb_atividades"
+            />
+    </RadioGroup>
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/button"
+        android:text="@string/continuar"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_continuarDiario"
+        />
+
+</LinearLayout>

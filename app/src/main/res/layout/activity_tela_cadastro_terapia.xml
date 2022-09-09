@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".telaCadastroTerapia"
+    android:orientation="vertical"
+    android:background="@color/light_blue"
+    >
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/nome"
+        android:id="@+id/et_nomeTerapia"
+        android:inputType="textPersonName"
+        android:maxLength="250"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/profissional"
+        android:maxLength="250"
+        android:id="@+id/et_profissionalTerapia"
+        android:inputType="textPersonName"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/endereco"
+        android:maxLength="250"
+        android:id="@+id/et_enderecoTerapia"
+        android:inputType="textPersonName"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/telefone"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:id="@+id/et_telefoneTerapia"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/horario"
+        android:inputType="time"
+        android:maxLength="4"
+        android:id="@+id/et_horaTerapia"
+        />
+
+    <Switch
+        style="@style/Switch"
+        android:id="@+id/swt_lembreTerapia"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_salvarTerapia"
+        android:text="@string/salvar"
+        style="@style/button"
+        android:layout_marginTop="20dp"
+        />
+
+</LinearLayout>

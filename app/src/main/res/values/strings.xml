@@ -1,0 +1,89 @@
+<resources>
+
+    <string-array name="unidades_posologia">
+        <item>h</item>
+        <item>Dia</item>
+    </string-array>
+    <string-array name="unidades_medicamentos">
+        <item>mg</item>
+        <item>ml</item>
+        <item>comp</item>
+        <item>grama</item>
+        <item>ml</item>
+        <item>gotas</item>
+        <item>microgotas</item>
+        <item>cáp</item>
+        <item>inj</item>
+    </string-array>
+    <string name="nome_idoso">Nome idoso</string>
+    <string name="app_name">DoseApp</string>
+    <string name="entrar">Entrar</string>
+    <string name="recuperar_senha">Esqueceu sua senha?</string>
+    <string name="fazer_cadastro">Cadastre-se</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="fazer_login">Logar-se</string>
+    <string name="lembre_me">Lembre-me</string>
+    <string name="salvar">Salvar</string>
+    <string name="continuar">Continuar</string>
+    <string name="cadastrar_medicamento">Cadastrar Medicamento</string>
+    <string name="cadastrar_receita">Cadastrar Receita</string>
+    <string name="cadastrar_diario">Cadastrar Diário de Cuidado</string>
+    <string name="cadastrar_terapia">Cadastrar Terapia</string>
+    <string name="cadastrar_consulta">Cadastrar Consulta</string>
+    <string name="cadastrar_idoso">Cadastrar Idoso</string>
+    <string name="atividades_diarias">Atividades Diárias:</string>
+    <string name="sono">Sono</string>
+    <string name="exercicios">Exercícios</string>
+    <string name="passeio">Passeio</string>
+    <string name="saude">Saúde</string>
+    <string name="refeicao">Refeição Principal</string>
+    <string name="lanche">Lanche</string>
+    <string name="outro">Outro</string>
+    <string name="obs">Observações</string>
+    <string name="alimentacao">Alimentação:</string>
+    <string name="nome">Nome</string>
+    <string name="data">Data</string>
+    <string name="data_fim">Data fim</string>
+    <string name="data_inicio">Data início</string>
+    <string name="data_nasc">Data de nascimento</string>
+    <string name="hospital">Hospital</string>
+    <string name="telefone">Telefone</string>
+    <string name="data_renovar_receita">Data para renovar receita</string>
+    <string name="endereco">Endereço</string>
+    <string name="profissional">Profissional</string>
+    <string name="horario">Horário</string>
+    <string name="perfil">Perfil</string>
+    <string name="idosos_cadastrados">Tela inicial</string>
+    <string name="hora_inicial">Hora inicial</string>
+    <string name="finalidade">Finalidade</string>
+    <string name="dose">Dose</string>
+    <string name="posologia">Posologia</string>
+    <string name="turno">Turno:</string>
+    <string name="manha">Manhã</string>
+    <string name="tarde">Tarde</string>
+    <string name="noite">Noite</string>
+    <string name="madrugada">Madrugada</string>
+    <string name="genero">Gênero:</string>
+    <string name="feminino">Feminino</string>
+    <string name="masculino">Masculino</string>
+    <string name="email">E-mail</string>
+    <string name="senha">Senha</string>
+    <string name="confirmar_senha">Confirmar senha</string>
+    <string name="ver_perfil">Ver perfil</string>
+    <string name="deslogar">Deslogar</string>
+    <string name="editar">Editar</string>
+    <string name="ver_dados_dos_idosos">Visualizar dados dos idosos</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_tela_cadastro_receita">telaCadastroReceita</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+</resources>

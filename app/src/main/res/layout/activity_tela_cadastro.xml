@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".telaCadastro"
+    android:background="@color/light_blue"
+    >
+
+    <EditText
+        android:id="@+id/et_cadNome"
+        android:layout_marginTop="100dp"
+        style="@style/Edit_text"
+        android:hint="@string/nome"
+        android:maxLength="250"
+        android:inputType="textPersonName"
+        android:drawableRight="@drawable/ic_baseline_person_24"
+        />
+
+    <EditText
+        android:id="@+id/et_cadEmail"
+        style="@style/Edit_text"
+        android:hint="@string/email"
+        android:maxLength="250"
+        android:inputType="textEmailAddress"
+        android:drawableRight="@drawable/ic_baseline_email_24"
+        />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_cadSenha"
+        style="@style/Edit_text"
+        android:hint="@string/senha"
+        android:inputType="textPassword"
+        android:maxLength="25"
+        android:drawableRight="@drawable/ic_eye"/>
+    <!--        app:passwordToggleEnabled="true"-->
+<!--        app:passwordToggleDrawable="@drawable/togle_pass"-->
+
+    <EditText
+        android:id="@+id/et_cadConfirmarSenha"
+        style="@style/Edit_text"
+        android:hint="@string/confirmar_senha"
+        android:inputType="textPassword"
+        android:maxLength="25"
+        android:drawableRight="@drawable/ic_eye"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_cadastrar"
+        style="@style/button"
+        android:text="@string/cadastrar"
+        android:layout_marginTop="20dp"
+        />
+
+</LinearLayout>
+</androidx.core.widget.NestedScrollView>

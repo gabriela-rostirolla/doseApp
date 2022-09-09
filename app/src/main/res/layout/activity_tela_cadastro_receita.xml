@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".telaCadastroReceita"
+    android:orientation="vertical"
+    android:background="@color/light_blue"
+    >
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/nome"
+        android:maxLength="250"
+        android:inputType="textPersonName"
+        android:id="@+id/et_nomeReceita"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/data"
+        android:maxLength="8"
+        android:inputType="date"
+        android:id="@+id/et_dataReceita"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/hospital"
+        android:maxLength="250"
+        android:inputType="textPersonName"
+        android:id="@+id/et_hospitalReceita"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/telefone"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:id="@+id/et_telefoneHospital"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/profissional"
+        android:inputType="textPersonName"
+        android:maxLength="250"
+        android:id="@+id/et_profissionalReceita"
+        />
+
+    <EditText
+        style="@style/Edit_text"
+        android:hint="@string/data_renovar_receita"
+        android:inputType="date"
+        android:maxLength="8"
+        android:id="@+id/et_dataRenReceita"
+        />
+
+    <Switch
+        android:id="@+id/swt_adicionarNaAgendaReceita"
+        style="@style/Switch"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/button"
+        android:text="@string/salvar"
+        android:id="@+id/btn_salvarCadReceita"
+        android:layout_marginTop="20dp"
+        />
+</LinearLayout>

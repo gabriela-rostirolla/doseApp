@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".telaConsultas"
+    android:orientation="vertical"
+    android:background="@color/light_blue"
+    >
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_marginTop="350dp"
+        android:id="@+id/fab_addConsulta"
+        style="@style/floatingactionbutton"
+        android:clickable="true"
+        android:src="@drawable/ic_add"
+        />
+
+</LinearLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/background.xml" value="0.136" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/borda.xml" value="0.1775" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/button.xml" value="0.136" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/conteiner_user.xml" value="0.1815" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/edit_text.xml" value="0.136" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/floatingactionbutton.xml" value="0.1855" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/gradiente.xml" value="0.1815" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1815" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/separador.xml" value="0.1855" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/togle_pass.xml" value="0.1775" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_cadastro_idoso_cuidado.xml" value="0.2" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_cadastro_paciente.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro.xml" value="0.2" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_consulta.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_diario.xml" value="0.18" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_diario_etapa02.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_diario_etapa03.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_medicamento.xml" value="0.25" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_receita.xml" value="0.18" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_receita2.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_terapia.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_dados_dos_idosos.xml" value="0.21" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_editar_idoso.xml" value="0.2" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_inicial.xml" value="0.21" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_login.xml" value="0.1" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_perfil.xml" value="0.25" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/content_tela_cadastro_receita.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_second.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_consultas.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_diario.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_diario_manha.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_receitas.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_remedios.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_terapias.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_idosos.xml" value="0.22" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_receita.xml" value="0.1743659420289855" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_remedio.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_opcoes.xml" value="0.18" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_perfil.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_unidade_posologia.xml" value="0.2" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_unidades_medicamento.xml" value="0.25" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1155" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
