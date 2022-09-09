@@ -20,7 +20,7 @@
         style="@style/Edit_text"
         android:hint="@string/nome"
         android:maxLength="250"
-        android:inputType="textPersonName"
+        android:inputType="textCapWords"
         android:drawableRight="@drawable/ic_baseline_person_24"
         />
 
@@ -33,15 +33,25 @@
         android:drawableRight="@drawable/ic_baseline_email_24"
         />
 
-<!--    <EditText-->
-<!--        android:id="@+id/et_cadSenha"-->
-<!--        style="@style/Edit_text"-->
-<!--        android:hint="@string/senha"-->
-<!--        android:inputType="textPassword"-->
-<!--        android:maxLength="25"-->
-<!--        android:textCursorDrawable="@drawable/togle_pass"-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleDrawable="@drawable/ic_eye"
+        app:passwordToggleEnabled="true"
+        app:hintEnabled="false"
+        app:boxBackgroundMode="none"
+        >
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_cadSenha"
+        style="@style/Edit_text"
+        android:hint="@string/senha"
+        android:maxLength="25"
+        android:drawableRight="@drawable/ic_eye"
+        android:inputType="textPassword"/>
 
-<!--        />-->
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_marginTop="10dp"
@@ -52,22 +62,15 @@
         app:hintEnabled="false"
         app:boxBackgroundMode="none"
         >
-    <EditText
-        android:id="@+id/et_cadSenha"
-        style="@style/Edit_text"
-        android:hint="@string/senha"
-        android:inputType="textPassword"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_cadConfirmarSenha"
+            style="@style/Edit_text"
+            android:maxLength="25"
+            android:hint="@string/confirmar_senha"
+            android:drawableRight="@drawable/ic_eye"
+            android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <EditText
-        android:id="@+id/et_cadConfirmarSenha"
-        style="@style/Edit_text"
-        android:hint="@string/confirmar_senha"
-        android:inputType="textPassword"
-        android:maxLength="25"
-        android:drawableRight="@drawable/ic_eye"
-        />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_cadastrar"
