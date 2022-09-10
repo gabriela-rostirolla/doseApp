@@ -1,64 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".telaCadastroTerapia"
-    android:orientation="vertical"
-    android:background="@color/light_blue"
-    >
+    android:fillViewport="true">
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/nome"
-        android:id="@+id/et_nomeTerapia"
-        android:inputType="textPersonName"
-        android:maxLength="250"
-        />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_blue"
+        android:orientation="vertical"
+        tools:context=".telaCadastroTerapia">
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/profissional"
-        android:maxLength="250"
-        android:id="@+id/et_profissionalTerapia"
-        android:inputType="textPersonName"
-        />
+        <EditText
+            android:id="@+id/et_nomeTerapia"
+            style="@style/Edit_text"
+            android:hint="@string/nome"
+            android:inputType="textPersonName"
+            android:maxLength="250" />
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/endereco"
-        android:maxLength="250"
-        android:id="@+id/et_enderecoTerapia"
-        android:inputType="textPersonName"
-        />
+        <EditText
+            android:id="@+id/et_profissionalTerapia"
+            style="@style/Edit_text"
+            android:hint="@string/profissional"
+            android:inputType="textPersonName"
+            android:maxLength="250" />
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/telefone"
-        android:inputType="phone"
-        android:maxLength="11"
-        android:id="@+id/et_telefoneTerapia"
-        />
+        <EditText
+            android:id="@+id/et_enderecoTerapia"
+            style="@style/Edit_text"
+            android:hint="@string/endereco"
+            android:inputType="textPersonName"
+            android:maxLength="250" />
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/horario"
-        android:inputType="time"
-        android:maxLength="4"
-        android:id="@+id/et_horaTerapia"
-        />
+        <EditText
+            android:id="@+id/et_telefoneTerapia"
+            style="@style/Edit_text"
+            android:hint="@string/telefone"
+            android:inputType="phone"
+            android:maxLength="11" />
 
-    <Switch
-        style="@style/Switch"
-        android:id="@+id/swt_lembreTerapia"
-        />
+        <EditText
+            android:id="@+id/et_horaTerapia"
+            style="@style/Edit_text"
+            android:hint="@string/horario"
+            android:inputType="time"
+            android:maxLength="4" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_salvarTerapia"
-        android:text="@string/salvar"
-        style="@style/button"
-        android:layout_marginTop="20dp"
-        />
+        <Switch
+            android:id="@+id/swt_lembreTerapia"
+            style="@style/Switch" />
 
-</LinearLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_salvarTerapia"
+            style="@style/button"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/salvar" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

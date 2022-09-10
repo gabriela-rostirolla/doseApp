@@ -1,111 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_blue"
-    android:orientation="vertical"
-    tools:context=".telaCadastroIdosoCuidado">
+    android:fillViewport="true">
 
-
-
-    <EditText
-        android:id="@+id/et_nomeIdoso"
-       style="@style/Edit_text"
-       android:hint="@string/nome"
-        android:inputType="textCapWords"
-        android:maxLength="50"
-        android:layout_marginTop="30dp"
-        android:drawableRight="@drawable/ic_baseline_person_24"
-        />
-
-    <EditText
-        android:id="@+id/et_enderecoIdoso"
-        style="@style/Edit_text"
-        android:hint="@string/endereco"
-        android:maxLength="90"
-        android:inputType="textCapWords"
-        android:drawableRight="@drawable/ic_house"
-        />
-
-    <EditText
-        android:id="@+id/et_telefoneIdoso"
-        style="@style/Edit_text"
-        android:hint="@string/telefone"
-        android:maxLength="14"
-        android:inputType="phone"
-        android:drawableRight="@drawable/ic_phone"
-        />
-
-    <EditText
-        android:id="@+id/et_dataNascIdoso"
-        style="@style/Edit_text"
-        android:hint="@string/data_nasc"
-        android:inputType="date"
-        android:maxLength="8"
-        android:drawableRight="@drawable/ic_calendar"
-        />
-
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/obs"
-        android:inputType="textCapWords"
-        android:id="@+id/et_obsIdoso"
-        />
-
-    <TextView
-        android:id="@+id/txt_genero"
-        style="@style/text_view"
-        android:text="@string/genero"
-        android:gravity="left"
-        android:textStyle="normal"
-        android:textSize="20dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        />
-
-    <RadioGroup
-        android:id="@+id/rg_genero"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        >
+        android:layout_height="match_parent"
+        android:background="@color/light_blue"
+        android:orientation="vertical"
+        tools:context=".telaCadastroIdosoCuidado">
 
-        <RadioButton
-            android:id="@+id/rb_feminino"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/feminino"
+        <EditText
+            android:id="@+id/et_nomeIdoso"
+            style="@style/Edit_text"
+            android:layout_marginTop="30dp"
+            android:drawableRight="@drawable/ic_baseline_person_24"
+            android:hint="@string/nome"
+            android:inputType="textCapWords"
+            android:maxLength="50" />
+
+        <EditText
+            android:id="@+id/et_enderecoIdoso"
+            style="@style/Edit_text"
+            android:drawableRight="@drawable/ic_house"
+            android:hint="@string/endereco"
+            android:inputType="textCapWords"
+            android:maxLength="90" />
+
+        <EditText
+            android:id="@+id/et_telefoneIdoso"
+            style="@style/Edit_text"
+            android:drawableRight="@drawable/ic_phone"
+            android:hint="@string/telefone"
+            android:inputType="phone"
+            android:maxLength="14" />
+
+        <EditText
+            android:id="@+id/et_dataNascIdoso"
+            style="@style/Edit_text"
+            android:drawableRight="@drawable/ic_calendar"
+            android:hint="@string/data_nasc"
+            android:inputType="date"
+            android:maxLength="8" />
+
+        <EditText
+            android:id="@+id/et_obsIdoso"
+            style="@style/Edit_text"
+            android:hint="@string/obs"
+            android:inputType="textCapWords" />
+
+        <TextView
+            android:id="@+id/txt_genero"
+            style="@style/text_view"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="left"
+            android:text="@string/genero"
+            android:textSize="20dp"
+            android:textStyle="normal" />
+
+        <RadioGroup
+            android:id="@+id/rg_genero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/light_grey"
-            />
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/rb_masculino"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textColor="@color/light_grey"
-            android:text="@string/masculino"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            />
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/rb_outro"
-            android:textColor="@color/light_grey"
-            android:text="@string/outro"
-            />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_feminino"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:text="@string/feminino"
+                android:textColor="@color/light_grey" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_marginTop="20dp"
-        android:id="@+id/btn_cadastrarIdoso"
-        style="@style/button"
-        android:text="@string/cadastrar"
-        />
-</LinearLayout>
+            <RadioButton
+                android:id="@+id/rb_masculino"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/masculino"
+                android:textColor="@color/light_grey" />
+
+            <RadioButton
+                android:id="@+id/rb_outro"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/outro"
+                android:textColor="@color/light_grey" />
+        </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cadastrarIdoso"
+            style="@style/button"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/cadastrar" />
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

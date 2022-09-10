@@ -63,9 +63,6 @@
             android:name=".telaInicial"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".telaCadastro"
             android:exported="false"
             android:parentActivityName=".telaLogin" />

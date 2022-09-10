@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".telaCadastroConsulta"
-    android:orientation="vertical"
-    android:background="@color/light_blue"
-    >
+    android:fillViewport="true">
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/nome"
-        android:maxLength="250"
-        android:inputType="textPersonName"
-        android:id="@+id/et_nomeConsulta"
-        />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_blue"
+        android:orientation="vertical"
+        tools:context=".telaCadastroConsulta">
 
-    <EditText
-        android:maxLength="250"
-        style="@style/Edit_text"
-        android:hint="@string/profissional"
-        android:inputType="textPersonName"
-        android:id="@+id/et_profissionalConsulta"
-        />
+        <EditText
+            android:id="@+id/et_nomeConsulta"
+            style="@style/Edit_text"
+            android:hint="@string/nome"
+            android:inputType="textPersonName"
+            android:maxLength="250" />
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/endereco"
-        android:maxLength="250"
-        android:inputType="textPersonName"
-        android:id="@+id/et_enderecoConsulta"
-        />
+        <EditText
+            android:id="@+id/et_profissionalConsulta"
+            style="@style/Edit_text"
+            android:hint="@string/profissional"
+            android:inputType="textPersonName"
+            android:maxLength="250" />
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/telefone"
-        android:inputType="phone"
-        android:maxLength="11"
-        android:id="@+id/et_telefoneConsulta"
-        />
+        <EditText
+            android:id="@+id/et_enderecoConsulta"
+            style="@style/Edit_text"
+            android:hint="@string/endereco"
+            android:inputType="textPersonName"
+            android:maxLength="250" />
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/data"
-        android:inputType="date"
-        android:maxLength="8"
-        android:id="@+id/et_dataConsulta"
-        />
+        <EditText
+            android:id="@+id/et_telefoneConsulta"
+            style="@style/Edit_text"
+            android:hint="@string/telefone"
+            android:inputType="phone"
+            android:maxLength="11" />
 
-    <EditText
-        style="@style/Edit_text"
-        android:hint="@string/horario"
-        android:maxLength="4"
-        android:inputType="time"
-        android:id="@+id/et_horarioConsulta"
-        />
+        <EditText
+            android:id="@+id/et_dataConsulta"
+            style="@style/Edit_text"
+            android:hint="@string/data"
+            android:inputType="date"
+            android:maxLength="8" />
 
-    <Switch
-        style="@style/Switch"
-        android:id="@+id/swt_lembreConculta"
-        />
+        <EditText
+            android:id="@+id/et_horarioConsulta"
+            style="@style/Edit_text"
+            android:hint="@string/horario"
+            android:inputType="time"
+            android:maxLength="4" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/button"
-        android:text="@string/salvar"
-        android:layout_marginTop="20dp"
-        android:id="@+id/btn_salvarConsulta"
-        />
+        <Switch
+            android:id="@+id/swt_lembreConculta"
+            style="@style/Switch" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_salvarConsulta"
+            style="@style/button"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/salvar" />
 
     </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

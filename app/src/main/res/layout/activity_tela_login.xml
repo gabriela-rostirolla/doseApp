@@ -1,81 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:fillViewport="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/light_blue"
-    android:orientation="vertical"
-    tools:context=".telaLogin">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_blue"
+        android:orientation="vertical"
+        tools:context=".telaLogin">
+
         <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="320dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="20dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/logodoseapp" />
+            android:id="@+id/imageView2"
+            android:layout_width="320dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            app:srcCompat="@drawable/logodoseapp" />
 
         <EditText
-        android:id="@+id/et_email"
-        style="@style/Edit_text"
-        android:hint="@string/email"
-        android:drawableRight="@drawable/ic_baseline_email_24"
-        android:inputType="textEmailAddress"
-        />
+            android:id="@+id/et_email"
+            style="@style/Edit_text"
+            android:drawableRight="@drawable/ic_baseline_email_24"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleDrawable="@drawable/ic_eye"
-            app:passwordToggleEnabled="true"
-            app:hintEnabled="false"
+            android:layout_marginTop="10dp"
             app:boxBackgroundMode="none"
-            >
+            app:hintEnabled="false"
+            app:passwordToggleDrawable="@drawable/ic_eye"
+            app:passwordToggleEnabled="true">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_senha"
                 style="@style/Edit_text"
-                android:maxLength="25"
-                android:hint="@string/senha"
                 android:drawableRight="@drawable/ic_eye"
-                android:inputType="textPassword"/>
+                android:hint="@string/senha"
+                android:inputType="textPassword"
+                android:maxLength="25" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_entrar"
-        style="@style/button"
-        android:text="@string/entrar"
-        android:layout_marginTop="20dp"
-        />
+            android:id="@+id/btn_entrar"
+            style="@style/button"
+            android:layout_marginTop="20dp"
+            android:text="@string/entrar" />
 
         <TextView
+            android:id="@+id/txt_recuperar_senha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txt_recuperar_senha"
-            android:layout_marginTop="20dp"
-            android:textSize="18sp"
-            android:textColor="@color/light_grey"
-            android:text="@string/recuperar_senha"
             android:layout_gravity="center"
-        />
+            android:layout_marginTop="20dp"
+            android:text="@string/recuperar_senha"
+            android:textColor="@color/light_grey"
+            android:textSize="18sp" />
 
         <TextView
-        android:layout_marginTop="30dp"
-        android:id="@+id/txt_fazer_cadastro"
-        style="@style/text_view"
-        android:text="@string/fazer_cadastro"
-        android:textAllCaps="true"
-        android:layout_marginBottom="30dp"
-        />
+            android:id="@+id/txt_fazer_cadastro"
+            style="@style/text_view"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/fazer_cadastro"
+            android:textAllCaps="true" />
 
-</LinearLayout>
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

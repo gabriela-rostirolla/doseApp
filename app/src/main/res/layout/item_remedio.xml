@@ -13,9 +13,9 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="1 Comp"
+            android:text=""
             android:textSize="25sp"
             android:textColor="@color/black"
         />
@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1 vez ao dia"
+            android:text=""
             android:textSize="20sp"
             android:textColor="@color/black"
             />
@@ -34,27 +34,35 @@
         android:layout_marginLeft="10dp"
         android:layout_gravity="center"
         android:layout_width="2dp"
-        android:layout_height="40dp"
+        android:layout_height="match_parent"
         android:background="@drawable/separador"
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_gravity="center"
-        android:textSize="27sp"
-        android:text="Medicamento 1"
+        android:textSize="25sp"
+        android:text=""
         android:textColor="@color/black"
         />
 
-    <ImageButton
-        android:backgroundTint="@color/light_blue"
-        android:id="@+id/imgBtn_opcoesRemedios"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imgBtn_editarMed"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_baseline_more_vert_24"
-        />
+        android:backgroundTint="@color/light_blue"
+        app:srcCompat="@drawable/ic_edit" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imgBtn_excluirMed"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/light_blue"
+        app:srcCompat="@drawable/ic_delete"/>
+
 
 </LinearLayout>

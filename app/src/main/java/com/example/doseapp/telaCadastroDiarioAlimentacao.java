@@ -28,7 +28,7 @@ public class telaCadastroDiarioAlimentacao extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tela_cadastro_diario_etapa02);
+        setContentView(R.layout.activity_tela_cadastro_diario_alimentacao);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Cadastrar Alimentação");
         actionBar.setDisplayHomeAsUpEnabled(true);

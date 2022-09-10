@@ -63,6 +63,8 @@ public class telaPerfil extends AppCompatActivity {
                 et_editNome.setText(nome);
                 et_editEmail.setText(email);
 
+                et_editEmail.setEnabled(false);
+                et_editEmail.setTextColor(Color.GRAY);
                 btn_editar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
