@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -16,13 +18,13 @@ public class telaRemedios extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private FloatingActionButton floatingActionButton;
-
+    private TextView tv_dose, tv_posologia, tv_nomeMedicamento;
+    private ImageButton imgBtn_compartilhar, imgBtn_excluir;
     private String mParam1;
     private String mParam2;
 
     public telaRemedios() {
     }
-
 
     public static telaRemedios newInstance(String param1, String param2) {
         telaRemedios fragment = new telaRemedios();
@@ -40,18 +42,22 @@ public class telaRemedios extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
-
+    protected void inicializarComponentes(View v){
+        floatingActionButton = v.findViewById(R.id.fab_addMedicamento);
+        tv_dose = v.findViewById(R.id.tv_dose);
+        tv_posologia = v.findViewById(R.id.tv_posologia);
+        tv_nomeMedicamento = v.findViewById(R.id.tv_nomeMedicamento);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_tela_medicamento, container, false);
+        inicializarComponentes(v);
 
-        floatingActionButton = v.findViewById(R.id.fab_addMedicamento);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

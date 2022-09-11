@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,11 +24,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,15 +41,30 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private List<IdosoCuidado> idosoCuidadoList;
+    private List<Medicamento> medicamentoList;
+    private List<Receita> receitaList;
     private onItemClick onItemClick;
     public Context context;
     private String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();;
+    private String id;
 
-    public IdosoCuidadoAdapter(List<IdosoCuidado> idosoCuidadoList, onItemClick onItemClick, Context context) {
+    public IdosoCuidadoAdapter(List<IdosoCuidado> idosoCuidadoList, onItemClick onItemClick, Context context){
         this.idosoCuidadoList = idosoCuidadoList;
         this.onItemClick = onItemClick;
         this.context = context;
     }
+
+//    public IdosoCuidadoAdapter(List<Receita> receitaList, onItemClick onItemClick, Context context){
+//        this.receitaList = receitaList;
+//        this.onItemClick = onItemClick;
+//        this.context = context;
+//    }
+
+//    public IdosoCuidadoAdapter(List<Medicamento> medicamentoList, onItemClick onItemClick, Context context){
+//        this.medicamentoList = medicamentoList;
+//        this.onItemClick = onItemClick;
+//        this.context = context;
+//    }
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_idosos, parent,false);
@@ -82,27 +104,18 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                     builder.setMessage("Deseja realmente excluir?")
                             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                   firebaseFirestore.collection(nomeColecao)
-                                           .orderBy("data de criacao", Query.Direction.DESCENDING)
-                                           .get()
-                                           .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                               @Override
-                                               public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                   int i=0;
-                                                   for (QueryDocumentSnapshot snap : task.getResult()) {
-                                                       if(i== getBindingAdapterPosition()) {
-                                                           firebaseFirestore.collection(nomeColecao).document(snap.getId()).delete();
-                                                           Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
-                                                           snackbar.setBackgroundTint(Color.WHITE);
-                                                           snackbar.setTextColor(Color.BLACK);
-                                                           snackbar.show();
-//                                                           Intent intent = new Intent(itemView.getContext(), telaInicial.class);
-//                                                           context.startActivity(intent);
-                                                       }
-                                                       i++;
-                                                   }
-                                               }
-                                           });
+                                    DocumentReference document = firebaseFirestore.collection(nomeColecao).document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
+                                    document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            document.delete();
+                                            //idosoCuidadoList.remove(idosoCuidadoList.get(getAbsoluteAdapterPosition()));
+                                            Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
+                                            snackbar.setBackgroundTint(Color.WHITE);
+                                            snackbar.setTextColor(Color.BLACK);
+                                            snackbar.show();
+                                        }
+                                    });
                                 }
                             })
                             .setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -123,7 +136,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(itemView.getContext(), telaEditarIdoso.class);
-                    intent.putExtra("posicao",getAbsoluteAdapterPosition());
+                    intent.putExtra("id", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
                     context.startActivity(intent);
                 }
             });

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapter.onItemClick {
@@ -33,13 +35,11 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     private IdosoCuidadoAdapter idosoCuidadoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String userId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
         inicializarComponentes();
-        listarIdososCuidados();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.idosos_cadastrados);
@@ -51,6 +51,12 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        listarIdososCuidados();
     }
 
     protected void inicializarComponentes(){
@@ -71,7 +77,9 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                IdosoCuidado ic = document.toObject(IdosoCuidado.class);
+                                IdosoCuidado ic = new IdosoCuidado();
+                                ic.setNome(document.getString("nome"));
+                                ic.setId(document.getId());
                                 idosoCuidadoList.add(ic);
                             }
                             idosoCuidadoAdapter = new IdosoCuidadoAdapter(idosoCuidadoList, telaInicial.this::onItemClick, telaInicial.this);
@@ -103,7 +111,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(telaInicial.this, telaDadosDosIdosos.class);
-        intent.putExtra("nome", idosoCuidadoList.get(position).getNome());
+        intent.putExtra("id", idosoCuidadoList.get(position).getId());
         startActivity(intent);
     }
 }

@@ -3,6 +3,7 @@ package com.example.doseapp;
 import java.util.Date;
 
 public class IdosoCuidado {
+    private String id;
     private String nome;
     private String endereco;
     private String nascimento;
@@ -13,7 +14,7 @@ public class IdosoCuidado {
     public IdosoCuidado() {
     }
 
-    public IdosoCuidado(String nome, String endereco, String nascimento, String telParaContato, String genero, String id_usuario, String obs) {
+    public IdosoCuidado(String nome, String endereco, String nascimento, String telParaContato, String genero, String id_usuario, String obs, String id) {
         this.nome = nome;
         this.endereco=endereco;
         this.telParaContato=telParaContato;
@@ -21,6 +22,15 @@ public class IdosoCuidado {
         this.obs = obs;
         this.genero=genero;
         this.id_usuario = id_usuario;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getObs() {

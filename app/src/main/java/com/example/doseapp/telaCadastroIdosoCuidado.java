@@ -163,7 +163,6 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         String nomeColecao = "Idosos cuidados "+userId;
         firebaseFirestore.collection(nomeColecao)
                 .add(idosoCuidadoMap)
-
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
