@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,20 +55,10 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
         this.context = context;
     }
 
-//    public IdosoCuidadoAdapter(List<Receita> receitaList, onItemClick onItemClick, Context context){
-//        this.receitaList = receitaList;
-//        this.onItemClick = onItemClick;
-//        this.context = context;
-//    }
-
-//    public IdosoCuidadoAdapter(List<Medicamento> medicamentoList, onItemClick onItemClick, Context context){
-//        this.medicamentoList = medicamentoList;
-//        this.onItemClick = onItemClick;
-//        this.context = context;
-//    }
-
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_idosos, parent,false);
+        View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_remedio, parent, false);
+
         IdosoCuidadoViewHolder viewHolder = new IdosoCuidadoViewHolder(view, onItemClick);
         return viewHolder;
     }
@@ -152,6 +143,8 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
             this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
+
+
         @Override
         public void onClick(View view) {
             onItemClick.onItemClick(getAbsoluteAdapterPosition());

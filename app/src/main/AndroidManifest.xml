@@ -7,7 +7,7 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -21,11 +21,13 @@
         <activity
             android:name=".telaCadastroDiarioAtividade"
             android:exported="false"
-            android:parentActivityName=".telaCadastroDiarioAtividade" />
+            android:parentActivityName=".telaCadastroDiario"
+            />
         <activity
             android:name=".telaCadastroConsulta"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaDadosDosIdosos"
+            />
         <activity
             android:name=".telaCadastroDiarioAlimentacao"
             android:exported="false"
@@ -34,11 +36,13 @@
         <activity
             android:name=".telaCadastroTerapia"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaDadosDosIdosos"
+            />
         <activity
             android:name=".telaCadastroReceita"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaDadosDosIdosos"
+            />
         <activity android:name=".telaCadastroDiario"
             android:exported="false"
             android:parentActivityName=".telaDadosDosIdosos"
@@ -61,17 +65,18 @@
             android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaInicial"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".telaCadastro"
             android:exported="false"
-            android:parentActivityName=".telaLogin" />
+            android:parentActivityName=".telaLogin"
+            />
         <activity
             android:name=".telaLogin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
