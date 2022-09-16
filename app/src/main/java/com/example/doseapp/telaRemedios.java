@@ -103,7 +103,6 @@ public class telaRemedios extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tela_medicamento, container, false);
         inicializarComponentes(v);
 
-
         //String id = getActivity().getIntent().getStringExtra("id");
         ListarRemedios();
 
