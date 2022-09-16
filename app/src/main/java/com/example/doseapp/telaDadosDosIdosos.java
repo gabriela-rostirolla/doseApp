@@ -34,7 +34,6 @@ public class telaDadosDosIdosos extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         String id = getIntent().getStringExtra("id");
-
         DocumentReference document = firebaseFirestore.collection(nomeColecao).document(id);
         document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override

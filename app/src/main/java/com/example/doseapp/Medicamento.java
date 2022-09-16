@@ -2,10 +2,10 @@ package com.example.doseapp;
 
 public class Medicamento {
     private String nome;
-    private int posologia;
+    private String posologia;
     private String unidade_posologia;
     private String horaInicial;
-    private float dose;
+    private String dose;
     private String unidade_dose;
     private String dataInicio;
     private String dataFim;
@@ -15,7 +15,7 @@ public class Medicamento {
     public Medicamento() {
     }
 
-    public Medicamento(String nome, int posologia, String unidade_posologia, String horaInicial, float dose, String unidade_dose, String dataInicio, String dataFim, String finalidade, boolean lembre) {
+    public Medicamento(String nome, String posologia, String unidade_posologia, String horaInicial, String dose, String unidade_dose, String dataInicio, String dataFim, String finalidade, boolean lembre) {
         this.nome = nome;
         this.posologia = posologia;
         this.unidade_posologia = unidade_posologia;
@@ -36,11 +36,11 @@ public class Medicamento {
         this.nome = nome;
     }
 
-    public int getPosologia() {
+    public String getPosologia() {
         return posologia;
     }
 
-    public void setPosologia(int posologia) {
+    public void setPosologia(String posologia) {
         this.posologia = posologia;
     }
 
@@ -60,11 +60,11 @@ public class Medicamento {
         this.horaInicial = horaInicial;
     }
 
-    public float getDose() {
+    public String getDose() {
         return dose;
     }
 
-    public void setDose(float dose) {
+    public void setDose(String dose) {
         this.dose = dose;
     }
 

@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapter.onItemClick {
+public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapter.OnItemClick {
 
     private FloatingActionButton fab_addIdosoCuidado;
     private RecyclerView rv_listaIdosos;
@@ -82,7 +82,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                                 ic.setId(document.getId());
                                 idosoCuidadoList.add(ic);
                             }
-                            idosoCuidadoAdapter = new IdosoCuidadoAdapter(idosoCuidadoList, telaInicial.this::onItemClick, telaInicial.this);
+                            idosoCuidadoAdapter = new IdosoCuidadoAdapter(idosoCuidadoList, telaInicial.this::OnItemClick, telaInicial.this);
                             rv_listaIdosos.setAdapter(idosoCuidadoAdapter);
                         }
                     }
@@ -109,7 +109,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void OnItemClick(int position) {
         Intent intent = new Intent(telaInicial.this, telaDadosDosIdosos.class);
         intent.putExtra("id", idosoCuidadoList.get(position).getId());
         startActivity(intent);

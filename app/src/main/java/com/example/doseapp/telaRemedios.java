@@ -36,7 +36,7 @@ public class telaRemedios extends Fragment {
     private String mParam2;
     private RecyclerView rv_listaRemedio;
     private List<Medicamento> medicamentoList;
-    private IdosoCuidadoAdapter idosoCuidadoAdapter;
+    private MedicamentoAdapter medicamentoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     public telaRemedios() {
@@ -77,7 +77,7 @@ public class telaRemedios extends Fragment {
     public void ListarRemedios(){
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         medicamentoList= new ArrayList<>();
-        firebaseFirestore.collection("Medicamentos")
+        firebaseFirestore.collection("Medicamento")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -86,10 +86,12 @@ public class telaRemedios extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Medicamento med = new Medicamento();
                                 med.setNome(document.getString("nome"));
+                                med.setDose(document.getString("dose"));
+                                med.setPosologia(document.getString("posologia"));
                                 medicamentoList.add(med);
                             }
-                            //idosoCuidadoAdapter = new IdosoCuidadoAdapter(medicamentoList , getActivity(), 1);
-                            //rv_listaRemedio.setAdapter(idosoCuidadoAdapter);
+                            medicamentoAdapter = new MedicamentoAdapter(getActivity().getApplicationContext(),medicamentoList);
+                            rv_listaRemedio.setAdapter(medicamentoAdapter);
                         }
                     }
                 });
@@ -102,7 +104,8 @@ public class telaRemedios extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tela_medicamento, container, false);
         inicializarComponentes(v);
 
-        //ListarRemedios();
+        //String id = getActivity().getIntent().getStringExtra("id");
+        ListarRemedios();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +115,6 @@ public class telaRemedios extends Fragment {
                 startActivity(intent);
             }
         });
-
         return v;
     }
 }
