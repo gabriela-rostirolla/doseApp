@@ -41,7 +41,6 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_senha"
                 style="@style/Edit_text"
-                android:drawableRight="@drawable/ic_eye"
                 android:hint="@string/senha"
                 android:inputType="textPassword"
                 android:maxLength="25" />

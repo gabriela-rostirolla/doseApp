@@ -5,12 +5,15 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -21,6 +24,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,23 +33,24 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class telaCadastroIdosoCuidado extends AppCompatActivity {
-    private EditText et_nomeIdoso, et_enderecoIdoso, et_telefoneIdoso, et_dataNascIdoso, et_obsIdoso;
+    private EditText et_nomeIdoso,et_dataNascIdoso, et_enderecoIdoso, et_telefoneIdoso, et_obsIdoso;
     private RadioGroup rg_genero;
     private Button btn_cadastrarIdoso;
     private RadioButton rb_feminino, rb_masculino, rb_outro;
     private FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
-    private String [] mensagens ={"Preencha todos os campos", "Cadastro realizado com sucesso", "Falha no cadastro", "Digite um telefone válido", "Este nome já foi registrado, por favor digite outro"};
+    private String [] mensagens ={"Preencha todos os campos", "Cadastro realizado com sucesso", "Falha no cadastro", "O número de telefone deve seguir o exemplo: (00) 0000-0000", "A data de nascimento deve seguir o exemplo: dd/mm/aaaa", "Digite um nome com mais de três letras"};
     private String userId;
-    private IdosoCuidado idosoCuidado;
-    private Boolean nomeValido;
-    private List<IdosoCuidado> idosoCuidadoList;
+    private DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,27 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.cadastrar_idoso);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        et_dataNascIdoso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int ano= calendar.get(Calendar.YEAR);
+                int dia = calendar.get(Calendar.DAY_OF_MONTH);
+                int mes = calendar.get(Calendar.MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(telaCadastroIdosoCuidado.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, dia, mes, ano);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                i1++;
+                et_dataNascIdoso.setText(i2+"/"+i1+"/"+i);
+            }
+        };
 
         btn_cadastrarIdoso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,21 +105,50 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
                     snackbar.setBackgroundTint(Color.WHITE);
                     snackbar.setTextColor(Color.BLACK);
                     snackbar.show();
+                }else if(validarTelefone(tel) == false){
+                    Snackbar snackbar = Snackbar.make(view, mensagens[3], Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.WHITE);
+                    snackbar.setTextColor(Color.BLACK);
+                    snackbar.show();
+                }else if(validarNasc(dataNasc)==false){
+                    Snackbar snackbar = Snackbar.make(view, mensagens[4], Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.WHITE);
+                    snackbar.setTextColor(Color.BLACK);
+                    snackbar.show();
+                }else if(nome.length() <4){
+                    Snackbar snackbar = Snackbar.make(view, mensagens[5], Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.WHITE);
+                    snackbar.setTextColor(Color.BLACK);
+                    snackbar.show();
                 }else{
                     Snackbar snackbar = Snackbar.make(view, mensagens[1], Snackbar.LENGTH_LONG);
                     snackbar.setBackgroundTint(Color.WHITE);
                     snackbar.setTextColor(Color.BLACK);
                     snackbar.show();
                     salvarNoBancoDeDados();
-                    voltarTelaInicio();
+                    finish();
                 }
             }
         });
     }
 
-    protected void voltarTelaInicio() {
-        Intent intent = new Intent(telaCadastroIdosoCuidado.this, telaInicial.class);
-        startActivity(intent);
+    protected boolean validarTelefone(String tel){
+        Pattern pattern = Pattern.compile( "^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
+        Matcher matcher = pattern.matcher(tel);
+        return (matcher.matches());
+    }
+
+    protected boolean validarNasc(String nasc){
+        if(nasc.contains("/")){
+            String aux[] = nasc.split("/");
+            if(aux.length == 3){
+                if(aux[0].length() < 3) return true;
+                if(aux[1].length() <3) return true;
+                if(aux[2].length() == 2 || aux[2].length()==4) return true;
+            }
+            else return false;
+        }else return false;
+        return false;
     }
 
     protected void inicializarComponentes(){
@@ -107,31 +162,6 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         rb_outro = findViewById(R.id.rb_outro);
         et_dataNascIdoso = findViewById(R.id.et_dataNascIdoso);
         et_obsIdoso = findViewById(R.id.et_obsIdoso);
-    }
-
-    protected boolean validarNome(){
-
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String nomeColecao = "Idosos cuidados "+userId;
-        firebaseFirestore.collection(nomeColecao)
-                .orderBy("data de criacao", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                IdosoCuidado ic = document.toObject(IdosoCuidado.class);
-                                idosoCuidadoList.add(ic);
-                            }
-                        }
-                    }
-                });
-        for (int i = 0; i < idosoCuidadoList.size(); i++) {
-            if(idosoCuidadoList.get(i).getNome().equals(et_nomeIdoso.getText().toString())) return false;
-            else return true;
-        }
-        return false;
     }
 
     protected void salvarNoBancoDeDados(){
@@ -152,7 +182,6 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Map<String, Object> idosoCuidadoMap = new HashMap<>();
-
         idosoCuidadoMap.put("nome", nome);
         idosoCuidadoMap.put("endereco", end);
         idosoCuidadoMap.put("telefone", tel);

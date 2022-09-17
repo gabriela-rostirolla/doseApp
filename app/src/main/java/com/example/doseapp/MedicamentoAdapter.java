@@ -60,7 +60,7 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return medicamentoList.size();
     }
 
     public class MedicamentoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -107,7 +107,7 @@ public class telaRemedios extends Fragment {
         inicializarComponentes(v);
 
         //String id = getActivity().getIntent().getStringExtra("id");
-        ListarRemedios();
+        //ListarRemedios();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
