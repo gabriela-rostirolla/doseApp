@@ -77,7 +77,10 @@ public class telaRemedios extends Fragment {
     public void ListarRemedios(){
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         medicamentoList= new ArrayList<>();
-        firebaseFirestore.collection("Medicamento")
+
+        medicamentoAdapter = new MedicamentoAdapter(getActivity(), medicamentoList);
+        rv_listaRemedio.setAdapter(medicamentoAdapter);
+                firebaseFirestore.collection("Medicamento")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
