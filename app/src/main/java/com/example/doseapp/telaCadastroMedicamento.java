@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,7 +62,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 String dataFim = et_dataFim.getText().toString();
                 String finalidade= et_finalidade.getText().toString();
 
-
                 if(nomeMed.isEmpty()||  posologia.isEmpty()||hrInicial.isEmpty()||dose.isEmpty()||dataInicio.isEmpty()||dataFim.isEmpty()||finalidade.isEmpty()){
                     Snackbar snackbar = Snackbar.make(view, mensagens[0], Snackbar.LENGTH_SHORT);
                     snackbar.setBackgroundTint(Color.WHITE);
@@ -70,15 +69,10 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                     snackbar.show();
                 }else{
                     salvarNoBancoDeDados();
-                    voltarTelaAnterior();
+                    finish();
                 }
             }
         });
-    }
-
-    protected void voltarTelaAnterior(){
-        Intent intent = new Intent(telaCadastroMedicamento.this, telaDadosDosIdosos.class);
-        startActivity(intent);
     }
 
     protected void inicializarComponentes(){
@@ -94,6 +88,13 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         spiMedicamento = findViewById(R.id.spiMedicamentos);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_perfil, menu);
+        return true;
+    }
+
     protected void salvarNoBancoDeDados(){
 
         String nomeMed = et_nomeMed.getText().toString();
@@ -104,6 +105,9 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String dataFim = et_dataFim.getText().toString();
         String finalidade= et_finalidade.getText().toString();
 
+        String unPosologia = spiPosologia.getSelectedItem().toString();
+        String unMed = spiMedicamento.getSelectedItem().toString();
+
         Map<String, Object> medicamentoMap = new HashMap<>();
         medicamentoMap.put("nome", nomeMed);
         medicamentoMap.put("posologia", posologia);
@@ -112,6 +116,8 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         medicamentoMap.put("data inicio", dataInicio);
         medicamentoMap.put("data fim", dataFim);
         medicamentoMap.put("finalidade", finalidade);
+        medicamentoMap.put("unidade medicamento", unMed);
+        medicamentoMap.put("unidade posologia", unPosologia);
 
         firebaseFirestore.collection("Medicamento")
                 .add(medicamentoMap)

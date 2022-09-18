@@ -25,10 +25,10 @@ import java.util.List;
 
 public class MedicamentoAdapter extends RecyclerView.Adapter {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private String idIdoso;
-    private Context context;
+    //private String idIdoso;
+    public static Context context;
     private List<Medicamento> medicamentoList;
-    private IdosoCuidadoAdapter.OnItemClick onItemClick;
+    //private IdosoCuidadoAdapter.OnItemClick onItemClick;
 
 
 
@@ -44,18 +44,18 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
     @Override
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_remedio, parent, false);
-        MedicamentoViewHolder viewHolder = new MedicamentoAdapter.MedicamentoViewHolder(view, onItemClick);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_remedio, parent, false);
+        MedicamentoViewHolder viewHolder = new MedicamentoAdapter.MedicamentoViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        MedicamentoAdapter.MedicamentoViewHolder viewHolderClass = (MedicamentoAdapter.MedicamentoViewHolder) holder;
+        MedicamentoAdapter.MedicamentoViewHolder viewHolder = (MedicamentoAdapter.MedicamentoViewHolder) holder;
         Medicamento medicamento = medicamentoList.get(position);
-        viewHolderClass.tv_nomeMedicamento.setText(medicamento.getNome());
-        viewHolderClass.tv_dose.setText(medicamento.getDose());
-        viewHolderClass.tv_posologia.setText(medicamento.getPosologia());
+        viewHolder.tv_nomeMedicamento.setText(medicamento.getNome());
+        viewHolder.tv_dose.setText(medicamento.getDose()+" "+medicamento.getUnidade_dose());
+        viewHolder.tv_posologia.setText(medicamento.getPosologia()+" "+medicamento.getUnidade_posologia());
     }
 
     @Override
@@ -63,27 +63,27 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
         return medicamentoList.size();
     }
 
-    public class MedicamentoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final IdosoCuidadoAdapter.OnItemClick onItemClick;
+    public static class MedicamentoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
         TextView tv_dose, tv_posologia, tv_nomeMedicamento;
         Button imgBtn_editarMed, imgBtn_excluirMed;
 
-        public MedicamentoViewHolder(@NonNull View itemView, IdosoCuidadoAdapter.OnItemClick onItemClick) {
+        public MedicamentoViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_dose = itemView.findViewById(R.id.tv_dose);
             tv_posologia = itemView.findViewById(R.id.tv_posologia);
             tv_nomeMedicamento = itemView.findViewById(R.id.tv_nomeMedicamento);
-            imgBtn_editarMed = itemView.findViewById(R.id.imgBtn_editarMed);
-            imgBtn_excluirMed = itemView.findViewById(R.id.imgBtn_excluirMed);
+            //imgBtn_editarMed = itemView.findViewById(R.id.imgBtn_editarMed);
+            //imgBtn_excluirMed = itemView.findViewById(R.id.imgBtn_excluirMed);
 
-            imgBtn_editarMed.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Intent intent = new Intent(itemView.getContext(), telaEditarMed.class);
-                    //intent.putExtra("id", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
-                    //context.startActivity(intent);
-                }
-            });
+//            imgBtn_editarMed.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent = new Intent(itemView.getContext(), telaEditarIdoso.class);
+//                    //intent.putExtra("id", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
+//                    context.startActivity(intent);
+//                }
+//            });
 
 //            imgBtn_excluirMed.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -119,13 +119,13 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
 //                    builder.show();
 //                }
 //            });
-            this.onItemClick = onItemClick;
+          //  this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            onItemClick.OnItemClick(getAbsoluteAdapterPosition());
+        //    onItemClick.OnItemClick(getAbsoluteAdapterPosition());
         }
     }
 }

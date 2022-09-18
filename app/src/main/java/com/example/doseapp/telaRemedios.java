@@ -30,8 +30,6 @@ public class telaRemedios extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private FloatingActionButton floatingActionButton;
-    private TextView tv_dose, tv_posologia, tv_nomeMedicamento;
-    private ImageButton imgBtn_compartilhar, imgBtn_excluir;
     private String mParam1;
     private String mParam2;
     private RecyclerView rv_listaRemedio;
@@ -62,9 +60,6 @@ public class telaRemedios extends Fragment {
 
     protected void inicializarComponentes(View v){
         floatingActionButton = v.findViewById(R.id.fab_addMedicamento);
-        tv_dose = v.findViewById(R.id.tv_dose);
-        tv_posologia = v.findViewById(R.id.tv_posologia);
-        tv_nomeMedicamento = v.findViewById(R.id.tv_nomeMedicamento);
         rv_listaRemedio = v.findViewById(R.id.rv_listaRemedio);
     }
 
@@ -74,7 +69,7 @@ public class telaRemedios extends Fragment {
 //        //intent.putExtra("id", .get(position).getId());
 //        //startActivity(intent);
 //    }
-    public void ListarRemedios(){
+    public void listarRemedios(){
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         medicamentoList= new ArrayList<>();
 
@@ -91,13 +86,21 @@ public class telaRemedios extends Fragment {
                                 med.setNome(document.getString("nome"));
                                 med.setDose(document.getString("dose"));
                                 med.setPosologia(document.getString("posologia"));
+                                med.setUnidade_dose(document.getString("unidade medicamento"));
+                                med.setUnidade_posologia(document.getString("unidade posologia"));
                                 medicamentoList.add(med);
                             }
-                            medicamentoAdapter = new MedicamentoAdapter(getActivity().getApplicationContext(),medicamentoList);
+                            medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList);
                             rv_listaRemedio.setAdapter(medicamentoAdapter);
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        listarRemedios();
     }
 
     @Override
@@ -107,7 +110,6 @@ public class telaRemedios extends Fragment {
         inicializarComponentes(v);
 
         //String id = getActivity().getIntent().getStringExtra("id");
-        //ListarRemedios();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

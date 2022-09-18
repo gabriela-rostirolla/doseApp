@@ -17,7 +17,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_listaRemedio"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_remedio"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_addMedicamento"
