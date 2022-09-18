@@ -42,9 +42,11 @@
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_receitas.xml" value="0.17481884057971014" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_remedios.xml" value="0.17481884057971014" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/fragment_tela_terapias.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_consulta.xml" value="0.17685185185185184" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_idosos.xml" value="0.22" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_receita.xml" value="0.1743659420289855" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_remedio.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_terapia.xml" value="0.17" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_logout.xml" value="0.17685185185185184" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_opcoes.xml" value="0.18" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_perfil.xml" value="0.19895833333333332" />
