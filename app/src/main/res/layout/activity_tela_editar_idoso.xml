@@ -15,7 +15,6 @@
         android:background="@color/light_blue"
         android:orientation="vertical"
         tools:context=".telaEditarIdoso">
-
         <include layout="@layout/activity_cadastro_idoso_cuidado" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -59,7 +59,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imgBtn_compartilhar"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete" />
+        app:srcCompat="@drawable/ic_delete"/>
+
 
     <!--androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imgBtn_excluir"

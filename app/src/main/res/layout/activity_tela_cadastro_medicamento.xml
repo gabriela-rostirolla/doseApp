@@ -19,7 +19,7 @@
             style="@style/Edit_text"
             android:layout_marginTop="30dp"
             android:hint="@string/nome"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <LinearLayout
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:elevation="1dp" />
+                />
 
             <EditText
                 android:id="@+id/et_horaInicial"
@@ -94,8 +94,9 @@
             android:id="@+id/et_finalidade"
             style="@style/Edit_text"
             android:hint="@string/finalidade"
-            android:inputType="textLongMessage"
-            android:maxLength="350" />
+            android:inputType="textCapSentences"
+            android:maxLength="350"
+            />
 
         <Switch
             android:id="@+id/swt_lembreMedicamento"

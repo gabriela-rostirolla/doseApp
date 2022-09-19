@@ -41,8 +41,7 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 salvarBancoDeDados();
-                Intent intent = new Intent(telaCadastroDiarioAtividade.this, telaDadosDosIdosos.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

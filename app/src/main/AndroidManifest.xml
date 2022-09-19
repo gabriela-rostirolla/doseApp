@@ -54,7 +54,8 @@
         <activity
             android:name=".telaCadastroMedicamento"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaDadosDosIdosos"
+            />
         <activity
             android:name=".telaCadastroIdosoCuidado"
             android:exported="false"

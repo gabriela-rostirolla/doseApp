@@ -52,7 +52,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
                     snackbar.show();
                 }else{
                     salvarNoBancoDeDados();
-                    voltarTelaAnterior();
+                    finish();
                 }
             }
         });
@@ -95,10 +95,5 @@ public class telaCadastroTerapia extends AppCompatActivity {
                         Log.d("erro_banco_dados", "Erro ao sarvar dados!");
                     }
                 });
-    }
-
-    protected void voltarTelaAnterior(){
-        Intent intent = new Intent(telaCadastroTerapia.this, telaDadosDosIdosos.class);
-        startActivity(intent);
     }
 }

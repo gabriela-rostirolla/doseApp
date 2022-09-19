@@ -56,16 +56,11 @@ public class telaCadastroConsulta extends AppCompatActivity {
                     snackbar.show();
                 } else {
                     salvarNoBancoDeDados();
-                    voltarTelaAnterior();
+                    finish();
                 }
 
             }
         });
-    }
-
-    protected void voltarTelaAnterior(){
-        Intent intent = new Intent(telaCadastroConsulta.this, telaDadosDosIdosos.class);
-        startActivity(intent);
     }
 
     protected void salvarNoBancoDeDados(){

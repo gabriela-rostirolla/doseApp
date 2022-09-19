@@ -55,7 +55,7 @@ public class telaCadastroReceita extends AppCompatActivity {
                     snackbar.show();
                 } else {
                     salvarNoBancoDeDados();
-                    voltarTelaAnterior();
+                    finish();
                 }
             }
         });
@@ -101,9 +101,4 @@ public class telaCadastroReceita extends AppCompatActivity {
                         }
                     });
     }
-
-        protected void voltarTelaAnterior(){
-            Intent intent = new Intent(telaCadastroReceita.this, telaDadosDosIdosos.class);
-            startActivity(intent);
-        }
 }

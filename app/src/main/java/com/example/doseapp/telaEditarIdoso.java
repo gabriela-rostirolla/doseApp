@@ -2,16 +2,21 @@ package com.example.doseapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -21,8 +26,15 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class telaEditarIdoso extends AppCompatActivity {
 
@@ -42,6 +54,19 @@ public class telaEditarIdoso extends AppCompatActivity {
         inicializarComponentes();
         id = getIntent().getStringExtra("id");
         listarIdososCuidados();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.editar);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        btn_editarIdoso.setText("Editar");
+
+        btn_editarIdoso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editarIdoso(view);
+            }
+        });
     }
 
     protected void inicializarComponentes(){
@@ -65,7 +90,6 @@ public class telaEditarIdoso extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 IdosoCuidado ic = new IdosoCuidado();
-
                 et_nomeIdosoEdit.setText(value.getString("nome"));
                 et_enderecoIdosoEdit.setText(value.getString("endereco"));
                 et_telefoneIdosoEdit.setText(value.getString("telefone"));
@@ -77,13 +101,82 @@ public class telaEditarIdoso extends AppCompatActivity {
                 else if(genero.equals("outro")) rb_outro.setChecked(true);
             }
         });
+    }
 
-        btn_editarIdoso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    protected void editarIdoso(View view){
+        String genero = "";
+        if(rb_feminino.isChecked()){
+            genero = "feminino";
+        }else if(rb_masculino.isChecked()){
+            genero= "masculino";
+        }else if (rb_outro.isChecked()) {
+            genero = "outro";
+        }
+        String nome = et_nomeIdosoEdit.getText().toString();
+        String end = et_enderecoIdosoEdit.getText().toString();
+        String tel = et_telefoneIdosoEdit.getText().toString();
+        String dataNasc = et_nascIdosoEdit.getText().toString();
+        String obs = et_obsEdit.getText().toString();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            }
-        });
+        if(nome.isEmpty() || end.isEmpty() || tel.isEmpty() || dataNasc.isEmpty()){
+            Snackbar snackbar = Snackbar.make(view, "Preencha todos os campos", Snackbar.LENGTH_SHORT);
+            snackbar.setBackgroundTint(Color.WHITE);
+            snackbar.setTextColor(Color.BLACK);
+            snackbar.show();
+        }else if(validarTelefone(tel) == false){
+            Snackbar snackbar = Snackbar.make(view, "Digite um telefone válido", Snackbar.LENGTH_SHORT);
+            snackbar.setBackgroundTint(Color.WHITE);
+            snackbar.setTextColor(Color.BLACK);
+            snackbar.show();
+        }
+//        else if(validarNasc(dataNasc)==false){
+//            Snackbar snackbar = Snackbar.make(view, "Digite uma data de nascimento válida", Snackbar.LENGTH_SHORT);
+//            snackbar.setBackgroundTint(Color.WHITE);
+//            snackbar.setTextColor(Color.BLACK);
+//            snackbar.show();
+//        }
+        else if(nome.length() <4){
+            Snackbar snackbar = Snackbar.make(view, "Digite um nome com mais de 3 letras", Snackbar.LENGTH_SHORT);
+            snackbar.setBackgroundTint(Color.WHITE);
+            snackbar.setTextColor(Color.BLACK);
+            snackbar.show();
+        }else {
+            String nomeColecao = "Idosos cuidados " + userId;
+
+            firebaseFirestore.collection(nomeColecao).document(id)
+                    .update("nome", nome, "endereco", end, "telefone", tel, "data de nascimento", dataNasc, "observacoes", obs, "genero",genero)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("firebase_update", "Sucesso ao atualizar dados");
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Snackbar snackbar = Snackbar.make(view, "Falha ao editar", Snackbar.LENGTH_SHORT);
+                            snackbar.setBackgroundTint(Color.WHITE);
+                            snackbar.setTextColor(Color.BLACK);
+                            snackbar.show();
+                            Log.w("firebase_failed_update", "Falha ao atualizar dados", e);
+                        }
+                    });
+        }
 
     }
+    protected boolean validarTelefone(String tel){
+        Pattern pattern = Pattern.compile( "^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
+        Matcher matcher = pattern.matcher(tel);
+        return (matcher.matches());
+    }
+
+    protected boolean validarNasc(String nasc){
+        Pattern pattern = Pattern.compile( "^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
+        Matcher matcher = pattern.matcher(nasc);
+        return (matcher.matches());
+
+    }
+
     }
