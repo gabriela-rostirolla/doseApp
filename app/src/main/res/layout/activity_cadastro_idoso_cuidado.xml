@@ -50,7 +50,7 @@
             android:id="@+id/et_obsIdoso"
             style="@style/Edit_text"
             android:hint="@string/obs"
-            android:inputType="textCapWords" />
+            android:inputType="textCapSentences" />
 
         <TextView
             android:id="@+id/txt_genero"

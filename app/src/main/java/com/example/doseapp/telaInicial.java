@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +32,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
 
     private FloatingActionButton fab_addIdosoCuidado;
     private RecyclerView rv_listaIdosos;
+    private TextView tv_nenhumIdosoCad;
     private List<IdosoCuidado> idosoCuidadoList;
     private IdosoCuidadoAdapter idosoCuidadoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -57,6 +59,9 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     protected void onStart() {
         super.onStart();
         listarIdososCuidados();
+        if(idosoCuidadoList.isEmpty()){
+            tv_nenhumIdosoCad.setCursorVisible(true);
+        }
     }
 
     protected void inicializarComponentes(){
@@ -67,11 +72,12 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     protected void listarIdososCuidados(){
         rv_listaIdosos.setLayoutManager(new LinearLayoutManager(this));
         idosoCuidadoList = new ArrayList<>();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String nomeColecao = "Idosos cuidados "+userId;
-        firebaseFirestore.collection(nomeColecao)
+
+        firebaseFirestore.collection("Idosos cuidados")
+                .whereEqualTo("cuidador_id", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .orderBy("data de criacao", Query.Direction.DESCENDING)
                 .get()
+
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

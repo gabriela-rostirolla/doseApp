@@ -84,8 +84,8 @@ public class telaEditarIdoso extends AppCompatActivity {
     protected void listarIdososCuidados(){
         idosoCuidadoList = new ArrayList<>();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String nomeColecao = "Idosos cuidados "+userId;
-        DocumentReference document = firebaseFirestore.collection(nomeColecao).document(id);
+
+        DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(id);
         document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {

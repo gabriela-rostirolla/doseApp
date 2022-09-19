@@ -189,8 +189,8 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         idosoCuidadoMap.put("data de criacao", new Date());
         idosoCuidadoMap.put("observacoes", obs);
         idosoCuidadoMap.put("genero", genero);
-        String nomeColecao = "Idosos cuidados "+userId;
-        firebaseFirestore.collection(nomeColecao)
+        idosoCuidadoMap.put("cuidador id", userId);
+        firebaseFirestore.collection("Idosos cuidados")
                 .add(idosoCuidadoMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

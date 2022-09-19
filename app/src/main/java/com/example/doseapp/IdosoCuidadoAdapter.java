@@ -65,7 +65,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
             imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluir);
             imgBtn_compartilhar = itemView.findViewById(R.id.imgBtn_compartilhar);
             imgBtn_editar = itemView.findViewById(R.id.imgBtn_editar);
-            String nomeColecao = "Idosos cuidados "+userId;
+
 
             imgBtn_excluir.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,7 +74,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                     builder.setMessage("Deseja realmente excluir?")
                             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    DocumentReference document = firebaseFirestore.collection(nomeColecao).document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
+                                    DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
                                     document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {

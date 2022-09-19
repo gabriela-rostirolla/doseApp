@@ -36,7 +36,7 @@ public class telaRemedios extends Fragment {
     private List<Medicamento> medicamentoList;
     private MedicamentoAdapter medicamentoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
+    private String id;
     public telaRemedios() {
     }
 
@@ -109,7 +109,7 @@ public class telaRemedios extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tela_medicamento, container, false);
         inicializarComponentes(v);
 
-        //String id = getActivity().getIntent().getStringExtra("id");
+        String id = getActivity().getIntent().getStringExtra("id");
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
