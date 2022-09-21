@@ -48,7 +48,6 @@ public class telaCadastroConsulta extends AppCompatActivity {
                 String profissional = et_profissional.getText().toString();
                 String horario = et_horario.getText().toString();
 
-
                 if (nome.isEmpty() || endereco.isEmpty() || data.isEmpty() || tel.isEmpty() || profissional.isEmpty() || horario.isEmpty()) {
                     Snackbar snackbar = Snackbar.make(view, mensagens[0], Snackbar.LENGTH_SHORT);
                     snackbar.setBackgroundTint(Color.WHITE);
@@ -58,7 +57,6 @@ public class telaCadastroConsulta extends AppCompatActivity {
                     salvarNoBancoDeDados();
                     finish();
                 }
-
             }
         });
     }
@@ -70,6 +68,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
         String tel = et_tel.getText().toString();
         String profissional = et_profissional.getText().toString();
         String horario = et_horario.getText().toString();
+        String id = getIntent().getStringExtra("id");
 
         Map<String, Object> consultaMap = new HashMap<>();
         consultaMap.put("nome", nome);
@@ -78,6 +77,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
         consultaMap.put("telefone", tel);
         consultaMap.put("profissional", profissional);
         consultaMap.put("horario", horario);
+        consultaMap.put("id do idoso", id);
 
         firebaseFirestore.collection("Consultas")
                 .add(consultaMap)

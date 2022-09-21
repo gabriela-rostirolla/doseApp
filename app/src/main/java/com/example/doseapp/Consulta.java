@@ -8,7 +8,7 @@ public class Consulta {
     private String data;
     private String horario;
     private boolean lembre;
-
+    private String id;
     public Consulta() {
     }
 
@@ -20,6 +20,14 @@ public class Consulta {
         this.data = data;
         this.horario = horario;
         this.lembre = lembre;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNome() {
