@@ -59,9 +59,9 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     protected void onStart() {
         super.onStart();
         listarIdososCuidados();
-        if(idosoCuidadoList.isEmpty()){
-            tv_nenhumIdosoCad.setCursorVisible(true);
-        }
+//        if(idosoCuidadoList.isEmpty()){
+//            tv_nenhumIdosoCad.setCursorVisible(true);
+//        }
     }
 
     protected void inicializarComponentes(){
@@ -72,12 +72,11 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     protected void listarIdososCuidados(){
         rv_listaIdosos.setLayoutManager(new LinearLayoutManager(this));
         idosoCuidadoList = new ArrayList<>();
-
+        String userId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseFirestore.collection("Idosos cuidados")
-                .whereEqualTo("cuidador_id", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .whereEqualTo("cuidador id", userId)
                 .orderBy("data de criacao", Query.Direction.DESCENDING)
                 .get()
-
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

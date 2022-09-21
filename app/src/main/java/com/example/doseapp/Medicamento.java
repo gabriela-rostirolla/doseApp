@@ -11,6 +11,7 @@ public class Medicamento {
     private String dataFim;
     private String finalidade;
     private boolean lembre;
+    private String id;
 
     public Medicamento() {
     }
@@ -26,6 +27,14 @@ public class Medicamento {
         this.dataFim = dataFim;
         this.finalidade = finalidade;
         this.lembre = lembre;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNome() {

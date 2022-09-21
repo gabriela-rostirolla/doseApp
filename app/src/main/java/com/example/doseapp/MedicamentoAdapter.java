@@ -24,13 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.List;
 
 public class MedicamentoAdapter extends RecyclerView.Adapter {
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     //private String idIdoso;
     public static Context context;
-    private List<Medicamento> medicamentoList;
+    private static List<Medicamento> medicamentoList;
     //private IdosoCuidadoAdapter.OnItemClick onItemClick;
-
-
 
     public MedicamentoAdapter(Context context, List<Medicamento> medicamentoList) {
         //this.idIdoso = idIdoso;
@@ -66,16 +64,14 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
     public static class MedicamentoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
         TextView tv_dose, tv_posologia, tv_nomeMedicamento;
-        Button imgBtn_editarMed, imgBtn_excluirMed;
+        ImageButton imgBtn_excluirMed;
 
         public MedicamentoViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_dose = itemView.findViewById(R.id.tv_dose);
             tv_posologia = itemView.findViewById(R.id.tv_posologia);
             tv_nomeMedicamento = itemView.findViewById(R.id.tv_nomeMedicamento);
-            //imgBtn_editarMed = itemView.findViewById(R.id.imgBtn_editarMed);
-            //imgBtn_excluirMed = itemView.findViewById(R.id.imgBtn_excluirMed);
-
+            imgBtn_excluirMed = itemView.findViewById(R.id.imgBtn_excluirMed);
 //            imgBtn_editarMed.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -84,41 +80,42 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
 //                    context.startActivity(intent);
 //                }
 //            });
+            imgBtn_excluirMed.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+                    builder.setMessage("Deseja realmente excluir?")
+                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    DocumentReference document = firebaseFirestore.collection("Medicamento").document(medicamentoList.get(getAbsoluteAdapterPosition()).getId());
+                                    document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            document.delete();
+                                            //medicamentoList.remove(medicamentoList.get(getAbsoluteAdapterPosition()));
+                                            Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
+                                            snackbar.setBackgroundTint(Color.WHITE);
+                                            snackbar.setTextColor(Color.BLACK);
+                                            snackbar.show();
+                                        }
+                                    });
+                                }
+                            })
+                            .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //return;
+                                    Snackbar snackbar = Snackbar.make(view, "Operação cancelada", Snackbar.LENGTH_SHORT);
+                                    snackbar.setBackgroundTint(Color.WHITE);
+                                    snackbar.setTextColor(Color.BLACK);
+                                    snackbar.show();
+                                }
+                            });
+                    builder.create();
+                    builder.show();
+                }
+            });
 
-//            imgBtn_excluirMed.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-//                    builder.setMessage("Deseja realmente excluir?")
-//                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    DocumentReference document = firebaseFirestore.collection(nomeColecao).document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
-//                                    document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//                                        @Override
-//                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                                            document.delete();
-//                                            //idosoCuidadoList.remove(idosoCuidadoList.get(getAbsoluteAdapterPosition()));
-//                                            Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
-//                                            snackbar.setBackgroundTint(Color.WHITE);
-//                                            snackbar.setTextColor(Color.BLACK);
-//                                            snackbar.show();
-//                                        }
-//                                    });
-//                                }
-//                            })
-//                            .setNegativeButton("Não", new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    //return;
-//                                    Snackbar snackbar = Snackbar.make(view, "Operação cancelada", Snackbar.LENGTH_SHORT);
-//                                    snackbar.setBackgroundTint(Color.WHITE);
-//                                    snackbar.setTextColor(Color.BLACK);
-//                                    snackbar.show();
-//                                }
-//                            });
-//                    builder.create();
-//                    builder.show();
-//                }
-//            });
+
           //  this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }

@@ -21,6 +21,8 @@ import com.google.android.material.snackbar.SnackbarContentLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthEmailException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -99,7 +101,6 @@ public class telaLogin extends AppCompatActivity {
                 }else{
                     autenticarUsuario(view);
                 }
-
             }
         });
     }
@@ -134,7 +135,7 @@ public class telaLogin extends AppCompatActivity {
                     String erro;
                     try{
                         throw task.getException();
-                    }catch (FirebaseAuthEmailException exception){
+                    }catch (FirebaseAuthInvalidUserException exception){
                         erro="Este E-mail não existe";
                     }catch (FirebaseAuthWeakPasswordException exception){
                         erro="Senha incorreta";
@@ -146,7 +147,6 @@ public class telaLogin extends AppCompatActivity {
                     snackbar.setTextColor(Color.BLACK);
                     snackbar.show();
                 }
-
             }
         });
 

@@ -22,6 +22,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +62,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 String dataInicio = et_dataInicio.getText().toString();
                 String dataFim = et_dataFim.getText().toString();
                 String finalidade= et_finalidade.getText().toString();
-
                 if(nomeMed.isEmpty()||  posologia.isEmpty()||hrInicial.isEmpty()||dose.isEmpty()||dataInicio.isEmpty()||dataFim.isEmpty()||finalidade.isEmpty()){
                     Snackbar snackbar = Snackbar.make(view, mensagens[0], Snackbar.LENGTH_SHORT);
                     snackbar.setBackgroundTint(Color.WHITE);
@@ -104,9 +104,9 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String dataInicio = et_dataInicio.getText().toString();
         String dataFim = et_dataFim.getText().toString();
         String finalidade= et_finalidade.getText().toString();
-
         String unPosologia = spiPosologia.getSelectedItem().toString();
         String unMed = spiMedicamento.getSelectedItem().toString();
+        String id = getIntent().getStringExtra("id");
 
         Map<String, Object> medicamentoMap = new HashMap<>();
         medicamentoMap.put("nome", nomeMed);
@@ -118,7 +118,8 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         medicamentoMap.put("finalidade", finalidade);
         medicamentoMap.put("unidade medicamento", unMed);
         medicamentoMap.put("unidade posologia", unPosologia);
-
+        medicamentoMap.put("id do idoso", id);
+        medicamentoMap.put("dia de criacao", new Date());
         firebaseFirestore.collection("Medicamento")
                 .add(medicamentoMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -134,5 +135,4 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                     }
                 });
     }
-
 }

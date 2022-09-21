@@ -41,10 +41,8 @@ public class telaEditarIdoso extends AppCompatActivity {
     private Button btn_editarIdoso;
     private EditText et_nomeIdosoEdit, et_enderecoIdosoEdit, et_telefoneIdosoEdit, et_nascIdosoEdit, et_obsEdit;
     private List<IdosoCuidado> idosoCuidadoList;
-    private String userId;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private RadioButton rb_feminino, rb_masculino, rb_outro;
-
     private String id;
 
     @Override
@@ -83,8 +81,6 @@ public class telaEditarIdoso extends AppCompatActivity {
 
     protected void listarIdososCuidados(){
         idosoCuidadoList = new ArrayList<>();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(id);
         document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -117,7 +113,6 @@ public class telaEditarIdoso extends AppCompatActivity {
         String tel = et_telefoneIdosoEdit.getText().toString();
         String dataNasc = et_nascIdosoEdit.getText().toString();
         String obs = et_obsEdit.getText().toString();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         if(nome.isEmpty() || end.isEmpty() || tel.isEmpty() || dataNasc.isEmpty()){
             Snackbar snackbar = Snackbar.make(view, "Preencha todos os campos", Snackbar.LENGTH_SHORT);
@@ -142,9 +137,7 @@ public class telaEditarIdoso extends AppCompatActivity {
             snackbar.setTextColor(Color.BLACK);
             snackbar.show();
         }else {
-            String nomeColecao = "Idosos cuidados " + userId;
-
-            firebaseFirestore.collection(nomeColecao).document(id)
+            firebaseFirestore.collection("Idosos cuidados").document(id)
                     .update("nome", nome, "endereco", end, "telefone", tel, "data de nascimento", dataNasc, "observacoes", obs, "genero",genero)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -164,7 +157,6 @@ public class telaEditarIdoso extends AppCompatActivity {
                         }
                     });
         }
-
     }
     protected boolean validarTelefone(String tel){
         Pattern pattern = Pattern.compile( "^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
@@ -176,7 +168,5 @@ public class telaEditarIdoso extends AppCompatActivity {
         Pattern pattern = Pattern.compile( "^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
         Matcher matcher = pattern.matcher(nasc);
         return (matcher.matches());
-
     }
-
-    }
+}

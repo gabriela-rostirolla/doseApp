@@ -30,11 +30,10 @@ public class telaDadosDosIdosos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_dados_dos_idosos);
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String nomeColecao = "Idosos cuidados "+userId;
 
         ActionBar actionBar = getSupportActionBar();
         String id = getIntent().getStringExtra("id");
-        DocumentReference document = firebaseFirestore.collection(nomeColecao).document(id);
+        DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(id);
         document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {

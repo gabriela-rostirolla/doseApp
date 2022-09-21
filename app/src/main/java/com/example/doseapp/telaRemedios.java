@@ -72,10 +72,11 @@ public class telaRemedios extends Fragment {
     public void listarRemedios(){
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         medicamentoList= new ArrayList<>();
-
         medicamentoAdapter = new MedicamentoAdapter(getActivity(), medicamentoList);
         rv_listaRemedio.setAdapter(medicamentoAdapter);
-                firebaseFirestore.collection("Medicamento")
+        firebaseFirestore.collection("Medicamento")
+                .whereEqualTo("id do idoso", id)
+                //.orderBy("dia de criacao", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -88,6 +89,7 @@ public class telaRemedios extends Fragment {
                                 med.setPosologia(document.getString("posologia"));
                                 med.setUnidade_dose(document.getString("unidade medicamento"));
                                 med.setUnidade_posologia(document.getString("unidade posologia"));
+                                med.setId(document.getId());
                                 medicamentoList.add(med);
                             }
                             medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList);
@@ -98,8 +100,8 @@ public class telaRemedios extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         listarRemedios();
     }
 
@@ -109,13 +111,14 @@ public class telaRemedios extends Fragment {
         View v = inflater.inflate(R.layout.fragment_tela_medicamento, container, false);
         inicializarComponentes(v);
 
-        String id = getActivity().getIntent().getStringExtra("id");
+        id = getActivity().getIntent().getStringExtra("id");
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), telaCadastroMedicamento.class);
+                intent.putExtra("id", id);
                 startActivity(intent);
             }
         });

@@ -68,8 +68,6 @@ public class telaCadastro extends AppCompatActivity {
                 }else{
                     cadastrarUsuario(view);
                 }
-
-
             }
         });
     }
@@ -116,11 +114,9 @@ public class telaCadastro extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void salvarDadosNoBancoDeDados(){
-
         String nome = et_cadNome.getText().toString();
         FirebaseFirestore banco_dados = FirebaseFirestore.getInstance();
         Map<String, Object> usuario = new HashMap<>();
@@ -128,7 +124,6 @@ public class telaCadastro extends AppCompatActivity {
         usuario.put("nome", nome);
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         DocumentReference documentReference = banco_dados.collection("Usuarios").document(userID);
         documentReference.set(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -141,7 +136,6 @@ public class telaCadastro extends AppCompatActivity {
                 Log.d("erro_banco_dados", "Erro ao salvar dados"+ exception.toString());
             }
         });
-
     }
 
     private void iniciarTelaInicial(){
