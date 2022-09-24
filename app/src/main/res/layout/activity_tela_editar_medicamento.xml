@@ -6,4 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".telaEditarMedicamento">
 
+    <include layout="@layout/activity_tela_cadastro_medicamento" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

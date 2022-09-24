@@ -25,22 +25,18 @@ import java.util.List;
 
 public class MedicamentoAdapter extends RecyclerView.Adapter {
     private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    //private String idIdoso;
     public static Context context;
     private static List<Medicamento> medicamentoList;
     private OnItemClick onItemClick;
 
     public MedicamentoAdapter(Context context, List<Medicamento> medicamentoList, OnItemClick onItemClick) {
-        //this.idIdoso = idIdoso;
         this.context = context;
         this.medicamentoList = medicamentoList;
         this.onItemClick = onItemClick;
     }
 
-
     @NonNull
     @Override
-
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_remedio, parent, false);
         MedicamentoViewHolder viewHolder = new MedicamentoAdapter.MedicamentoViewHolder(view, onItemClick);
@@ -72,14 +68,7 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
             tv_posologia = itemView.findViewById(R.id.tv_posologia);
             tv_nomeMedicamento = itemView.findViewById(R.id.tv_nomeMedicamento);
             imgBtn_excluirMed = itemView.findViewById(R.id.imgBtn_excluirMed);
-//            imgBtn_editarMed.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(itemView.getContext(), telaEditarIdoso.class);
-//                    //intent.putExtra("id", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
-//                    context.startActivity(intent);
-//                }
-//            });
+
             imgBtn_excluirMed.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -92,7 +81,6 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             document.delete();
-                                            //medicamentoList.remove(medicamentoList.get(getAbsoluteAdapterPosition()));
                                             Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
                                             snackbar.setBackgroundTint(Color.WHITE);
                                             snackbar.setTextColor(Color.BLACK);
@@ -103,7 +91,6 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
                             })
                             .setNegativeButton("Não", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    //return;
                                     Snackbar snackbar = Snackbar.make(view, "Operação cancelada", Snackbar.LENGTH_SHORT);
                                     snackbar.setBackgroundTint(Color.WHITE);
                                     snackbar.setTextColor(Color.BLACK);
@@ -114,7 +101,6 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
                     builder.show();
                 }
             });
-
 
             this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);

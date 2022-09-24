@@ -13,19 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.List;
 
 public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
@@ -34,7 +27,6 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
     private List<IdosoCuidado> idosoCuidadoList;
     private OnItemClick onItemClick;
     public Context context;
-    //private String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public IdosoCuidadoAdapter(List<IdosoCuidado> idosoCuidadoList, OnItemClick onItemClick, Context context){
         this.idosoCuidadoList = idosoCuidadoList;

@@ -5,8 +5,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,9 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapter.OnItemClick {
@@ -36,7 +31,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     private List<IdosoCuidado> idosoCuidadoList;
     private IdosoCuidadoAdapter idosoCuidadoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

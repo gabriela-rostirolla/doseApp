@@ -2,26 +2,19 @@ package com.example.doseapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,17 +56,9 @@ import java.util.List;
         rv_listaRemedio = v.findViewById(R.id.rv_listaRemedio);
     }
 
-//    @Override
-//    public void onItemClick(int position) {
-//        //Intent intent = new Intent(getActivity(), tela.class);
-//        //intent.putExtra("id", .get(position).getId());
-//        //startActivity(intent);
-//    }
     public void listarRemedios(){
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         medicamentoList= new ArrayList<>();
-        medicamentoAdapter = new MedicamentoAdapter(getActivity(), medicamentoList, this::OnItemClick);
-        rv_listaRemedio.setAdapter(medicamentoAdapter);
         firebaseFirestore.collection("Medicamento")
                 .whereEqualTo("id do idoso", id)
                 //.orderBy("dia de criacao", Query.Direction.DESCENDING)
@@ -92,7 +77,7 @@ import java.util.List;
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
                             }
-                            medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList, telaRemedios.this::OnItemClick);
+                            medicamentoAdapter = new MedicamentoAdapter(getActivity(),medicamentoList, telaRemedios.this::OnItemClick);
                             rv_listaRemedio.setAdapter(medicamentoAdapter);
                         }
                     }
@@ -127,7 +112,7 @@ import java.util.List;
 
     @Override
     public void OnItemClick(int position) {
-        Intent intent = new Intent(getContext(), telaEditarMedicamento.class);
-        getContext().startActivity(intent);
+        Intent intent = new Intent(getActivity(), telaEditarMedicamento.class);
+        startActivity(intent);
     }
 }
