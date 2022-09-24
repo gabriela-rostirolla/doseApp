@@ -59,14 +59,12 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     protected void onStart() {
         super.onStart();
         listarIdososCuidados();
-//        if(idosoCuidadoList.isEmpty()){
-//            tv_nenhumIdosoCad.setCursorVisible(true);
-//        }
     }
 
     protected void inicializarComponentes(){
         fab_addIdosoCuidado = findViewById(R.id.fab_addIdosoCuidado);
         rv_listaIdosos=findViewById(R.id.rv_listaIdoso);
+        tv_nenhumIdosoCad=findViewById(R.id.tv_nenhumIdosoCad);
     }
 
     protected void listarIdososCuidados(){
@@ -86,6 +84,11 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                                 ic.setNome(document.getString("nome"));
                                 ic.setId(document.getId());
                                 idosoCuidadoList.add(ic);
+                            }
+                            if(idosoCuidadoList.isEmpty()){
+                                tv_nenhumIdosoCad.setVisibility(View.VISIBLE);
+                            }else{
+                                tv_nenhumIdosoCad.setVisibility(View.INVISIBLE);
                             }
                             idosoCuidadoAdapter = new IdosoCuidadoAdapter(idosoCuidadoList, telaInicial.this::OnItemClick, telaInicial.this);
                             rv_listaIdosos.setAdapter(idosoCuidadoAdapter);

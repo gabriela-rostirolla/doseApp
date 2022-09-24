@@ -3,17 +3,17 @@ package com.example.doseapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,76 +23,65 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.List;
 
-public class MedicamentoAdapter extends RecyclerView.Adapter {
+public class ReceitaAdapter extends RecyclerView.Adapter {
     private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    //private String idIdoso;
     public static Context context;
-    private static List<Medicamento> medicamentoList;
-    private OnItemClick onItemClick;
+    private static List<Receita> receitaList;
+    //private IdosoCuidadoAdapter.OnItemClick onItemClick;
 
-    public MedicamentoAdapter(Context context, List<Medicamento> medicamentoList, OnItemClick onItemClick) {
-        //this.idIdoso = idIdoso;
+    public ReceitaAdapter(Context context, List<Receita> receitaList) {
         this.context = context;
-        this.medicamentoList = medicamentoList;
-        this.onItemClick = onItemClick;
+        this.receitaList = receitaList;
+        //this.onItemClick = onItemClick;
     }
-
 
     @NonNull
     @Override
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_remedio, parent, false);
-        MedicamentoViewHolder viewHolder = new MedicamentoAdapter.MedicamentoViewHolder(view, onItemClick);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_receita, parent, false);
+        ReceitaAdapter.ReceitaViewHolder viewHolder = new ReceitaAdapter.ReceitaViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        MedicamentoAdapter.MedicamentoViewHolder viewHolder = (MedicamentoAdapter.MedicamentoViewHolder) holder;
-        Medicamento medicamento = medicamentoList.get(position);
-        viewHolder.tv_nomeMedicamento.setText(medicamento.getNome());
-        viewHolder.tv_dose.setText(medicamento.getDose()+" "+medicamento.getUnidade_dose());
-        viewHolder.tv_posologia.setText(medicamento.getPosologia()+" "+medicamento.getUnidade_posologia());
+        ReceitaAdapter.ReceitaViewHolder viewHolder = (ReceitaAdapter.ReceitaViewHolder) holder;
+        Receita receita = receitaList.get(position);
+        viewHolder.tv_nomeReceita.setText(receita.getNome());
+        viewHolder.tv_receitaData.setText(receita.getDataRenovar());
+        //viewHolder.tv_diaConsulta.setText(terapia.getDiasSemana());
     }
 
     @Override
     public int getItemCount() {
-        return medicamentoList.size();
+        return receitaList.size();
     }
 
-    public static class MedicamentoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final OnItemClick onItemClick;
-        TextView tv_dose, tv_posologia, tv_nomeMedicamento;
-        ImageButton imgBtn_excluirMed;
+    public static class ReceitaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
+        TextView tv_receitaData, tv_nomeReceita;
+        ImageButton imgBtn_excluirReceita;
 
-        public MedicamentoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
+        public ReceitaViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_dose = itemView.findViewById(R.id.tv_dose);
-            tv_posologia = itemView.findViewById(R.id.tv_posologia);
-            tv_nomeMedicamento = itemView.findViewById(R.id.tv_nomeMedicamento);
-            imgBtn_excluirMed = itemView.findViewById(R.id.imgBtn_excluirMed);
-//            imgBtn_editarMed.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(itemView.getContext(), telaEditarIdoso.class);
-//                    //intent.putExtra("id", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
-//                    context.startActivity(intent);
-//                }
-//            });
-            imgBtn_excluirMed.setOnClickListener(new View.OnClickListener() {
+            //tv_diasTerapia = itemView.findViewById(R.id.tv_diasSemana);
+            tv_nomeReceita = itemView.findViewById(R.id.tv_nomeReceita);
+            tv_receitaData = itemView.findViewById(R.id.tv_dataRenovacao);
+            imgBtn_excluirReceita = itemView.findViewById(R.id.imgBtn_excluirReceita);
+
+            imgBtn_excluirReceita.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
                     builder.setMessage("Deseja realmente excluir?")
                             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    DocumentReference document = firebaseFirestore.collection("Medicamento").document(medicamentoList.get(getAbsoluteAdapterPosition()).getId());
+                                    DocumentReference document = firebaseFirestore.collection("Receitas").document(receitaList.get(getAbsoluteAdapterPosition()).getId());
                                     document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             document.delete();
-                                            //medicamentoList.remove(medicamentoList.get(getAbsoluteAdapterPosition()));
                                             Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
                                             snackbar.setBackgroundTint(Color.WHITE);
                                             snackbar.setTextColor(Color.BLACK);
@@ -115,18 +104,13 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
                 }
             });
 
-
-            this.onItemClick = onItemClick;
+            //  this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            onItemClick.OnItemClick(getAbsoluteAdapterPosition());
+            //    onItemClick.OnItemClick(getAbsoluteAdapterPosition());
         }
-    }
-
-    public interface OnItemClick{
-        void OnItemClick(int position);
     }
 }

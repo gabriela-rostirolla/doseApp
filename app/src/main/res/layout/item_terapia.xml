@@ -26,10 +26,10 @@
 
         <TextView
             android:id="@+id/tv_diasSemana"
-            android:layout_width="70dp"
+            android:layout_width="75dp"
             android:layout_height="27dp"
-            android:text=""
-            android:textSize="20sp"
+            android:text="S T Q Q S S D"
+            android:textSize="12sp"
             android:textColor="@color/black"/>
 
         <TextView
@@ -53,21 +53,13 @@
 
     <TextView
         android:id="@+id/tv_nomeTerapia"
-        android:layout_width="150dp"
+        android:layout_width="190dp"
         android:layout_height="27dp"
         android:layout_marginLeft="8dp"
         android:layout_gravity="center"
         android:textSize="20sp"
         android:text=""
         android:textColor="@color/black"/>
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/imgBtn_editarTerapia"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/light_blue"
-        app:srcCompat="@drawable/ic_edit"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imgBtn_excluirTerapia"

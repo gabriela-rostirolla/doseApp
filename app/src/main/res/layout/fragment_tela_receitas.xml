@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,12 +11,19 @@
         android:layout_height="match_parent"
         android:background="@color/light_blue"
         android:orientation="vertical"
-        tools:context=".telaReceitas">
+        tools:context=".telaReceita">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_listaReceita"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_receita"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_addReceita"
             style="@style/floatingactionbutton"
-            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
             android:layout_marginBottom="50dp"
             android:clickable="true"
             android:src="@drawable/ic_add"

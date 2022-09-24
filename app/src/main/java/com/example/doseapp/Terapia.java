@@ -10,7 +10,7 @@ public class Terapia {
     private String horario;
     private List<String> diasSemana;
     private boolean lembre;
-
+    private String id;
     public Terapia() {
     }
 
@@ -22,6 +22,14 @@ public class Terapia {
         this.horario = horario;
         this.diasSemana = diasSemana;
         this.lembre = lembre;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNome() {

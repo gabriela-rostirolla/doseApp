@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/light_blue"
         android:orientation="vertical"
+
         tools:context=".telaCadastroIdosoCuidado">
 
         <EditText
@@ -39,12 +40,28 @@
             android:inputType="phone"
             android:maxLength="14" />
 
-        <EditText
-            android:id="@+id/et_dataNascIdoso"
-            style="@style/Edit_text"
-            android:drawableRight="@drawable/ic_calendar"
-            android:hint="@string/data_nasc"
-            android:maxLength="10" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/et_dataNascIdoso"
+                style="@style/Edit_text"
+                android:layout_width="match_parent"
+                android:hint="@string/data_nasc"
+                android:enabled="false"
+                android:maxLength="10" />
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_calendar"
+                android:id="@+id/icon_calendar"
+                android:layout_gravity="center"
+                android:background="@drawable/borda"
+                />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/et_obsIdoso"
@@ -61,6 +78,7 @@
             android:text="@string/genero"
             android:textSize="20dp"
             android:textStyle="normal" />
+
 
         <RadioGroup
             android:id="@+id/rg_genero"

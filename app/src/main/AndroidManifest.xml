@@ -14,39 +14,36 @@
         android:theme="@style/Theme.DoseApp"
         tools:targetApi="31">
         <activity
+            android:name=".telaEditarMedicamento"
+            android:exported="false" />
+        <activity
             android:name=".telaEditarIdoso"
             android:exported="false"
-            android:parentActivityName=".telaInicial"
-            />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaCadastroDiarioAtividade"
             android:exported="false"
-            android:parentActivityName=".telaCadastroDiario"
-            />
+            android:parentActivityName=".telaCadastroDiario" />
         <activity
             android:name=".telaCadastroConsulta"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos"
-            />
+            android:parentActivityName=".telaDadosDosIdosos" />
         <activity
             android:name=".telaCadastroDiarioAlimentacao"
             android:exported="false"
-            android:parentActivityName=".telaCadastroDiario"
-            />
+            android:parentActivityName=".telaCadastroDiario" />
         <activity
             android:name=".telaCadastroTerapia"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos"
-            />
+            android:parentActivityName=".telaDadosDosIdosos" />
         <activity
             android:name=".telaCadastroReceita"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos"
-            />
-        <activity android:name=".telaCadastroDiario"
+            android:parentActivityName=".telaDadosDosIdosos" />
+        <activity
+            android:name=".telaCadastroDiario"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos"
-            />
+            android:parentActivityName=".telaDadosDosIdosos" />
         <activity
             android:name=".telaDadosDosIdosos"
             android:exported="false"
@@ -54,8 +51,7 @@
         <activity
             android:name=".telaCadastroMedicamento"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos"
-            />
+            android:parentActivityName=".telaDadosDosIdosos" />
         <activity
             android:name=".telaCadastroIdosoCuidado"
             android:exported="false"
@@ -66,18 +62,17 @@
             android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaInicial"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".telaCadastro"
             android:exported="false"
-            android:parentActivityName=".telaLogin"
-            />
+            android:parentActivityName=".telaLogin" />
         <activity
             android:name=".telaLogin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

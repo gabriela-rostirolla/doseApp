@@ -6,6 +6,7 @@ public class DiarioDeCuidado{
     private Alimentacao alimentacao;
     private Atividade atividade;
     private String cuidadorResponsavel;
+    private String id;
 
     public DiarioDeCuidado() {
     }
@@ -16,6 +17,14 @@ public class DiarioDeCuidado{
         this.alimentacao = alimentacao;
         this.atividade = atividade;
         this.cuidadorResponsavel = cuidadorResponsavel;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitulo() {

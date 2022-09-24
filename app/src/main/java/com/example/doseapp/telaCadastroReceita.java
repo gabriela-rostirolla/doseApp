@@ -77,7 +77,7 @@ public class telaCadastroReceita extends AppCompatActivity {
             String tel = et_tel.getText().toString();
             String profissional = et_profissional.getText().toString();
             String dataRen = et_dataRen.getText().toString();
-
+            String id = getIntent().getStringExtra("id");
             Map<String, Object> receitaMap = new HashMap<>();
             receitaMap.put("nome", nome);
             receitaMap.put("data", data);
@@ -85,6 +85,7 @@ public class telaCadastroReceita extends AppCompatActivity {
             receitaMap.put("telefone", tel);
             receitaMap.put("profissional", profissional);
             receitaMap.put("data para renovar", dataRen);
+            receitaMap.put("id do idoso", id);
 
             firebaseFirestore.collection("Receitas")
                     .add(receitaMap)

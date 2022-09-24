@@ -18,21 +18,21 @@
             android:id="@+id/et_nomeConsulta"
             style="@style/Edit_text"
             android:hint="@string/nome"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_profissionalConsulta"
             style="@style/Edit_text"
             android:hint="@string/profissional"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_enderecoConsulta"
             style="@style/Edit_text"
             android:hint="@string/endereco"
-            android:inputType="textPersonName"
+            android:inputType="textCapSentences"
             android:maxLength="250" />
 
         <EditText
@@ -46,15 +46,15 @@
             android:id="@+id/et_dataConsulta"
             style="@style/Edit_text"
             android:hint="@string/data"
-            android:inputType="date"
-            android:maxLength="8" />
+            android:inputType="textPersonName"
+            />
 
         <EditText
             android:id="@+id/et_horarioConsulta"
             style="@style/Edit_text"
             android:hint="@string/horario"
-            android:inputType="time"
-            android:maxLength="4" />
+            android:inputType="textPersonName"
+             />
 
         <Switch
             android:id="@+id/swt_lembreConculta"

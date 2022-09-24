@@ -10,9 +10,18 @@ public class Receita {
     private String telefone;
     private String profissional;
     private String dataRenovar;
+    private String id;
     private boolean lembre;
 
     public Receita() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Receita(String nome, String data, Blob foto, String hospital, String telefone, String profissional, String dataRenovar, boolean lembre) {

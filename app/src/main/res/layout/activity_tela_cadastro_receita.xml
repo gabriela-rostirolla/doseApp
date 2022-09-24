@@ -18,21 +18,21 @@
             android:id="@+id/et_nomeReceita"
             style="@style/Edit_text"
             android:hint="@string/nome"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_dataReceita"
             style="@style/Edit_text"
             android:hint="@string/data"
-            android:inputType="date"
+            android:inputType="textPersonName"
             android:maxLength="8" />
 
         <EditText
             android:id="@+id/et_hospitalReceita"
             style="@style/Edit_text"
             android:hint="@string/hospital"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
@@ -46,14 +46,14 @@
             android:id="@+id/et_profissionalReceita"
             style="@style/Edit_text"
             android:hint="@string/profissional"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_dataRenReceita"
             style="@style/Edit_text"
             android:hint="@string/data_renovar_receita"
-            android:inputType="date"
+            android:inputType="textPersonName"
             android:maxLength="8" />
 
         <Switch

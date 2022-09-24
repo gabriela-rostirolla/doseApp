@@ -73,13 +73,14 @@ public class telaCadastroTerapia extends AppCompatActivity {
         String profissional = et_profissional.getText().toString();
         String horario = et_horario.getText().toString();
         String tel = et_telefone.getText().toString();
-
+        String id = getIntent().getStringExtra("id");
         Map<String, Object> terapiaMap = new HashMap<>();
         terapiaMap.put("nome", nome);
         terapiaMap.put("endereco", end);
         terapiaMap.put("profissional", profissional);
         terapiaMap.put("horario", horario);
         terapiaMap.put("telefone", tel);
+        terapiaMap.put("id do idoso", id);
 
         firebaseFirestore.collection("Terapias")
                 .add(terapiaMap)

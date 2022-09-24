@@ -25,7 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class telaRemedios extends Fragment {
+ class telaRemedios extends Fragment implements MedicamentoAdapter.OnItemClick{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -72,7 +72,7 @@ public class telaRemedios extends Fragment {
     public void listarRemedios(){
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         medicamentoList= new ArrayList<>();
-        medicamentoAdapter = new MedicamentoAdapter(getActivity(), medicamentoList);
+        medicamentoAdapter = new MedicamentoAdapter(getActivity(), medicamentoList, this::OnItemClick);
         rv_listaRemedio.setAdapter(medicamentoAdapter);
         firebaseFirestore.collection("Medicamento")
                 .whereEqualTo("id do idoso", id)
@@ -92,7 +92,7 @@ public class telaRemedios extends Fragment {
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
                             }
-                            medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList);
+                            medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList, telaRemedios.this::OnItemClick);
                             rv_listaRemedio.setAdapter(medicamentoAdapter);
                         }
                     }
@@ -123,5 +123,11 @@ public class telaRemedios extends Fragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        Intent intent = new Intent(getContext(), telaEditarMedicamento.class);
+        getContext().startActivity(intent);
     }
 }
