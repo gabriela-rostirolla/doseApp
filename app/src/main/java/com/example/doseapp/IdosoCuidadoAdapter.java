@@ -64,7 +64,6 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
             imgBtn_compartilhar = itemView.findViewById(R.id.imgBtn_compartilhar);
             imgBtn_editar = itemView.findViewById(R.id.imgBtn_editar);
 
-
             imgBtn_excluir.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

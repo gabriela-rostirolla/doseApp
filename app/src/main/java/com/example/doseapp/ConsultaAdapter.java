@@ -23,24 +23,19 @@ import java.util.List;
 
 public class ConsultaAdapter extends RecyclerView.Adapter {
     private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    //private String idIdoso;
     public static Context context;
     private static List<Consulta> consultaList;
-    //private IdosoCuidadoAdapter.OnItemClick onItemClick;
+    private static OnItemClick onItemClick;
 
-    public ConsultaAdapter(Context context, List<Consulta> consultaList) {
-        //this.idIdoso = idIdoso;
+    public ConsultaAdapter(Context context, List<Consulta> consultaList, OnItemClick onItemClick) {
         this.context = context;
         this.consultaList = consultaList;
-        //this.onItemClick = onItemClick;
+        this.onItemClick = onItemClick;
     }
-
-    @NonNull
-    @Override
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_consulta, parent, false);
-        ConsultaViewHolder viewHolder = new ConsultaAdapter.ConsultaViewHolder(view);
+        ConsultaViewHolder viewHolder = new ConsultaAdapter.ConsultaViewHolder(view, onItemClick);
         return viewHolder;
     }
 
@@ -59,11 +54,12 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
     }
 
     public static class ConsultaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
+
         TextView tv_diaConsulta, tv_horaConsulta, tv_nomeConsulta;
         ImageButton imgBtn_excluirConsulta;
+        OnItemClick onItemClick;
 
-        public ConsultaViewHolder(@NonNull View itemView) {
+        public ConsultaViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
             tv_diaConsulta = itemView.findViewById(R.id.tv_diaConsulta);
             tv_horaConsulta = itemView.findViewById(R.id.tv_horaConsulta);
@@ -92,7 +88,6 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
                             })
                             .setNegativeButton("Não", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    //return;
                                     Snackbar snackbar = Snackbar.make(view, "Operação cancelada", Snackbar.LENGTH_SHORT);
                                     snackbar.setBackgroundTint(Color.WHITE);
                                     snackbar.setTextColor(Color.BLACK);
@@ -104,13 +99,17 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            //  this.onItemClick = onItemClick;
+            this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            //    onItemClick.OnItemClick(getAbsoluteAdapterPosition());
+            onItemClick.OnItemClick(getAbsoluteAdapterPosition());
         }
+    }
+
+    public interface OnItemClick{
+        void OnItemClick(int position);
     }
 }

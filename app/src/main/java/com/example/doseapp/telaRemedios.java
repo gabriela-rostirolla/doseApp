@@ -30,6 +30,7 @@ import java.util.List;
     private MedicamentoAdapter medicamentoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String id;
+
     public telaRemedios() {
     }
 
@@ -77,7 +78,7 @@ import java.util.List;
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
                             }
-                            medicamentoAdapter = new MedicamentoAdapter(getActivity(),medicamentoList, telaRemedios.this::OnItemClick);
+                            medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList, telaRemedios.this::OnItemClick);
                             rv_listaRemedio.setAdapter(medicamentoAdapter);
                         }
                     }
@@ -110,9 +111,11 @@ import java.util.List;
         return v;
     }
 
-    @Override
-    public void OnItemClick(int position) {
-        Intent intent = new Intent(getActivity(), telaEditarMedicamento.class);
-        startActivity(intent);
-    }
+     @Override
+     public void OnItemClick(int position) {
+         Intent intent = new Intent();
+         intent.setClass(getActivity(), telaEditarMedicamento.class);
+         intent.putExtra("id", id);
+         startActivity(intent);
+     }
 }

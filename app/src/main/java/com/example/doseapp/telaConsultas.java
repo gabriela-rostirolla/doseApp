@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class telaConsultas extends Fragment {
+public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemClick {
 
     private static List<Consulta> consultaList;
     private static RecyclerView rv_listaConsulta;
@@ -34,6 +34,7 @@ public class telaConsultas extends Fragment {
     private String mParam1;
     private String mParam2;
     private static String id;
+    private ConsultaAdapter.OnItemClick onItemClick;
 
     public telaConsultas() {
     }
@@ -77,7 +78,7 @@ public class telaConsultas extends Fragment {
                                 System.out.println(consulta.getNome());
                                 consultaList.add(consulta);
                             }
-                            consultaAdapter = new ConsultaAdapter(getContext(), consultaList);
+                            consultaAdapter = new ConsultaAdapter(getContext(), consultaList, onItemClick);
                             rv_listaConsulta.setAdapter(consultaAdapter);
                         }
                     }
@@ -115,5 +116,13 @@ public class telaConsultas extends Fragment {
         });
 
         return v;
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), telaEditarMedicamento.class);
+        intent.putExtra("id consulta", consultaList.get(position).getId());
+        startActivity(intent);
     }
 }

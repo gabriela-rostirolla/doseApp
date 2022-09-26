@@ -58,9 +58,9 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
     }
 
     public static class MedicamentoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final OnItemClick onItemClick;
         TextView tv_dose, tv_posologia, tv_nomeMedicamento;
         ImageButton imgBtn_excluirMed;
+        OnItemClick onItemClick;
 
         public MedicamentoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);

@@ -14,6 +14,15 @@
         android:theme="@style/Theme.DoseApp"
         tools:targetApi="31">
         <activity
+            android:name=".telaEditarTerapia"
+            android:exported="false" />
+        <activity
+            android:name=".telaEditarConsulta"
+            android:exported="false" />
+        <activity
+            android:name=".telaEditarReceita"
+            android:exported="false" />
+        <activity
             android:name=".telaEditarMedicamento"
             android:exported="false" />
         <activity

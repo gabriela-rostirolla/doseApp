@@ -23,7 +23,6 @@ import java.util.List;
 
 public class telaDadosDosIdosos extends AppCompatActivity {
 
-    private List<IdosoCuidado> idosoCuidadoList;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String userId;
     @Override
@@ -45,7 +44,7 @@ public class telaDadosDosIdosos extends AppCompatActivity {
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("Remédios", telaRemedios.class)
+                //.add("Remédios", telaRemedios.class)
                 .add("Consultas", telaConsultas.class)
                 .add("Terapias", telaTerapias.class)
                 .add("Diário de cuidado", telaDiario.class)
