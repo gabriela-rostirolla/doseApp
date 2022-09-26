@@ -13,12 +13,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
- class telaRemedios extends Fragment implements MedicamentoAdapter.OnItemClick{
+ public class telaMedicamentos extends Fragment implements MedicamentoAdapter.OnItemClick{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -31,11 +32,11 @@ import java.util.List;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String id;
 
-    public telaRemedios() {
+    public telaMedicamentos() {
     }
 
-    public static telaRemedios newInstance(String param1, String param2) {
-        telaRemedios fragment = new telaRemedios();
+    public static telaMedicamentos newInstance(String param1, String param2) {
+        telaMedicamentos fragment = new telaMedicamentos();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -57,12 +58,12 @@ import java.util.List;
         rv_listaRemedio = v.findViewById(R.id.rv_listaRemedio);
     }
 
-    public void listarRemedios(){
+    public void listarMedicamentos(){
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         medicamentoList= new ArrayList<>();
         firebaseFirestore.collection("Medicamento")
                 .whereEqualTo("id do idoso", id)
-                //.orderBy("dia de criacao", Query.Direction.DESCENDING)
+                .orderBy("dia de criacao", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -78,7 +79,7 @@ import java.util.List;
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
                             }
-                            medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList, telaRemedios.this::OnItemClick);
+                            medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList, telaMedicamentos.this::OnItemClick);
                             rv_listaRemedio.setAdapter(medicamentoAdapter);
                         }
                     }
@@ -88,7 +89,7 @@ import java.util.List;
     @Override
     public void onResume() {
         super.onResume();
-        listarRemedios();
+        listarMedicamentos();
     }
 
     @Override
@@ -115,7 +116,7 @@ import java.util.List;
      public void OnItemClick(int position) {
          Intent intent = new Intent();
          intent.setClass(getActivity(), telaEditarMedicamento.class);
-         intent.putExtra("id", id);
+         intent.putExtra("id medicamento", medicamentoList.get(position).getId());
          startActivity(intent);
      }
 }

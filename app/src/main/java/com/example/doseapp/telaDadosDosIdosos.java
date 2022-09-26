@@ -44,7 +44,7 @@ public class telaDadosDosIdosos extends AppCompatActivity {
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                //.add("Remédios", telaRemedios.class)
+                .add("Remédios", telaMedicamentos.class)
                 .add("Consultas", telaConsultas.class)
                 .add("Terapias", telaTerapias.class)
                 .add("Diário de cuidado", telaDiario.class)

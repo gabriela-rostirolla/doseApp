@@ -40,7 +40,6 @@ public class telaEditarIdoso extends AppCompatActivity {
 
     private Button btn_editarIdoso;
     private EditText et_nomeIdosoEdit, et_enderecoIdosoEdit, et_telefoneIdosoEdit, et_nascIdosoEdit, et_obsEdit;
-    private List<IdosoCuidado> idosoCuidadoList;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private RadioButton rb_feminino, rb_masculino, rb_outro;
     private String id;
@@ -80,7 +79,6 @@ public class telaEditarIdoso extends AppCompatActivity {
     }
 
     protected void listarIdososCuidados(){
-        idosoCuidadoList = new ArrayList<>();
         DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(id);
         document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override

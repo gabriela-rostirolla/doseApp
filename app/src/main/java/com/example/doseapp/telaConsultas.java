@@ -57,9 +57,9 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
         }
     }
 
-    public void listarConsultas(){
+    public void listarConsultas() {
         rv_listaConsulta.setLayoutManager(new LinearLayoutManager(getActivity()));
-        consultaList= new ArrayList<>();
+        consultaList = new ArrayList<>();
 
         firebaseFirestore.collection("Consultas")
                 .whereEqualTo("id do idoso", id)
@@ -91,10 +91,9 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
         listarConsultas();
     }
 
-    protected void inicializarComponentes(View v){
+    protected void inicializarComponentes(View v) {
         floatingActionButton = v.findViewById(R.id.fab_addConsulta);
         rv_listaConsulta = v.findViewById(R.id.rv_listaConsulta);
-
     }
 
     @Override
