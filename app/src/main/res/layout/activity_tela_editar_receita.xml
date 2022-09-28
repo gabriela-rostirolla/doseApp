@@ -6,4 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".telaEditarReceita">
 
+    <include layout="@layout/activity_tela_cadastro_receita" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

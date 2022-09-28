@@ -47,8 +47,8 @@ public class telaDadosDosIdosos extends AppCompatActivity {
                 .add("Remédios", telaMedicamentos.class)
                 .add("Consultas", telaConsultas.class)
                 .add("Terapias", telaTerapias.class)
-                .add("Diário de cuidado", telaDiario.class)
                 .add("Receitas", telaReceitas.class)
+                .add("Diário de cuidado", telaDiario.class)
                 .create());
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);

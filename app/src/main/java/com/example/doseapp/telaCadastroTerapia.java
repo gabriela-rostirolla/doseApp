@@ -26,6 +26,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
     private Button btn_salvar;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String[] mensagens ={"Preencha todos os campos"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -60,7 +60,7 @@ public class telaEditarMedicamento extends AppCompatActivity {
         btn_salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                salvarBancoDeDados();
+                editarBancoDeDados();
                 finish();
             }
         });
@@ -95,9 +95,9 @@ public class telaEditarMedicamento extends AppCompatActivity {
                 et_posologia.setText(value.getString("posologia"));
             }
         });
-
     }
-    public void salvarBancoDeDados(){
+
+    public void editarBancoDeDados(){
         String nomeMed = et_nomeMed.getText().toString();
         String posologia =  et_posologia.getText().toString();
         String hrInicial = et_hrInicial.getText().toString();

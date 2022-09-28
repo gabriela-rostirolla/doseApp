@@ -6,4 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".telaEditarConsulta">
 
+    <include layout="@layout/activity_tela_cadastro_consulta" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
