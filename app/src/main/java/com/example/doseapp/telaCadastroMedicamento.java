@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.type.DateTime;
+
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,17 +61,22 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 String dataInicio = et_dataInicio.getText().toString();
                 String dataFim = et_dataFim.getText().toString();
                 String finalidade= et_finalidade.getText().toString();
-                if(nomeMed.isEmpty()||  posologia.isEmpty()||hrInicial.isEmpty()||dose.isEmpty()||dataInicio.isEmpty()||dataFim.isEmpty()||finalidade.isEmpty()){
-                    Snackbar snackbar = Snackbar.make(view, mensagens[0], Snackbar.LENGTH_SHORT);
-                    snackbar.setBackgroundTint(Color.WHITE);
-                    snackbar.setTextColor(Color.BLACK);
-                    snackbar.show();
+
+                if(validarCampos() == false){
+                    gerarSnackBar(view, mensagens[0]);
                 }else{
                     salvarNoBancoDeDados();
                     finish();
                 }
             }
         });
+    }
+
+    protected void gerarSnackBar(View view, String texto){
+        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.WHITE);
+        snackbar.setTextColor(Color.BLACK);
+        snackbar.show();
     }
 
     protected void inicializarComponentes(){
@@ -130,5 +138,26 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                         Log.d("erro_banco_dados", "Erro ao salvar dados!", e);
                     }
                 });
+    }
+
+    public boolean validarCampos(){
+        String nome = et_nomeMed.getText().toString();
+        String posologia = et_posologia.getText().toString();
+        //DateTime horario = DateTimeFormatter.ofPattern(et_hrInicial.getText().toString());
+        //Date dataInicio = (et_dataInicio.getText().toString());
+        String finalidade = et_finalidade.getText().toString();
+        try {
+            Date dataInicio = new Date(et_dataInicio.getText().toString());
+        }catch (Exception e){
+            return false;
+        }
+        if(nome.isEmpty() || posologia.isEmpty()||finalidade.isEmpty()){
+            return false;
+        }else if(nome.length() <3){
+            return false;
+        }else if(finalidade.length() <3){
+            return false;
+        }
+        return true;
     }
 }

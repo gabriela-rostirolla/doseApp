@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -35,7 +37,7 @@ public class telaEditarMedicamento extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private EditText et_nomeMed, et_posologia, et_hrInicial, et_dose, et_dataInicio, et_dataFim, et_finalidade;
     private Button btn_salvar;
-    private String[] mensagens = {"Preencha todos os campos"};
+    private String[] mensagens = {"Preencha todos os campos", "Digite uma data válida", "Digite um nome com mais de 3 letras", "Digite uma funcionalidade com mais de 3 letras", "Não foi possivel editar dados"};
     private Spinner spiPosologia, spiMedicamento;
 
     @Override
@@ -60,8 +62,10 @@ public class telaEditarMedicamento extends AppCompatActivity {
         btn_salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editarBancoDeDados();
-                finish();
+                if (validarCampos(view) == true) {
+                    editarBancoDeDados();
+                    finish();
+                }
             }
         });
     }
@@ -116,5 +120,42 @@ public class telaEditarMedicamento extends AppCompatActivity {
                         Log.d("banco_dados_salvos", "Sucesso ao atualizar dados!");
                     }
                 });
+    }
+
+    public void gerarSnackBar(View view, String texto){
+        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.WHITE);
+        snackbar.setTextColor(Color.BLACK);
+        snackbar.show();
+    }
+
+    public boolean validarCampos(View view){
+        String nome = et_nomeMed.getText().toString();
+        String posologia = et_posologia.getText().toString();
+        String horaInicial = et_hrInicial.getText().toString();
+        String dose = et_dose.getText().toString();
+        String dataInicio= et_dataInicio.getText().toString();
+        String dataFim = et_dataFim.getText().toString();
+
+        //DateTime horario = DateTimeFormatter.ofPattern(et_hrInicial.getText().toString());
+        //Date dataInicio = (et_dataInicio.getText().toString());
+        String finalidade = et_finalidade.getText().toString();
+//        try {
+//            Date dataInicio = new Date(et_dataInicio.getText().toString());
+//        }catch (Exception e){
+//            gerarSnackBar(view, mensagens[1]);
+//            return false;
+//        }
+        if(nome.isEmpty() || posologia.isEmpty()||finalidade.isEmpty()||horaInicial.isEmpty()||dose.isEmpty()||dataInicio.isEmpty()||dataFim.isEmpty()){
+            gerarSnackBar(view, mensagens[0]);
+            return false;
+        }else if(nome.length() <3){
+            gerarSnackBar(view, mensagens[2]);
+            return false;
+        }else if(finalidade.length() <3){
+            gerarSnackBar(view, mensagens[3]);
+            return false;
+        }
+        return true;
     }
 }
