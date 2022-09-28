@@ -24,7 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class telaReceitas extends Fragment {
+public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -62,8 +62,6 @@ public class telaReceitas extends Fragment {
     protected void listarReceitas(){
         rv_listaReceita.setLayoutManager(new LinearLayoutManager(getActivity()));
         receitaList= new ArrayList<>();
-        receitaAdapter = new ReceitaAdapter(getActivity(), receitaList);
-        rv_listaReceita.setAdapter(receitaAdapter);
         firebaseFirestore.collection("Receitas")
                 .whereEqualTo("id do idoso", id)
                 //.orderBy("dia de criacao", Query.Direction.DESCENDING)
@@ -84,7 +82,7 @@ public class telaReceitas extends Fragment {
                             }else{
                                 tv_nenhumRecCad.setVisibility(View.INVISIBLE);
                             }
-                            receitaAdapter = new ReceitaAdapter(getContext(),receitaList);
+                            receitaAdapter = new ReceitaAdapter(getContext(),receitaList, telaReceitas.this::OnItemClick);
                             rv_listaReceita.setAdapter(receitaAdapter);
                         }
                     }
@@ -119,5 +117,13 @@ public class telaReceitas extends Fragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), telaEditarReceita.class);
+        intent.putExtra("id receita", receitaList.get(position).getId());
+        startActivity(intent);
     }
 }

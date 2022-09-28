@@ -23,7 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class telaTerapias extends Fragment {
+public class telaTerapias extends Fragment  implements TerapiaAdapter.OnItemClick{
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -52,8 +52,7 @@ public class telaTerapias extends Fragment {
     protected void listarTerapias(){
         rv_listaTerapia.setLayoutManager(new LinearLayoutManager(getActivity()));
         terapiaList= new ArrayList<>();
-        terapiaAdapter = new TerapiaAdapter(getActivity(), terapiaList);
-        rv_listaTerapia.setAdapter(terapiaAdapter);
+
         firebaseFirestore.collection("Terapias")
                 .whereEqualTo("id do idoso", id)
                 //.orderBy("dia de criacao", Query.Direction.DESCENDING)
@@ -75,7 +74,7 @@ public class telaTerapias extends Fragment {
                             }else{
                                 tv_nenhumTerCad.setVisibility(View.INVISIBLE);
                             }
-                            terapiaAdapter = new TerapiaAdapter(getContext(),terapiaList);
+                            terapiaAdapter = new TerapiaAdapter(getContext(),terapiaList, telaTerapias.this::OnItemClick);
                             rv_listaTerapia.setAdapter(terapiaAdapter);
                         }
                     }
@@ -120,5 +119,13 @@ public class telaTerapias extends Fragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), telaEditarTerapia.class);
+        intent.putExtra("id terapia", terapiaList.get(position).getId());
+        startActivity(intent);
     }
 }

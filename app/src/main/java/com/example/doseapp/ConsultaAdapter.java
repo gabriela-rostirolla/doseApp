@@ -25,7 +25,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
     private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static Context context;
     private static List<Consulta> consultaList;
-    private static OnItemClick onItemClick;
+    private OnItemClick onItemClick;
 
     public ConsultaAdapter(Context context, List<Consulta> consultaList, OnItemClick onItemClick) {
         this.context = context;

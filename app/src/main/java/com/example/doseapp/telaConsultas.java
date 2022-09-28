@@ -36,7 +36,6 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
     private TextView tv_nenhumConsulCad;
     private String mParam2;
     private static String id;
-    private ConsultaAdapter.OnItemClick onItemClick;
 
     public telaConsultas() {
     }
@@ -85,7 +84,7 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                             }else{
                                 tv_nenhumConsulCad.setVisibility(View.INVISIBLE);
                             }
-                            consultaAdapter = new ConsultaAdapter(getContext(), consultaList, onItemClick);
+                            consultaAdapter = new ConsultaAdapter(getContext(), consultaList, telaConsultas.this::OnItemClick);
                             rv_listaConsulta.setAdapter(consultaAdapter);
                         }
                     }
@@ -128,7 +127,7 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
     @Override
     public void OnItemClick(int position) {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), telaEditarMedicamento.class);
+        intent.setClass(getActivity(), telaEditarConsulta.class);
         intent.putExtra("id consulta", consultaList.get(position).getId());
         startActivity(intent);
     }

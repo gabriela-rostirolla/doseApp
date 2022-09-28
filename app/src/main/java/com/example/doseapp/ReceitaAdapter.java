@@ -27,12 +27,12 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
     private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static Context context;
     private static List<Receita> receitaList;
-    //private IdosoCuidadoAdapter.OnItemClick onItemClick;
+    private OnItemClick onItemClick;
 
-    public ReceitaAdapter(Context context, List<Receita> receitaList) {
+    public ReceitaAdapter(Context context, List<Receita> receitaList, OnItemClick onItemClick) {
         this.context = context;
         this.receitaList = receitaList;
-        //this.onItemClick = onItemClick;
+        this.onItemClick = onItemClick;
     }
 
     @NonNull
@@ -40,7 +40,7 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_receita, parent, false);
-        ReceitaAdapter.ReceitaViewHolder viewHolder = new ReceitaAdapter.ReceitaViewHolder(view);
+        ReceitaAdapter.ReceitaViewHolder viewHolder = new ReceitaAdapter.ReceitaViewHolder(view, onItemClick);
         return viewHolder;
     }
 
@@ -62,8 +62,9 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
         //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
         TextView tv_receitaData, tv_nomeReceita;
         ImageButton imgBtn_excluirReceita;
+        OnItemClick onItemClick;
 
-        public ReceitaViewHolder(@NonNull View itemView) {
+        public ReceitaViewHolder(@NonNull View itemView,  OnItemClick onItemClick) {
             super(itemView);
             //tv_diasTerapia = itemView.findViewById(R.id.tv_diasSemana);
             tv_nomeReceita = itemView.findViewById(R.id.tv_nomeReceita);
@@ -104,13 +105,17 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            //  this.onItemClick = onItemClick;
+            this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            //    onItemClick.OnItemClick(getAbsoluteAdapterPosition());
+            onItemClick.OnItemClick(getAbsoluteAdapterPosition());
         }
+    }
+
+    public interface OnItemClick{
+        void OnItemClick(int position);
     }
 }

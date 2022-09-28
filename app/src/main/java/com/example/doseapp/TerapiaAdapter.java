@@ -25,12 +25,11 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
     private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static Context context;
     private static List<Terapia> terapiaList;
-    //private IdosoCuidadoAdapter.OnItemClick onItemClick;
-
-    public TerapiaAdapter(Context context, List<Terapia> terapiaList) {
+    private OnItemClick onItemClick;
+    public TerapiaAdapter(Context context, List<Terapia> terapiaList, OnItemClick onItemClick) {
         this.context = context;
         this.terapiaList = terapiaList;
-        //this.onItemClick = onItemClick;
+        this.onItemClick = onItemClick;
     }
 
     @NonNull
@@ -38,7 +37,7 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_terapia, parent, false);
-        TerapiaAdapter.TerapiaViewHolder viewHolder = new TerapiaAdapter.TerapiaViewHolder(view);
+        TerapiaAdapter.TerapiaViewHolder viewHolder = new TerapiaAdapter.TerapiaViewHolder(view, onItemClick);
         return viewHolder;
     }
 
@@ -60,13 +59,16 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
         TextView tv_diasTerapia, tv_horaTerapia, tv_nomeTerapia;
         ImageButton imgBtn_excluirTerapia;
+        OnItemClick onItemClick;
 
-        public TerapiaViewHolder(@NonNull View itemView) {
+        public TerapiaViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
             //tv_diasTerapia = itemView.findViewById(R.id.tv_diasSemana);
             tv_horaTerapia = itemView.findViewById(R.id.tv_horaTerapia);
             tv_nomeTerapia = itemView.findViewById(R.id.tv_nomeTerapia);
             imgBtn_excluirTerapia = itemView.findViewById(R.id.imgBtn_excluirTerapia);
+
+
 
             imgBtn_excluirTerapia.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,13 +104,17 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            //  this.onItemClick = onItemClick;
+            this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            //    onItemClick.OnItemClick(getAbsoluteAdapterPosition());
+            onItemClick.OnItemClick(getAbsoluteAdapterPosition());
         }
+    }
+
+    public interface OnItemClick{
+        void OnItemClick(int position);
     }
 }
