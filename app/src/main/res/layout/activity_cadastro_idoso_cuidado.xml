@@ -41,18 +41,23 @@
             android:maxLength="14" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             >
             <EditText
                 android:id="@+id/et_dataNascIdoso"
                 style="@style/Edit_text"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:hint="@string/data_nasc"
                 android:enabled="false"
+                android:layout_marginLeft="0dp"
                 android:maxLength="10" />
+
             <ImageButton
+                android:layout_marginTop="5dp"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_calendar"

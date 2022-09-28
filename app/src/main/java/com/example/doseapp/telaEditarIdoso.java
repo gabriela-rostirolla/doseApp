@@ -71,7 +71,7 @@ public class telaEditarIdoso extends AppCompatActivity {
         et_nomeIdosoEdit = findViewById(R.id.et_nomeIdoso);
         et_enderecoIdosoEdit = findViewById(R.id.et_enderecoIdoso);
         et_telefoneIdosoEdit = findViewById(R.id.et_telefoneIdoso);
-        et_nascIdosoEdit = findViewById(R.id.et_dataNascIdoso);
+        //et_nascIdosoEdit = findViewById(R.id.et_dataNascIdoso);
         et_obsEdit = findViewById(R.id.et_obsIdoso);
         rb_feminino = findViewById(R.id.rb_feminino);
         rb_masculino = findViewById(R.id.rb_masculino);

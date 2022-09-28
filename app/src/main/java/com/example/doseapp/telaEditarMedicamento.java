@@ -4,21 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,10 +20,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class telaEditarMedicamento extends AppCompatActivity {
 
@@ -136,16 +126,8 @@ public class telaEditarMedicamento extends AppCompatActivity {
         String dose = et_dose.getText().toString();
         String dataInicio= et_dataInicio.getText().toString();
         String dataFim = et_dataFim.getText().toString();
-
-        //DateTime horario = DateTimeFormatter.ofPattern(et_hrInicial.getText().toString());
-        //Date dataInicio = (et_dataInicio.getText().toString());
         String finalidade = et_finalidade.getText().toString();
-//        try {
-//            Date dataInicio = new Date(et_dataInicio.getText().toString());
-//        }catch (Exception e){
-//            gerarSnackBar(view, mensagens[1]);
-//            return false;
-//        }
+
         if(nome.isEmpty() || posologia.isEmpty()||finalidade.isEmpty()||horaInicial.isEmpty()||dose.isEmpty()||dataInicio.isEmpty()||dataFim.isEmpty()){
             gerarSnackBar(view, mensagens[0]);
             return false;
@@ -158,4 +140,5 @@ public class telaEditarMedicamento extends AppCompatActivity {
         }
         return true;
     }
+
 }
