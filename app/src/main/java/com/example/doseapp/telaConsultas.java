@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,6 +33,7 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
     private static final String ARG_PARAM2 = "param2";
     private static FloatingActionButton floatingActionButton;
     private String mParam1;
+    private TextView tv_nenhumConsulCad;
     private String mParam2;
     private static String id;
     private ConsultaAdapter.OnItemClick onItemClick;
@@ -78,6 +80,11 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                                 System.out.println(consulta.getNome());
                                 consultaList.add(consulta);
                             }
+                            if(consultaList.isEmpty()){
+                                tv_nenhumConsulCad.setVisibility(View.VISIBLE);
+                            }else{
+                                tv_nenhumConsulCad.setVisibility(View.INVISIBLE);
+                            }
                             consultaAdapter = new ConsultaAdapter(getContext(), consultaList, onItemClick);
                             rv_listaConsulta.setAdapter(consultaAdapter);
                         }
@@ -94,6 +101,7 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
     protected void inicializarComponentes(View v) {
         floatingActionButton = v.findViewById(R.id.fab_addConsulta);
         rv_listaConsulta = v.findViewById(R.id.rv_listaConsulta);
+        tv_nenhumConsulCad = v.findViewById(R.id.tv_nenhumConsulCad);
     }
 
     @Override

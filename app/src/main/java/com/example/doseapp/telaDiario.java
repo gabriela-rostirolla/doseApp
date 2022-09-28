@@ -44,6 +44,7 @@ public class telaDiario extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tela_diario, container, false);
         floatingActionButton = v.findViewById(R.id.fab_addDiario);
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

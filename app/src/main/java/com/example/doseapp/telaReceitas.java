@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,9 +36,9 @@ public class telaReceitas extends Fragment {
     private static List<Receita> receitaList;
     private String mParam2;
     private static String id;
+    private TextView tv_nenhumRecCad;
 
     public telaReceitas() {
-
     }
 
     public static telaReceitas newInstance(String param1, String param2) {
@@ -78,6 +79,11 @@ public class telaReceitas extends Fragment {
                                 rec.setId(document.getId());
                                 receitaList.add(rec);
                             }
+                            if(receitaList.isEmpty()){
+                                tv_nenhumRecCad.setVisibility(View.VISIBLE);
+                            }else{
+                                tv_nenhumRecCad.setVisibility(View.INVISIBLE);
+                            }
                             receitaAdapter = new ReceitaAdapter(getContext(),receitaList);
                             rv_listaReceita.setAdapter(receitaAdapter);
                         }
@@ -94,6 +100,7 @@ public class telaReceitas extends Fragment {
     protected void inicializarComponentes(View v){
         floatingActionButton = v.findViewById(R.id.fab_addReceita);
         rv_listaReceita = v.findViewById(R.id.rv_listaReceita);
+        tv_nenhumRecCad = v.findViewById(R.id.tv_nenhumRecCad);
     }
 
     @Override

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,6 +33,7 @@ import java.util.List;
     private MedicamentoAdapter medicamentoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String id;
+    private TextView tv_nenhumMedCad;
 
     public telaMedicamentos() {
     }
@@ -56,6 +59,7 @@ import java.util.List;
     protected void inicializarComponentes(View v){
         floatingActionButton = v.findViewById(R.id.fab_addMedicamento);
         rv_listaRemedio = v.findViewById(R.id.rv_listaRemedio);
+        tv_nenhumMedCad = v.findViewById(R.id.tv_nenhumMedCad);
     }
 
     public void listarMedicamentos(){
@@ -78,6 +82,11 @@ import java.util.List;
                                 med.setUnidade_posologia(document.getString("unidade posologia"));
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
+                            }
+                            if(medicamentoList.isEmpty()){
+                                tv_nenhumMedCad.setVisibility(View.VISIBLE);
+                            }else{
+                                tv_nenhumMedCad.setVisibility(View.INVISIBLE);
                             }
                             medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList, telaMedicamentos.this::OnItemClick);
                             rv_listaRemedio.setAdapter(medicamentoAdapter);

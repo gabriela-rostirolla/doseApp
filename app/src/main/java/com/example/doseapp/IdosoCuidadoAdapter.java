@@ -10,15 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.List;
 
 public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
@@ -28,14 +36,14 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
     private OnItemClick onItemClick;
     public Context context;
 
-    public IdosoCuidadoAdapter(List<IdosoCuidado> idosoCuidadoList, OnItemClick onItemClick, Context context){
+    public IdosoCuidadoAdapter(List<IdosoCuidado> idosoCuidadoList, OnItemClick onItemClick, Context context) {
         this.idosoCuidadoList = idosoCuidadoList;
         this.onItemClick = onItemClick;
         this.context = context;
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_idosos, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_idosos, parent, false);
         IdosoCuidadoViewHolder viewHolder = new IdosoCuidadoViewHolder(view, onItemClick);
         return viewHolder;
     }
@@ -52,7 +60,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
         return idosoCuidadoList.size();
     }
 
-    public class IdosoCuidadoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class IdosoCuidadoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_nomeIdoso;
         ImageButton imgBtn_editar, imgBtn_excluir, imgBtn_compartilhar;
         OnItemClick onItemClick;
@@ -76,26 +84,58 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             document.delete();
-                                            //idosoCuidadoList.remove(idosoCuidadoList.get(getAbsoluteAdapterPosition()));
                                             Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
                                             snackbar.setBackgroundTint(Color.WHITE);
                                             snackbar.setTextColor(Color.BLACK);
                                             snackbar.show();
-//                                            firebaseFirestore.collection("Receitas")
-//                                                    .whereEqualTo("id do idoso", id)
-//                                                    .get()
-//                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                                        @Override
-//                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                                            if (task.isSuccessful()){
-//                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
-//                                                                    Receita receita = new Receita();
-//                                                                    receita.setId(doc.getString("id"));
-//                                                                    doc.
-//                                                                }
-//                                                            }
-//                                                        }
-//                                                    });
+
+                                            firebaseFirestore.collection("Medicamento")
+                                                    .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                    Medicamento medicamento = new Medicamento();
+                                                                    medicamento.setId(doc.getId());
+                                                                    firebaseFirestore.collection("Medicamento").document(medicamento.getId()).delete();
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+
+                                            firebaseFirestore.collection("Consultas")
+                                                    .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                    Consulta consulta = new Consulta();
+                                                                    consulta.setId(doc.getId());
+                                                                    firebaseFirestore.collection("Consultas").document(consulta.getId()).delete();
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+
+                                            firebaseFirestore.collection("Receitas")
+                                                    .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                    Receita receita = new Receita();
+                                                                    receita.setId(doc.getId());
+                                                                    firebaseFirestore.collection("Consultas").document(receita.getId()).delete();
+                                                                }
+                                                            }
+                                                        }
+                                                    });
                                         }
                                     });
                                 }
@@ -130,6 +170,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
 //                    context.startActivity(intent);
 //                }
 //            });
+
             this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
@@ -140,7 +181,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public interface OnItemClick{
+    public interface OnItemClick {
         void OnItemClick(int position);
     }
 }

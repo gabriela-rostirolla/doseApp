@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +35,7 @@ public class telaTerapias extends Fragment {
     private String id;
     private List<Terapia> terapiaList;
     private TerapiaAdapter terapiaAdapter;
+    private TextView tv_nenhumTerCad;
 
     public telaTerapias() {
     }
@@ -68,6 +70,11 @@ public class telaTerapias extends Fragment {
                                 ter.setId(document.getId());
                                 terapiaList.add(ter);
                             }
+                            if(terapiaList.isEmpty()){
+                                tv_nenhumTerCad.setVisibility(View.VISIBLE);
+                            }else{
+                                tv_nenhumTerCad.setVisibility(View.INVISIBLE);
+                            }
                             terapiaAdapter = new TerapiaAdapter(getContext(),terapiaList);
                             rv_listaTerapia.setAdapter(terapiaAdapter);
                         }
@@ -93,6 +100,7 @@ public class telaTerapias extends Fragment {
     protected void inicializarComponentes(View v){
         floatingActionButton = v.findViewById(R.id.fab_addTerapia);
         rv_listaTerapia = v.findViewById(R.id.rv_listaTerapia);
+        tv_nenhumTerCad = v.findViewById(R.id.tv_nenhumTerCad);
     }
 
     @Override
