@@ -4,6 +4,7 @@
         <item>h</item>
         <item>Dia</item>
     </string-array>
+
     <string-array name="unidades_medicamentos">
         <item>mg</item>
         <item>ml</item>
@@ -15,6 +16,31 @@
         <item>cáp</item>
         <item>inj</item>
     </string-array>
+
+    <string-array name="op_via">
+        <item>Oral</item>
+        <item>Intramuscular</item>
+        <item>Dermatológica</item>
+        <item>Nasal</item>
+        <item>Subcutânea</item>
+        <item>Inalatoriapor via nasal</item>
+        <item>Inalatoria por via oral</item>
+        <item>Vacina</item>
+        <item>Oftalmica</item>
+        <item>Ontológica</item>
+        <item>Intravenosa</item>
+        <item>Retal</item>
+        <item>Sublingual</item>
+        <item>Intra articular</item>
+        <item>Intra arterial</item>
+        <item>Intradermica</item>
+        <item>Parenteral</item>
+        <item>Local</item>
+        <item>Capilar</item>
+        <item>Intrauterina</item>
+        <item>Irrigação</item>
+    </string-array>
+    <string name="recomendacao">Recomendação</string>
     <string name="nome_idoso">Nome idoso</string>
     <string name="app_name">DoseApp</string>
     <string name="entrar">Entrar</string>
@@ -55,9 +81,9 @@
     <string name="perfil">Perfil</string>
     <string name="idosos_cadastrados">Tela inicial</string>
     <string name="hora_inicial">Hora inicial</string>
-    <string name="finalidade">Finalidade</string>
+    <string name="via">Via de administração</string>
     <string name="dose">Dose</string>
-    <string name="posologia">Posologia</string>
+    <string name="intervalo">Intervalo</string>
     <string name="turno">Turno:</string>
     <string name="manha">Manhã</string>
     <string name="tarde">Tarde</string>

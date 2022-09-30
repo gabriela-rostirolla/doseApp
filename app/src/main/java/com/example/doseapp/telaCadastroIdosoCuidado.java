@@ -44,13 +44,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class telaCadastroIdosoCuidado extends AppCompatActivity {
-    private EditText et_nomeIdoso,et_dataNascIdoso, et_enderecoIdoso, et_telefoneIdoso, et_obsIdoso;
+    private EditText et_nomeIdoso, et_dataNascIdoso, et_enderecoIdoso, et_telefoneIdoso, et_obsIdoso;
     private RadioGroup rg_genero;
     private ImageButton imgBtn_calendario;
     private Button btn_cadastrarIdoso;
     private RadioButton rb_feminino, rb_masculino, rb_outro;
-    private FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
-    private String [] mensagens ={"Preencha todos os campos", "Cadastro realizado com sucesso", "Falha no cadastro", "O número de telefone deve seguir o exemplo: (00) 0000-0000", "Digite um endereço válido", "Digite um nome com mais de três letras"};
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private String[] mensagens = {"Preencha todos os campos", "Cadastro realizado com sucesso", "Falha no cadastro", "O número de telefone deve seguir o exemplo: (00) 0000-0000", "Digite um endereço válido", "Digite um nome com mais de três letras"};
     private String userId;
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
@@ -68,7 +68,7 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                int ano= calendar.get(Calendar.YEAR);
+                int ano = calendar.get(Calendar.YEAR);
                 int dia = calendar.get(Calendar.DAY_OF_MONTH);
                 int mes = calendar.get(Calendar.MONTH);
                 DatePickerDialog dialog = new DatePickerDialog(telaCadastroIdosoCuidado.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, dia, mes, ano);
@@ -81,7 +81,7 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1++;
-                et_dataNascIdoso.setText(i2+"/"+i1+"/"+i);
+                et_dataNascIdoso.setText(i2 + "/" + i1 + "/" + i);
             }
         };
 
@@ -89,10 +89,10 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String genero = "";
-                if(rb_feminino.isChecked()){
+                if (rb_feminino.isChecked()) {
                     genero = "feminino";
-                }else if(rb_masculino.isChecked()){
-                    genero= "masculino";
+                } else if (rb_masculino.isChecked()) {
+                    genero = "masculino";
                 } else if (rb_outro.isChecked()) {
                     genero = "outro";
                 }
@@ -102,15 +102,15 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
                 String tel = et_telefoneIdoso.getText().toString();
                 String dataNasc = et_dataNascIdoso.getText().toString();
 
-                if(nome.isEmpty() || end.isEmpty() || dataNasc.isEmpty() || tel.isEmpty() || genero.isEmpty()){
+                if (nome.isEmpty() || end.isEmpty() || dataNasc.isEmpty() || tel.isEmpty() || genero.isEmpty()) {
                     gerarSnackBar(view, mensagens[0]);
-                }else if(validarTelefone(tel) == false){
+                } else if (validarTelefone(tel) == false) {
                     gerarSnackBar(view, mensagens[3]);
-                }else if(nome.length()<3){
+                } else if (nome.length() < 3) {
                     gerarSnackBar(view, mensagens[4]);
-                }else if(nome.length() <4){
+                } else if (nome.length() < 4) {
                     gerarSnackBar(view, mensagens[5]);
-                }else{
+                } else {
                     gerarSnackBar(view, mensagens[1]);
                     salvarNoBancoDeDados();
                     finish();
@@ -119,20 +119,20 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         });
     }
 
-    protected void gerarSnackBar(View v,String s){
+    protected void gerarSnackBar(View v, String s) {
         Snackbar snackbar = Snackbar.make(v, s, Snackbar.LENGTH_LONG);
         snackbar.setBackgroundTint(Color.WHITE);
         snackbar.setTextColor(Color.BLACK);
         snackbar.show();
     }
 
-    protected boolean validarTelefone(String tel){
-        Pattern pattern = Pattern.compile( "^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
+    protected boolean validarTelefone(String tel) {
+        Pattern pattern = Pattern.compile("^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
         Matcher matcher = pattern.matcher(tel);
         return (matcher.matches());
     }
 
-    protected void inicializarComponentes(){
+    protected void inicializarComponentes() {
         et_nomeIdoso = findViewById(R.id.et_nomeIdoso);
         et_enderecoIdoso = findViewById(R.id.et_enderecoIdoso);
         et_telefoneIdoso = findViewById(R.id.et_telefoneIdoso);
@@ -146,13 +146,13 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         imgBtn_calendario = findViewById(R.id.icon_calendar);
     }
 
-    protected void salvarNoBancoDeDados(){
+    protected void salvarNoBancoDeDados() {
         String genero = "";
-        if(rb_feminino.isChecked()){
+        if (rb_feminino.isChecked()) {
             genero = "feminino";
-        }else if(rb_masculino.isChecked()){
-            genero= "masculino";
-        }else if (rb_outro.isChecked()) {
+        } else if (rb_masculino.isChecked()) {
+            genero = "masculino";
+        } else if (rb_outro.isChecked()) {
             genero = "outro";
         }
 
@@ -177,8 +177,8 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d("banco_dados_salvos", "Sucesso ao salvar dados!"+documentReference.getId());
-                        }
+                        Log.d("banco_dados_salvos", "Sucesso ao salvar dados!" + documentReference.getId());
+                    }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override

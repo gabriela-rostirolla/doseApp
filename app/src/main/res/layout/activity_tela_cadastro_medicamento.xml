@@ -14,11 +14,43 @@
         android:orientation="vertical"
         tools:context=".telaCadastroMedicamento">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/et_via"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:text="Via de Administração:"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spiVia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:elevation="@dimen/fab_margin" />
+
+        </LinearLayout>
+
         <EditText
             android:id="@+id/et_nomeMedicamento"
             style="@style/Edit_text"
-            android:layout_marginTop="30dp"
             android:hint="@string/nome"
+            android:inputType="textCapWords"
+            android:maxLength="250" />
+
+        <EditText
+            android:id="@+id/et_recomendacao"
+            style="@style/Edit_text"
+            android:hint="@string/recomendacao"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
@@ -30,27 +62,19 @@
             <EditText
                 android:id="@+id/et_posologia"
                 style="@style/Edit_text"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_marginRight="0dp"
-                android:hint="@string/posologia"
+                android:hint="@string/intervalo"
                 android:inputType="number"
                 android:maxLength="2" />
 
             <Spinner
                 android:id="@+id/spiPosologia"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                />
-
-            <EditText
-                android:id="@+id/et_horaInicial"
-                style="@style/Edit_text"
-                android:layout_marginLeft="0dp"
-                android:hint="@string/hora_inicial"
-                android:inputType="time"
-                android:maxLength="4" />
-
+                android:layout_marginLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,34 +93,89 @@
             <Spinner
                 android:id="@+id/spiMedicamentos"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:elevation="@dimen/fab_margin" />
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/et_dataInicio"
-            style="@style/Edit_text"
-            android:hint="@string/data_inicio"
-            android:inputType="date"
-            android:maxLength="8" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_dataFim"
-            style="@style/Edit_text"
-            android:hint="@string/data_fim"
-            android:inputType="date"
-            android:maxLength="8" />
+            <EditText
+                android:id="@+id/et_horaInicial"
+                style="@style/Edit_text"
+                android:layout_width="250dp"
+                android:layout_marginLeft="20dp"
+                android:hint="@string/hora_inicial"
+                android:inputType="time"
+                android:enabled="false"
+                android:maxLength="4" />
 
-        <EditText
-            android:id="@+id/et_finalidade"
-            style="@style/Edit_text"
-            android:hint="@string/finalidade"
-            android:inputType="textCapSentences"
-            android:maxLength="350"
-            />
+            <ImageButton
+                android:id="@+id/ic_watch"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/borda"
+                android:src="@drawable/ic_watch" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_dataInicio"
+                style="@style/Edit_text"
+                android:layout_width="250dp"
+                android:layout_marginLeft="20dp"
+                android:enabled="false"
+                android:hint="@string/data_inicio"
+                android:maxLength="10" />
+
+            <ImageButton
+                android:id="@+id/ic_calendar_dataInicio"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/borda"
+                android:src="@drawable/ic_calendar" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_dataFim"
+                style="@style/Edit_text"
+                android:layout_width="250dp"
+                android:layout_marginLeft="20dp"
+                android:enabled="false"
+                android:hint="@string/data_fim"
+                android:maxLength="10" />
+
+            <ImageButton
+                android:id="@+id/ic_calendar_dataFim"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/borda"
+                android:src="@drawable/ic_calendar" />
+
+        </LinearLayout>
 
         <Switch
             android:id="@+id/swt_lembreMedicamento"

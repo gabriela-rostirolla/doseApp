@@ -67,7 +67,7 @@ public class telaEditarMedicamento extends AppCompatActivity {
         et_dose = findViewById(R.id.et_dose);
         et_dataInicio = findViewById(R.id.et_dataInicio);
         et_dataFim = findViewById(R.id.et_dataFim);
-        et_finalidade = findViewById(R.id.et_finalidade);
+        //et_finalidade = findViewById(R.id.et_finalidade);
         btn_salvar = findViewById(R.id.btn_salvarCadMedicamento);
         btn_salvar.setText("Editar");
         spiPosologia = findViewById(R.id.spiPosologia);
