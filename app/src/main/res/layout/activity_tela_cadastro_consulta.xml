@@ -32,7 +32,7 @@
             android:id="@+id/et_enderecoConsulta"
             style="@style/Edit_text"
             android:hint="@string/endereco"
-            android:inputType="textCapSentences"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
@@ -42,19 +42,56 @@
             android:inputType="phone"
             android:maxLength="11" />
 
-        <EditText
-            android:id="@+id/et_dataConsulta"
-            style="@style/Edit_text"
-            android:hint="@string/data"
-            android:inputType="textPersonName"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_horarioConsulta"
-            style="@style/Edit_text"
-            android:hint="@string/horario"
-            android:inputType="textPersonName"
-             />
+            <EditText
+                android:id="@+id/et_dataConsul"
+                style="@style/Edit_text"
+                android:layout_width="250dp"
+                android:layout_marginLeft="20dp"
+                android:enabled="false"
+                android:hint="@string/data"
+                android:maxLength="10" />
+
+            <ImageButton
+                android:id="@+id/imgBtn_dataConsul"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/borda"
+                android:src="@drawable/ic_calendar" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_horaConsulta"
+                style="@style/Edit_text"
+                android:layout_width="250dp"
+                android:layout_marginLeft="20dp"
+                android:hint="@string/horario"
+                android:inputType="time"
+                android:enabled="false"
+                android:maxLength="4" />
+
+            <ImageButton
+                android:id="@+id/imgBtn_horarioConsul"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/borda"
+                android:src="@drawable/ic_watch" />
+
+        </LinearLayout>
 
         <Switch
             android:id="@+id/swt_lembreConculta"

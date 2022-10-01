@@ -104,11 +104,11 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
 
                 if (nome.isEmpty() || end.isEmpty() || dataNasc.isEmpty() || tel.isEmpty() || genero.isEmpty()) {
                     gerarSnackBar(view, mensagens[0]);
-                } else if (validarTelefone(tel) == false) {
+                } else if (validarTelefone(tel) == false || tel.length() <11) {
                     gerarSnackBar(view, mensagens[3]);
                 } else if (nome.length() < 3) {
                     gerarSnackBar(view, mensagens[4]);
-                } else if (nome.length() < 4) {
+                } else if (end.length() < 4) {
                     gerarSnackBar(view, mensagens[5]);
                 } else {
                     gerarSnackBar(view, mensagens[1]);

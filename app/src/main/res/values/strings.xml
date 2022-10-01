@@ -19,25 +19,15 @@
 
     <string-array name="op_via">
         <item>Oral</item>
-        <item>Intramuscular</item>
         <item>Dermatológica</item>
         <item>Nasal</item>
-        <item>Subcutânea</item>
         <item>Inalatoriapor via nasal</item>
         <item>Inalatoria por via oral</item>
-        <item>Vacina</item>
         <item>Oftalmica</item>
-        <item>Ontológica</item>
-        <item>Intravenosa</item>
+        <item>Otológica</item>
         <item>Retal</item>
         <item>Sublingual</item>
-        <item>Intra articular</item>
-        <item>Intra arterial</item>
-        <item>Intradermica</item>
-        <item>Parenteral</item>
         <item>Local</item>
-        <item>Capilar</item>
-        <item>Intrauterina</item>
         <item>Irrigação</item>
     </string-array>
     <string name="recomendacao">Recomendação</string>

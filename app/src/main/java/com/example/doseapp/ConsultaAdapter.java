@@ -45,7 +45,8 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
         Consulta consulta = consultaList.get(position);
         viewHolder.tv_nomeConsulta.setText(consulta.getNome());
         viewHolder.tv_horaConsulta.setText(consulta.getHorario());
-        viewHolder.tv_diaConsulta.setText(consulta.getData());
+        String [] dataFormat = consulta.getData().split("/");
+        viewHolder.tv_diaConsulta.setText(dataFormat[0]+"/"+dataFormat[1]);
     }
 
     @Override
