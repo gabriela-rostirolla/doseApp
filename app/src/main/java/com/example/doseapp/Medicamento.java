@@ -1,31 +1,34 @@
 package com.example.doseapp;
 
+import android.net.wifi.WifiManager;
+
 public class Medicamento {
+
     private String nome;
-    private String posologia;
-    private String unidade_posologia;
-    private String horaInicial;
+    private String recomendacao;
+    private String intervalo;
+    private String unidade_intervalo;
     private String dose;
     private String unidade_dose;
+    private String horaInicial;
     private String dataInicio;
     private String dataFim;
-    private String finalidade;
     private boolean lembre;
     private String id;
 
     public Medicamento() {
     }
 
-    public Medicamento(String nome, String posologia, String unidade_posologia, String horaInicial, String dose, String unidade_dose, String dataInicio, String dataFim, String finalidade, boolean lembre) {
+    public Medicamento(String nome, String recomendacao, String intervalo, String unidade_intervalo, String dose, String unidade_dose, String horaInicial, String dataInicio, String dataFim, boolean lembre) {
         this.nome = nome;
-        this.posologia = posologia;
-        this.unidade_posologia = unidade_posologia;
-        this.horaInicial = horaInicial;
+        this.recomendacao = recomendacao;
+        this.intervalo = intervalo;
+        this.unidade_intervalo = unidade_intervalo;
         this.dose = dose;
         this.unidade_dose = unidade_dose;
+        this.horaInicial = horaInicial;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.finalidade = finalidade;
         this.lembre = lembre;
     }
 
@@ -45,28 +48,28 @@ public class Medicamento {
         this.nome = nome;
     }
 
-    public String getPosologia() {
-        return posologia;
+    public String getRecomendacao() {
+        return recomendacao;
     }
 
-    public void setPosologia(String posologia) {
-        this.posologia = posologia;
+    public void setRecomendacao(String recomendacao) {
+        this.recomendacao = recomendacao;
     }
 
-    public String getUnidade_posologia() {
-        return unidade_posologia;
+    public String getIntervalo() {
+        return intervalo;
     }
 
-    public void setUnidade_posologia(String unidade_posologia) {
-        this.unidade_posologia = unidade_posologia;
+    public void setIntervalo(String intervalo) {
+        this.intervalo = intervalo;
     }
 
-    public String getHoraInicial() {
-        return horaInicial;
+    public String getUnidade_intervalo() {
+        return unidade_intervalo;
     }
 
-    public void setHoraInicial(String horaInicial) {
-        this.horaInicial = horaInicial;
+    public void setUnidade_intervalo(String unidade_intervalo) {
+        this.unidade_intervalo = unidade_intervalo;
     }
 
     public String getDose() {
@@ -85,6 +88,14 @@ public class Medicamento {
         this.unidade_dose = unidade_dose;
     }
 
+    public String getHoraInicial() {
+        return horaInicial;
+    }
+
+    public void setHoraInicial(String horaInicial) {
+        this.horaInicial = horaInicial;
+    }
+
     public String getDataInicio() {
         return dataInicio;
     }
@@ -99,14 +110,6 @@ public class Medicamento {
 
     public void setDataFim(String dataFim) {
         this.dataFim = dataFim;
-    }
-
-    public String getFinalidade() {
-        return finalidade;
-    }
-
-    public void setFinalidade(String finalidade) {
-        this.finalidade = finalidade;
     }
 
     public boolean isLembre() {

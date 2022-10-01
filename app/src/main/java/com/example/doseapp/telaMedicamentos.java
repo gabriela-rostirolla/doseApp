@@ -77,9 +77,9 @@ import java.util.List;
                                 Medicamento med = new Medicamento();
                                 med.setNome(document.getString("nome"));
                                 med.setDose(document.getString("dose"));
-                                med.setPosologia(document.getString("posologia"));
-                                med.setUnidade_dose(document.getString("unidade medicamento"));
-                                med.setUnidade_posologia(document.getString("unidade posologia"));
+                                med.setUnidade_intervalo(document.getString("unidade intervalo"));
+                                med.setUnidade_dose(document.getString("unidade dose"));
+                                med.setIntervalo(document.getString("intervalo"));
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
                             }
@@ -112,9 +112,11 @@ import java.util.List;
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String nome = getActivity().getIntent().getStringExtra("nome");
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), telaCadastroMedicamento.class);
                 intent.putExtra("id", id);
+                intent.putExtra("nome", nome);
                 startActivity(intent);
             }
         });

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -45,7 +46,8 @@ public class telaCadastroMedicamento extends AppCompatActivity {
     private ImageButton ic_calendar_dataInicio, ic_calendar_dataFim, ic_watch;
     private DatePickerDialog.OnDateSetListener dateSetListenerInicio;
     private DatePickerDialog.OnDateSetListener dateSetListenerFim;
-    private TimePickerDialog.OnTimeSetListener timeSetListener;
+    private static int anoIni, anoFim, mesIni, mesFim, diaIni, diaFim, hora, min;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         spiPosologia.setAdapter(adapter);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.unidades_medicamentos, android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiMedicamento.setAdapter(adapter1);
 
         ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.op_via, android.R.layout.simple_spinner_dropdown_item);
@@ -73,10 +75,10 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                int ano = calendar.get(Calendar.YEAR);
-                int dia = calendar.get(Calendar.DAY_OF_MONTH);
-                int mes = calendar.get(Calendar.MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(telaCadastroMedicamento.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerInicio, dia, mes, ano);
+                anoIni = calendar.get(Calendar.YEAR);
+                diaIni = calendar.get(Calendar.DAY_OF_MONTH);
+                mesIni = calendar.get(Calendar.MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(telaCadastroMedicamento.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerInicio, diaIni, mesIni, anoIni);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -86,6 +88,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1++;
+
                 et_dataInicio.setText(i2 + "/" + i1 + "/" + i);
             }
         };
@@ -94,10 +97,10 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                int ano = calendar.get(Calendar.YEAR);
-                int dia = calendar.get(Calendar.DAY_OF_MONTH);
-                int mes = calendar.get(Calendar.MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(telaCadastroMedicamento.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerFim, dia, mes, ano);
+                anoFim = calendar.get(Calendar.YEAR);
+                diaFim = calendar.get(Calendar.DAY_OF_MONTH);
+                mesFim = calendar.get(Calendar.MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(telaCadastroMedicamento.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerFim, diaFim, mesFim, anoFim);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -107,20 +110,22 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                int hora = calendar.get(Calendar.HOUR_OF_DAY);
-                int min = calendar.get(Calendar.MINUTE);
-                //TimePickerDialog dialog = new TimePickerDialog(telaCadastroMedicamento.this, );
-                //TimePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                hora = calendar.get(Calendar.HOUR_OF_DAY);
+                min = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(telaCadastroMedicamento.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int i,
+                                                  int i2) {
+
+                                et_hrInicial.setText(i + ":" + i2);
+                            }
+                        }, hora, min, false);
+                timePickerDialog.show();
             }
         });
 
-
-        timeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                et_hrInicial.setText(i+":"+i1);
-            }
-        };
         dateSetListenerFim = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
@@ -166,7 +171,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
 
     protected void salvarNoBancoDeDados() {
         String nomeMed = et_nomeMed.getText().toString();
-        String posologia = et_posologia.getText().toString();
+        String intervalo = et_posologia.getText().toString();
         String hrInicial = et_hrInicial.getText().toString();
         String dose = et_dose.getText().toString();
         String dataInicio = et_dataInicio.getText().toString();
@@ -179,19 +184,19 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String id = getIntent().getStringExtra("id");
 
         Map<String, Object> medicamentoMap = new HashMap<>();
+        medicamentoMap.put("via", opVia);
         medicamentoMap.put("nome", nomeMed);
-        medicamentoMap.put("posologia", posologia);
-        medicamentoMap.put("hora inicial", hrInicial);
+        medicamentoMap.put("recomendacoes", recomendacoes);
+        medicamentoMap.put("intervalo", intervalo);
+        medicamentoMap.put("unidade intervalo", unPosologia);
         medicamentoMap.put("dose", dose);
+        medicamentoMap.put("unidade dose", unMed);
+        medicamentoMap.put("hora inicial", hrInicial);
         medicamentoMap.put("data inicio", dataInicio);
         medicamentoMap.put("data fim", dataFim);
-        //medicamentoMap.put("finalidade", finalidade);
-        medicamentoMap.put("unidade medicamento", unMed);
-        medicamentoMap.put("unidade posologia", unPosologia);
         medicamentoMap.put("id do idoso", id);
         medicamentoMap.put("dia de criacao", new Date());
-        medicamentoMap.put("via", opVia);
-        medicamentoMap.put("recomendacoes", recomendacoes);
+
         firebaseFirestore.collection("Medicamento")
                 .add(medicamentoMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -212,33 +217,16 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String nome = et_nomeMed.getText().toString();
         String horaInicial = et_hrInicial.getText().toString();
         String dose = et_dose.getText().toString();
-        int posologia = Integer.parseInt(et_posologia.getText().toString());
+        String posologia = et_posologia.getText().toString();
         String dataInicio = et_dataInicio.getText().toString();
         String dataFim = et_dataFim.getText().toString();
 
-//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-//        Date ini = null;
-//        try {
-//            ini = format.parse(et_dataInicio.getText().toString());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Date fim = null;
-//
-//        try {
-//            fim = format.parse(et_dataFim.getText().toString());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-
-        if (nome.isEmpty() || posologia == 0 || horaInicial.isEmpty() || dose.isEmpty() || dataInicio.isEmpty() || dataFim.isEmpty()) {
+        if (nome.isEmpty() || posologia.isEmpty() || horaInicial.isEmpty() || dose.isEmpty() || dataInicio.isEmpty() || dataFim.isEmpty()) {
             gerarSnackBar(view, mensagens[0]);
             return false;
         } else if (nome.length() < 3) {
             gerarSnackBar(view, mensagens[2]);
             return false;
-        }else if(posologia >24){
-            gerarSnackBar(view, "O intervalo de tempo digitado não é válido");
         }
         return true;
     }

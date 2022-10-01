@@ -115,6 +115,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     public void OnItemClick(int position) {
         Intent intent = new Intent(telaInicial.this, telaDadosDosIdosos.class);
         intent.putExtra("id", idosoCuidadoList.get(position).getId());
+        intent.putExtra("nome", idosoCuidadoList.get(position).getNome());
         startActivity(intent);
     }
 }

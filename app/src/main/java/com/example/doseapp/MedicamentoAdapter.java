@@ -49,7 +49,7 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
         Medicamento medicamento = medicamentoList.get(position);
         viewHolder.tv_nomeMedicamento.setText(medicamento.getNome());
         viewHolder.tv_dose.setText(medicamento.getDose()+" "+medicamento.getUnidade_dose());
-        viewHolder.tv_posologia.setText(medicamento.getPosologia()+" "+medicamento.getUnidade_posologia());
+        viewHolder.tv_posologia.setText(medicamento.getIntervalo()+" "+medicamento.getUnidade_intervalo());
     }
 
     @Override
