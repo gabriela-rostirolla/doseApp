@@ -177,7 +177,8 @@ public class telaEditarMedicamento extends AppCompatActivity {
                 et_intervalo.setText(value.getString("intervalo"));
                 spiIntervalo.setSelection(adapter.getPosition(value.getString("unidade intervalo")));
                 et_hrInicial.setText(value.getString("hora inicial"));
-                usoContinuo.setChecked(value.getBoolean("uso continuo"));
+                boolean uso = value.getBoolean("uso continuo");
+                usoContinuo.setChecked(uso);
                 et_dataInicio.setText(value.getString("data inicio"));
                 et_dataFim.setText(value.getString("data fim"));
                 swt_lembre.setChecked(value.getBoolean("lembre-me"));
@@ -187,8 +188,7 @@ public class telaEditarMedicamento extends AppCompatActivity {
     }
 
     public void editarBancoDeDados() {
-
-        String via =  spiVia.getSelectedItem().toString();
+        String via = spiVia.getSelectedItem().toString();
         String nome = et_nomeMed.getText().toString();
         String concentracao = et_concentracao.getText().toString();
         String recomendacao = et_recomendacao.getText().toString();
@@ -198,9 +198,9 @@ public class telaEditarMedicamento extends AppCompatActivity {
         String hora_inicial = et_hrInicial.getText().toString();
         boolean uso_continuo = usoContinuo.isChecked();
         String data_inicio = et_dataInicio.getText().toString();
-        String data_fim= et_dataFim.getText().toString();
+        String data_fim = et_dataFim.getText().toString();
         String observacoes = et_observacoes.getText().toString();
-        boolean lembre= swt_lembre.isChecked();
+        boolean lembre = swt_lembre.isChecked();
 
         firebaseFirestore.collection("Medicamento").document(idMed)
                 .update("via", via, "nome", nome, "concentracao", concentracao, "recomendacao/finalidade", recomendacao, "dose", dose, "intervalo", intervalo, "unidade intervalo", unidade_intervalo, "hora inicial", hora_inicial, "uso continuo", uso_continuo, "data inicio", data_inicio, "data fim", data_fim, "observacoes", observacoes, "lembre-me", lembre)
@@ -221,20 +221,21 @@ public class telaEditarMedicamento extends AppCompatActivity {
 
     public boolean validarCampos(View view) {
         String nome = et_nomeMed.getText().toString();
-        String horaInicial = et_hrInicial.getText().toString();
+        String concentracao = et_concentracao.getText().toString();
         String dose = et_dose.getText().toString();
-        String posologia = et_intervalo.getText().toString();
-        String dataInicio = et_dataInicio.getText().toString();
-        String dataFim = et_dataFim.getText().toString();
+        String intervalo = et_intervalo.getText().toString();
+        String hora_inicial = et_hrInicial.getText().toString();
+        String data_inicio = et_dataInicio.getText().toString();
+        String data_fim = et_dataFim.getText().toString();
 
-        if (nome.isEmpty() || posologia.isEmpty() || horaInicial.isEmpty() || dose.isEmpty() || dataInicio.isEmpty() || dataFim.isEmpty()) {
+        if (nome.isEmpty() || concentracao.isEmpty() || dose.isEmpty() || intervalo.isEmpty() || hora_inicial.isEmpty() || data_inicio.isEmpty() || data_fim.isEmpty()) {
             gerarSnackBar(view, mensagens[0]);
             return false;
         } else if (nome.length() < 3) {
+            et_nomeMed.setFocusable(true);
             gerarSnackBar(view, mensagens[2]);
             return false;
         }
         return true;
     }
-
 }

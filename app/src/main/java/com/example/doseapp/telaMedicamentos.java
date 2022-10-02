@@ -80,6 +80,7 @@ import java.util.List;
                                 med.setUnidade_intervalo(document.getString("unidade intervalo"));
                                 med.setIntervalo(document.getString("intervalo"));
                                 med.setLembre(document.getBoolean("lembre-me"));
+
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
                             }

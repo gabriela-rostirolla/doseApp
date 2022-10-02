@@ -225,16 +225,18 @@ public class telaCadastroMedicamento extends AppCompatActivity {
 
     public boolean validarCampos(View view) {
         String nome = et_nomeMed.getText().toString();
-        String horaInicial = et_hrInicial.getText().toString();
+        String concentracao = et_concentracao.getText().toString();
         String dose = et_dose.getText().toString();
-        String posologia = et_intervalo.getText().toString();
-        String dataInicio = et_dataInicio.getText().toString();
-        String dataFim = et_dataFim.getText().toString();
+        String intervalo = et_intervalo.getText().toString();
+        String hora_inicial = et_hrInicial.getText().toString();
+        String data_inicio = et_dataInicio.getText().toString();
+        String data_fim = et_dataFim.getText().toString();
 
-        if (nome.isEmpty() || posologia.isEmpty() || horaInicial.isEmpty() || dose.isEmpty() || dataInicio.isEmpty() || dataFim.isEmpty()) {
+        if (nome.isEmpty() || concentracao.isEmpty() || dose.isEmpty() || intervalo.isEmpty() || hora_inicial.isEmpty() || data_inicio.isEmpty() || data_fim.isEmpty()) {
             gerarSnackBar(view, mensagens[0]);
             return false;
         } else if (nome.length() < 3) {
+            et_nomeMed.setFocusable(true);
             gerarSnackBar(view, mensagens[2]);
             return false;
         }
