@@ -1,12 +1,9 @@
 package com.example.doseapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,38 +12,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toolbar;
-
-import com.google.android.gms.tasks.OnCompleteListener;
+import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class telaCadastroIdosoCuidado extends AppCompatActivity {
-    private EditText et_nomeIdoso, et_dataNascIdoso, et_enderecoIdoso, et_telefoneIdoso, et_obsIdoso;
+    private EditText et_nomeIdoso, et_enderecoIdoso, et_telefoneIdoso, et_obsIdoso;
     private RadioGroup rg_genero;
-    private ImageButton imgBtn_calendario;
+    private TextView et_dataNascIdoso;
     private Button btn_cadastrarIdoso;
     private RadioButton rb_feminino, rb_masculino, rb_outro;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -64,7 +49,7 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         actionBar.setTitle(R.string.cadastrar_idoso);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        imgBtn_calendario.setOnClickListener(new View.OnClickListener() {
+        et_dataNascIdoso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -82,6 +67,7 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1++;
                 et_dataNascIdoso.setText(i2 + "/" + i1 + "/" + i);
+                et_dataNascIdoso.setTextColor(Color.BLACK);
             }
         };
 
@@ -143,7 +129,6 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         rb_outro = findViewById(R.id.rb_outro);
         et_dataNascIdoso = findViewById(R.id.et_dataNascIdoso);
         et_obsIdoso = findViewById(R.id.et_obsIdoso);
-        imgBtn_calendario = findViewById(R.id.icon_calendar);
     }
 
     protected void salvarNoBancoDeDados() {

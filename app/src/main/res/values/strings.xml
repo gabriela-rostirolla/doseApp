@@ -1,6 +1,6 @@
 <resources>
 
-    <string-array name="unidades_posologia">
+    <string-array name="unidade_intervalo">
         <item>h</item>
         <item>Dia</item>
     </string-array>
@@ -19,21 +19,32 @@
 
     <string-array name="op_via">
         <item>Oral</item>
+        <item>Intramuscular</item>
         <item>Dermatológica</item>
         <item>Nasal</item>
+        <item>Subcutânea</item>
         <item>Inalatoriapor via nasal</item>
         <item>Inalatoria por via oral</item>
+        <item>Vaginal</item>
         <item>Oftalmica</item>
         <item>Otológica</item>
+        <item>Intravenosa</item>
         <item>Retal</item>
         <item>Sublingual</item>
+        <item>Intra articular</item>
+        <item>Intra arterial</item>
+        <item>Intradermica</item>
+        <item>Parenteral</item>
         <item>Local</item>
+        <item>Capilar</item>
+        <item>Intrauterina</item>
         <item>Irrigação</item>
     </string-array>
-    <string name="recomendacao">Recomendação</string>
+    <string name="recomendacao">Recomendação/Finalidade</string>
     <string name="nome_idoso">Nome idoso</string>
     <string name="app_name">DoseApp</string>
     <string name="entrar">Entrar</string>
+    <string name="concentracao">Concentração</string>
     <string name="recuperar_senha">Esqueceu sua senha?</string>
     <string name="fazer_cadastro">Cadastre-se</string>
     <string name="cadastrar">Cadastrar</string>
@@ -86,6 +97,8 @@
     <string name="senha">Senha</string>
     <string name="confirmar_senha">Confirmar senha</string>
     <string name="ver_perfil">Ver perfil</string>
+    <string name="uso_continuo">Uso contínuo</string>
+    <string name="medicamento">Medicamento</string>
     <string name="deslogar">Deslogar</string>
     <string name="editar">Editar</string>
     <string name="ver_dados_dos_idosos">Visualizar dados dos idosos</string>

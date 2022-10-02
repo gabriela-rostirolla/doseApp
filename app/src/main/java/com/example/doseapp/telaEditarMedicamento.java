@@ -14,10 +14,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,20 +33,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class telaEditarMedicamento extends AppCompatActivity {
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private EditText et_nomeMed, et_posologia, et_hrInicial, et_dose, et_dataInicio, et_dataFim, et_recomendacao;
+    private EditText et_nomeMed, et_dose, et_recomendacao, et_concentracao, et_intervalo, et_observacoes;
+    private TextView et_hrInicial, et_dataInicio, et_dataFim;
     private Button btn_salvar;
-    private String idMed;
     private String[] mensagens = {"Preencha todos os campos", "Digite uma data válida", "Digite um nome com mais de 3 letras", "Digite uma funcionalidade com mais de 3 letras", "Não foi possivel editar dados"};
-    private Spinner spiPosologia, spiMedicamento, spiVia;
-    private ImageButton ic_calendar_dataInicio, ic_calendar_dataFim, ic_watch;
+    private Spinner spiIntervalo, spiVia;
     private DatePickerDialog.OnDateSetListener dateSetListenerInicio;
     private DatePickerDialog.OnDateSetListener dateSetListenerFim;
+    private CheckBox usoContinuo;
+    private Switch swt_lembre;
+    private ArrayAdapter<CharSequence> adapter, adapter2;
+    private static String idMed;
     private static int anoIni, anoFim, mesIni, mesFim, diaIni, diaFim, hora, min;
-    private static ArrayAdapter<CharSequence> adapter, adapter1, adapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,19 +62,15 @@ public class telaEditarMedicamento extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         preencherDadosMedicamento();
 
-        adapter = ArrayAdapter.createFromResource(this, R.array.unidades_posologia, android.R.layout.simple_spinner_dropdown_item);
+        adapter = ArrayAdapter.createFromResource(this, R.array.unidade_intervalo, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiPosologia.setAdapter(adapter);
-
-        adapter1 = ArrayAdapter.createFromResource(this, R.array.unidades_medicamentos, android.R.layout.simple_spinner_dropdown_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiMedicamento.setAdapter(adapter1);
+        spiIntervalo.setAdapter(adapter);
 
         adapter2 = ArrayAdapter.createFromResource(this, R.array.op_via, android.R.layout.simple_spinner_dropdown_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiVia.setAdapter(adapter2);
 
-        ic_calendar_dataInicio.setOnClickListener(new View.OnClickListener() {
+        et_dataInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -90,7 +92,7 @@ public class telaEditarMedicamento extends AppCompatActivity {
             }
         };
 
-        ic_calendar_dataFim.setOnClickListener(new View.OnClickListener() {
+        et_dataFim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -103,7 +105,7 @@ public class telaEditarMedicamento extends AppCompatActivity {
             }
         });
 
-        ic_watch.setOnClickListener(new View.OnClickListener() {
+        et_hrInicial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -143,20 +145,23 @@ public class telaEditarMedicamento extends AppCompatActivity {
     }
 
     protected void inicializarComponentes() {
-        et_nomeMed = findViewById(R.id.et_nomeMedicamento);
-        et_posologia = findViewById(R.id.et_posologia);
-        ic_watch = findViewById(R.id.ic_watch);
-        et_hrInicial = findViewById(R.id.et_horaInicial);
-        et_dose = findViewById(R.id.et_dose);
-        et_dataInicio = findViewById(R.id.et_dataInicio);
-        et_dataFim = findViewById(R.id.et_dataFim);
-        btn_salvar = findViewById(R.id.btn_salvarCadMedicamento);
-        spiPosologia = findViewById(R.id.spiPosologia);
-        spiMedicamento = findViewById(R.id.spiMedicamentos);
-        ic_calendar_dataInicio = findViewById(R.id.ic_calendar_dataInicio);
-        ic_calendar_dataFim = findViewById(R.id.ic_calendar_dataFim);
-        et_recomendacao = findViewById(R.id.et_recomendacao);
         spiVia = findViewById(R.id.spiVia);
+        et_nomeMed = findViewById(R.id.et_nomeMedicamento);
+        et_concentracao = findViewById(R.id.et_concentracao);
+        et_recomendacao = findViewById(R.id.et_recomendacao);
+        et_dose = findViewById(R.id.et_dose);
+        et_intervalo = findViewById(R.id.et_intervalo);
+        spiIntervalo = findViewById(R.id.spiPosologia);
+        et_hrInicial = findViewById(R.id.et_horaInicial);
+        et_hrInicial.setTextColor(Color.BLACK);
+        usoContinuo = findViewById(R.id.cb_usoContinuo);
+        et_dataInicio = findViewById(R.id.et_dataInicio);
+        et_dataInicio.setTextColor(Color.BLACK);
+        et_dataFim = findViewById(R.id.et_dataFim);
+        et_dataFim.setTextColor(Color.BLACK);
+        et_observacoes = findViewById(R.id.et_obs);
+        swt_lembre = findViewById(R.id.swt_lembreMedicamento);
+        btn_salvar = findViewById(R.id.btn_salvarCadMedicamento);
     }
 
     public void preencherDadosMedicamento() {
@@ -164,35 +169,41 @@ public class telaEditarMedicamento extends AppCompatActivity {
         document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                Medicamento med = new Medicamento();
+                spiVia.setSelection(adapter2.getPosition(value.getString("via")));
                 et_nomeMed.setText(value.getString("nome"));
-                et_recomendacao.setText(value.getString("recomendacoes"));
-                et_posologia.setText(value.getString("intervalo"));
+                et_concentracao.setText(value.getString("concentracao"));
+                et_recomendacao.setText(value.getString("recomendacao ou finalidade"));
                 et_dose.setText(value.getString("dose"));
+                et_intervalo.setText(value.getString("intervalo"));
+                spiIntervalo.setSelection(adapter.getPosition(value.getString("unidade intervalo")));
                 et_hrInicial.setText(value.getString("hora inicial"));
+                usoContinuo.setChecked(value.getBoolean("uso continuo"));
                 et_dataInicio.setText(value.getString("data inicio"));
                 et_dataFim.setText(value.getString("data fim"));
-                spiMedicamento.setSelection(adapter1.getPosition(value.getString("unidade dose")));
-                spiPosologia.setSelection(adapter.getPosition(value.getString("unidade intervalo")));
-                spiVia.setSelection(adapter2.getPosition(value.getString("via")));
+                swt_lembre.setChecked(value.getBoolean("lembre-me"));
+                et_observacoes.setText(value.getString("observacoes"));
             }
         });
     }
 
     public void editarBancoDeDados() {
-        String nomeMed = et_nomeMed.getText().toString();
-        String intervalo = et_posologia.getText().toString();
-        String hrInicial = et_hrInicial.getText().toString();
+
+        String via =  spiVia.getSelectedItem().toString();
+        String nome = et_nomeMed.getText().toString();
+        String concentracao = et_concentracao.getText().toString();
+        String recomendacao = et_recomendacao.getText().toString();
         String dose = et_dose.getText().toString();
-        String dataInicio = et_dataInicio.getText().toString();
-        String dataFim = et_dataFim.getText().toString();
-        String unPosologia = spiPosologia.getSelectedItem().toString();
-        String unMed = spiMedicamento.getSelectedItem().toString();
-        String recomendacoes = et_recomendacao.getText().toString();
-        String opVia = spiVia.getSelectedItem().toString();
+        String intervalo = et_intervalo.getText().toString();
+        String unidade_intervalo = spiIntervalo.getSelectedItem().toString();
+        String hora_inicial = et_hrInicial.getText().toString();
+        boolean uso_continuo = usoContinuo.isChecked();
+        String data_inicio = et_dataInicio.getText().toString();
+        String data_fim= et_dataFim.getText().toString();
+        String observacoes = et_observacoes.getText().toString();
+        boolean lembre= swt_lembre.isChecked();
 
         firebaseFirestore.collection("Medicamento").document(idMed)
-                .update("nome", nomeMed, "intervalo", intervalo, "hora inicial", hrInicial, "dose", dose, "data inicio", dataInicio, "data fim", dataFim, "recomendacoes", recomendacoes, "unidade medicamento", unMed, "unidade posologia", unPosologia, "via", opVia)
+                .update("via", via, "nome", nome, "concentracao", concentracao, "recomendacao/finalidade", recomendacao, "dose", dose, "intervalo", intervalo, "unidade intervalo", unidade_intervalo, "hora inicial", hora_inicial, "uso continuo", uso_continuo, "data inicio", data_inicio, "data fim", data_fim, "observacoes", observacoes, "lembre-me", lembre)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -212,7 +223,7 @@ public class telaEditarMedicamento extends AppCompatActivity {
         String nome = et_nomeMed.getText().toString();
         String horaInicial = et_hrInicial.getText().toString();
         String dose = et_dose.getText().toString();
-        String posologia = et_posologia.getText().toString();
+        String posologia = et_intervalo.getText().toString();
         String dataInicio = et_dataInicio.getText().toString();
         String dataFim = et_dataFim.getText().toString();
 

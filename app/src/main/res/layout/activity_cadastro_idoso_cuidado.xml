@@ -47,24 +47,16 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             >
-            <EditText
+            <TextView
                 android:id="@+id/et_dataNascIdoso"
                 style="@style/Edit_text"
-                android:layout_width="250dp"
-                android:hint="@string/data_nasc"
-                android:enabled="false"
+                android:layout_marginRight="0dp"
+                android:text="@string/data_nasc"
+                android:textColor="@color/light_grey"
                 android:layout_marginLeft="0dp"
-                android:maxLength="10" />
-
-            <ImageButton
-                android:layout_marginTop="5dp"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_calendar"
-                android:id="@+id/icon_calendar"
-                android:layout_gravity="center"
-                android:background="@drawable/borda"
+                android:drawableRight="@drawable/ic_calendar"
                 />
+
 
         </LinearLayout>
 

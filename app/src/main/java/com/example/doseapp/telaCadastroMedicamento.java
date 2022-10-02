@@ -14,10 +14,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,15 +42,16 @@ import java.util.Map;
 public class telaCadastroMedicamento extends AppCompatActivity {
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private EditText et_nomeMed, et_posologia, et_hrInicial, et_dose, et_dataInicio, et_dataFim, et_recomendacao;
+    private EditText et_nomeMed, et_dose, et_recomendacao, et_concentracao, et_intervalo, et_observacoes;
+    private TextView et_hrInicial, et_dataInicio, et_dataFim;
     private Button btn_salvar;
     private String[] mensagens = {"Preencha todos os campos", "Digite uma data válida", "Digite um nome com mais de 3 letras", "Digite uma funcionalidade com mais de 3 letras", "Não foi possivel editar dados"};
-    private Spinner spiPosologia, spiMedicamento, spiVia;
-    private ImageButton ic_calendar_dataInicio, ic_calendar_dataFim, ic_watch;
+    private Spinner spiIntervalo, spiVia;
     private DatePickerDialog.OnDateSetListener dateSetListenerInicio;
     private DatePickerDialog.OnDateSetListener dateSetListenerFim;
-    private static int anoIni, anoFim, mesIni, mesFim, diaIni, diaFim, hora, min;
-
+    private CheckBox usoContinuo;
+    private Switch swt_lembre;
+    private ArrayAdapter<CharSequence> adapter, adapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,25 +63,22 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         actionBar.setTitle(R.string.cadastrar_medicamento);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.unidades_posologia, android.R.layout.simple_spinner_dropdown_item);
+        adapter = ArrayAdapter.createFromResource(this, R.array.unidade_intervalo, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiPosologia.setAdapter(adapter);
+        spiIntervalo.setAdapter(adapter);
 
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.unidades_medicamentos, android.R.layout.simple_spinner_dropdown_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiMedicamento.setAdapter(adapter1);
-
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.op_via, android.R.layout.simple_spinner_dropdown_item);
+        adapter2 = ArrayAdapter.createFromResource(this, R.array.op_via, android.R.layout.simple_spinner_dropdown_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiVia.setAdapter(adapter2);
 
-        ic_calendar_dataInicio.setOnClickListener(new View.OnClickListener() {
+
+        et_dataInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                anoIni = calendar.get(Calendar.YEAR);
-                diaIni = calendar.get(Calendar.DAY_OF_MONTH);
-                mesIni = calendar.get(Calendar.MONTH);
+                int anoIni = calendar.get(Calendar.YEAR);
+                int diaIni = calendar.get(Calendar.DAY_OF_MONTH);
+                int mesIni = calendar.get(Calendar.MONTH);
                 DatePickerDialog dialog = new DatePickerDialog(telaCadastroMedicamento.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerInicio, diaIni, mesIni, anoIni);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
@@ -89,37 +90,48 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1++;
 
-                et_dataInicio.setText(i2 + "/" + i1 + "/" + i);
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_dataInicio.setText(dia + "/" + mes + "/" + i);
+                et_dataInicio.setTextColor(Color.BLACK);
             }
         };
 
-        ic_calendar_dataFim.setOnClickListener(new View.OnClickListener() {
+        et_dataFim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                anoFim = calendar.get(Calendar.YEAR);
-                diaFim = calendar.get(Calendar.DAY_OF_MONTH);
-                mesFim = calendar.get(Calendar.MONTH);
+                int anoFim = calendar.get(Calendar.YEAR);
+                int diaFim = calendar.get(Calendar.DAY_OF_MONTH);
+                int mesFim = calendar.get(Calendar.MONTH);
                 DatePickerDialog dialog = new DatePickerDialog(telaCadastroMedicamento.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerFim, diaFim, mesFim, anoFim);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
         });
 
-        ic_watch.setOnClickListener(new View.OnClickListener() {
+        et_hrInicial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                hora = calendar.get(Calendar.HOUR_OF_DAY);
-                min = calendar.get(Calendar.MINUTE);
+                int hora = calendar.get(Calendar.HOUR_OF_DAY);
+                int min = calendar.get(Calendar.MINUTE);
 
                 TimePickerDialog timePickerDialog = new TimePickerDialog(telaCadastroMedicamento.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
-                            public void onTimeSet(TimePicker view, int i,
-                                                  int i2) {
-
-                                et_hrInicial.setText(i + ":" + i2);
+                            public void onTimeSet(TimePicker view, int i, int i2) {
+                                if (i2 < 10) {
+                                    et_hrInicial.setText(i + ":" + 0 + i2);
+                                    et_hrInicial.setTextColor(Color.BLACK);
+                                } else {
+                                    et_hrInicial.setText(i + ":" + i2);
+                                    et_hrInicial.setTextColor(Color.BLACK);
+                                }
                             }
                         }, hora, min, false);
                 timePickerDialog.show();
@@ -130,7 +142,14 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1++;
-                et_dataFim.setText(i2 + "/" + i1 + "/" + i);
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_dataFim.setText(dia + "/" + mes + "/" + i);
+                et_dataFim.setTextColor(Color.BLACK);
             }
         };
 
@@ -153,48 +172,39 @@ public class telaCadastroMedicamento extends AppCompatActivity {
     }
 
     protected void inicializarComponentes() {
+        spiVia = findViewById(R.id.spiVia);
         et_nomeMed = findViewById(R.id.et_nomeMedicamento);
-        et_posologia = findViewById(R.id.et_posologia);
-        ic_watch = findViewById(R.id.ic_watch);
-        et_hrInicial = findViewById(R.id.et_horaInicial);
+        et_concentracao = findViewById(R.id.et_concentracao);
+        et_recomendacao = findViewById(R.id.et_recomendacao);
         et_dose = findViewById(R.id.et_dose);
+        et_intervalo = findViewById(R.id.et_intervalo);
+        spiIntervalo = findViewById(R.id.spiPosologia);
+        et_hrInicial = findViewById(R.id.et_horaInicial);
+        usoContinuo = findViewById(R.id.cb_usoContinuo);
         et_dataInicio = findViewById(R.id.et_dataInicio);
         et_dataFim = findViewById(R.id.et_dataFim);
+        et_observacoes = findViewById(R.id.et_obs);
+        swt_lembre = findViewById(R.id.swt_lembreMedicamento);
         btn_salvar = findViewById(R.id.btn_salvarCadMedicamento);
-        spiPosologia = findViewById(R.id.spiPosologia);
-        spiMedicamento = findViewById(R.id.spiMedicamentos);
-        ic_calendar_dataInicio = findViewById(R.id.ic_calendar_dataInicio);
-        ic_calendar_dataFim = findViewById(R.id.ic_calendar_dataFim);
-        et_recomendacao = findViewById(R.id.et_recomendacao);
-        spiVia = findViewById(R.id.spiVia);
     }
 
     protected void salvarNoBancoDeDados() {
-        String nomeMed = et_nomeMed.getText().toString();
-        String intervalo = et_posologia.getText().toString();
-        String hrInicial = et_hrInicial.getText().toString();
-        String dose = et_dose.getText().toString();
-        String dataInicio = et_dataInicio.getText().toString();
-        String dataFim = et_dataFim.getText().toString();
-        String unPosologia = spiPosologia.getSelectedItem().toString();
-        String unMed = spiMedicamento.getSelectedItem().toString();
-        String recomendacoes = et_recomendacao.getText().toString();
-        String opVia = spiVia.getSelectedItem().toString();
-
-        String id = getIntent().getStringExtra("id");
 
         Map<String, Object> medicamentoMap = new HashMap<>();
-        medicamentoMap.put("via", opVia);
-        medicamentoMap.put("nome", nomeMed);
-        medicamentoMap.put("recomendacoes", recomendacoes);
-        medicamentoMap.put("intervalo", intervalo);
-        medicamentoMap.put("unidade intervalo", unPosologia);
-        medicamentoMap.put("dose", dose);
-        medicamentoMap.put("unidade dose", unMed);
-        medicamentoMap.put("hora inicial", hrInicial);
-        medicamentoMap.put("data inicio", dataInicio);
-        medicamentoMap.put("data fim", dataFim);
-        medicamentoMap.put("id do idoso", id);
+        medicamentoMap.put("via", spiVia.getSelectedItem().toString());
+        medicamentoMap.put("nome", et_nomeMed.getText().toString());
+        medicamentoMap.put("concentracao", et_concentracao.getText().toString());
+        medicamentoMap.put("recomendacao ou finalidade", et_recomendacao.getText().toString());
+        medicamentoMap.put("dose", et_dose.getText().toString());
+        medicamentoMap.put("intervalo", et_intervalo.getText().toString());
+        medicamentoMap.put("unidade intervalo", spiIntervalo.getSelectedItem().toString());
+        medicamentoMap.put("hora inicial", et_hrInicial.getText().toString());
+        medicamentoMap.put("uso continuo", usoContinuo.isChecked());
+        medicamentoMap.put("data inicio", et_dataInicio.getText().toString());
+        medicamentoMap.put("data fim", et_dataFim.getText().toString());
+        medicamentoMap.put("observacoes", et_observacoes.getText().toString());
+        medicamentoMap.put("lembre-me", swt_lembre.isChecked());
+        medicamentoMap.put("id do idoso", getIntent().getStringExtra("id"));
         medicamentoMap.put("dia de criacao", new Date());
 
         firebaseFirestore.collection("Medicamento")
@@ -217,7 +227,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String nome = et_nomeMed.getText().toString();
         String horaInicial = et_hrInicial.getText().toString();
         String dose = et_dose.getText().toString();
-        String posologia = et_posologia.getText().toString();
+        String posologia = et_intervalo.getText().toString();
         String dataInicio = et_dataInicio.getText().toString();
         String dataFim = et_dataFim.getText().toString();
 

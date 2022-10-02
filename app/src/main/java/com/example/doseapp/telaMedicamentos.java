@@ -78,8 +78,8 @@ import java.util.List;
                                 med.setNome(document.getString("nome"));
                                 med.setDose(document.getString("dose"));
                                 med.setUnidade_intervalo(document.getString("unidade intervalo"));
-                                med.setUnidade_dose(document.getString("unidade dose"));
                                 med.setIntervalo(document.getString("intervalo"));
+                                med.setLembre(document.getBoolean("lembre-me"));
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
                             }

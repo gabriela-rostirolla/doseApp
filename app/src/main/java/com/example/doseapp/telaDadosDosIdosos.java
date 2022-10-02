@@ -23,24 +23,17 @@ import java.util.List;
 
 public class telaDadosDosIdosos extends AppCompatActivity {
 
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_dados_dos_idosos);
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         ActionBar actionBar = getSupportActionBar();
         String id = getIntent().getStringExtra("id");
-        DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(id);
-        document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                actionBar.setTitle(value.getString("nome"));
-                actionBar.setDisplayHomeAsUpEnabled(true);
-            }
-        });
+        String nome = getIntent().getStringExtra("nome");
+        actionBar.setTitle(nome);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)

@@ -5,13 +5,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.TextView;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,10 +46,12 @@ import java.util.regex.Pattern;
 public class telaEditarIdoso extends AppCompatActivity {
 
     private Button btn_editarIdoso;
-    private EditText et_nomeIdosoEdit, et_enderecoIdosoEdit, et_telefoneIdosoEdit, et_nascIdosoEdit, et_obsEdit;
+    private EditText et_nomeIdosoEdit, et_enderecoIdosoEdit, et_telefoneIdosoEdit, et_obsEdit;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private RadioButton rb_feminino, rb_masculino, rb_outro;
     private String id;
+    private TextView et_nascIdosoEdit;
+    private DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,27 @@ public class telaEditarIdoso extends AppCompatActivity {
         actionBar.setTitle(R.string.editar);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        et_nascIdosoEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int ano = calendar.get(Calendar.YEAR);
+                int dia = calendar.get(Calendar.DAY_OF_MONTH);
+                int mes = calendar.get(Calendar.MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(telaEditarIdoso.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, dia, mes, ano);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                i1++;
+                et_nascIdosoEdit.setText(i2 + "/" + i1 + "/" + i);
+                et_nascIdosoEdit.setTextColor(Color.BLACK);
+            }
+        };
         btn_editarIdoso.setText("Editar");
 
         btn_editarIdoso.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +101,8 @@ public class telaEditarIdoso extends AppCompatActivity {
         et_nomeIdosoEdit = findViewById(R.id.et_nomeIdoso);
         et_enderecoIdosoEdit = findViewById(R.id.et_enderecoIdoso);
         et_telefoneIdosoEdit = findViewById(R.id.et_telefoneIdoso);
-        //et_nascIdosoEdit = findViewById(R.id.et_dataNascIdoso);
+        et_nascIdosoEdit = findViewById(R.id.et_dataNascIdoso);
+        et_nascIdosoEdit.setTextColor(Color.BLACK);
         et_obsEdit = findViewById(R.id.et_obsIdoso);
         rb_feminino = findViewById(R.id.rb_feminino);
         rb_masculino = findViewById(R.id.rb_masculino);
@@ -113,27 +144,12 @@ public class telaEditarIdoso extends AppCompatActivity {
         String obs = et_obsEdit.getText().toString();
 
         if(nome.isEmpty() || end.isEmpty() || tel.isEmpty() || dataNasc.isEmpty()){
-            Snackbar snackbar = Snackbar.make(view, "Preencha todos os campos", Snackbar.LENGTH_SHORT);
-            snackbar.setBackgroundTint(Color.WHITE);
-            snackbar.setTextColor(Color.BLACK);
-            snackbar.show();
-        }else if(validarTelefone(tel) == false){
-            Snackbar snackbar = Snackbar.make(view, "Digite um telefone válido", Snackbar.LENGTH_SHORT);
-            snackbar.setBackgroundTint(Color.WHITE);
-            snackbar.setTextColor(Color.BLACK);
-            snackbar.show();
+            gerarSnackBar(view, "Preencha todos os campos");
+        }else if(validarTelefone(tel) == false || tel.length() <11){
+            gerarSnackBar(view, "Digite um telefone válido");
         }
-//        else if(validarNasc(dataNasc)==false){
-//            Snackbar snackbar = Snackbar.make(view, "Digite uma data de nascimento válida", Snackbar.LENGTH_SHORT);
-//            snackbar.setBackgroundTint(Color.WHITE);
-//            snackbar.setTextColor(Color.BLACK);
-//            snackbar.show();
-//        }
         else if(nome.length() <4){
-            Snackbar snackbar = Snackbar.make(view, "Digite um nome com mais de 3 letras", Snackbar.LENGTH_SHORT);
-            snackbar.setBackgroundTint(Color.WHITE);
-            snackbar.setTextColor(Color.BLACK);
-            snackbar.show();
+            gerarSnackBar(view, "Digite um nome com mais de 3 letras");
         }else {
             firebaseFirestore.collection("Idosos cuidados").document(id)
                     .update("nome", nome, "endereco", end, "telefone", tel, "data de nascimento", dataNasc, "observacoes", obs, "genero",genero)
@@ -147,10 +163,7 @@ public class telaEditarIdoso extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Snackbar snackbar = Snackbar.make(view, "Falha ao editar", Snackbar.LENGTH_SHORT);
-                            snackbar.setBackgroundTint(Color.WHITE);
-                            snackbar.setTextColor(Color.BLACK);
-                            snackbar.show();
+                            gerarSnackBar(view, "Falha ao editar");
                             Log.w("firebase_failed_update", "Falha ao atualizar dados", e);
                         }
                     });
@@ -162,9 +175,11 @@ public class telaEditarIdoso extends AppCompatActivity {
         return (matcher.matches());
     }
 
-    protected boolean validarNasc(String nasc){
-        Pattern pattern = Pattern.compile( "^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
-        Matcher matcher = pattern.matcher(nasc);
-        return (matcher.matches());
+    protected void gerarSnackBar(View view, String texto){
+        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.WHITE);
+        snackbar.setTextColor(Color.BLACK);
+        snackbar.show();
+
     }
 }

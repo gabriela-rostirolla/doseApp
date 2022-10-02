@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,7 +27,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
     private Button btn_salvar;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String[] mensagens ={"Preencha todos os campos"};
-
+    private Chip chipDom, chipSeg, chipTer, chipQua, chipQui, chipSex, chipSab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
         ActionBar actionBar= getSupportActionBar();
         actionBar.setTitle(R.string.cadastrar_terapia);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         btn_salvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +68,13 @@ public class telaCadastroTerapia extends AppCompatActivity {
         et_horario = findViewById(R.id.et_horaTerapia);
         et_telefone = findViewById(R.id.et_telefoneTerapia);
         btn_salvar = findViewById(R.id.btn_salvarTerapia);
+        chipDom= findViewById(R.id.chip_dom);
+        chipSeg = findViewById(R.id.chip_seg);
+        chipTer = findViewById(R.id.chip_ter);
+        chipQua = findViewById(R.id.chip_qua);
+        chipQui = findViewById(R.id.chip_qui);
+        chipSex = findViewById(R.id.chip_sex);
+        chipSab = findViewById(R.id.chip_sab);
     }
 
     protected void salvarNoBancoDeDados(){
