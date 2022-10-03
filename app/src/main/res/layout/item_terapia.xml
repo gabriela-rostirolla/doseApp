@@ -1,73 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:orientation="horizontal"
-    android:layout_marginTop="8dp"
+    android:layout_height="90dp"
+    android:layout_marginTop="10dp"
     android:background="@color/light_blue"
-    android:elevation="1dp">
+    android:elevation="@dimen/cardview_compat_inset_shadow">
 
     <View
-        android:layout_gravity="center"
-        android:layout_width="5dp"
-        android:layout_marginLeft="1dp"
         android:id="@+id/v_indicadorTerapia"
-        android:layout_height="match_parent"
-        android:backgroundTint="@color/dark_blue"
-        android:background="@drawable/separador"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_width="7dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_diasSemana"
-            android:layout_width="75dp"
-            android:layout_height="27dp"
-            android:text="S T Q Q S S D"
-            android:textSize="12sp"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/tv_horaTerapia"
-            android:layout_width="70dp"
-            android:layout_height="27dp"
-            android:text=""
-            android:textSize="15dp"
-            android:textColor="@color/black"/>
-
-    </LinearLayout>
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/separador"
+        android:backgroundTint="@color/dark_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_horaTerapia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:id="@+id/view2"
+        android:layout_width="3dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_width="2dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/separador"/>
+        android:layout_marginEnd="13dp"
+        android:background="@drawable/separador"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_nomeTerapia"
+        app:layout_constraintStart_toEndOf="@+id/tv_horaTerapia"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_nomeTerapia"
-        android:layout_width="190dp"
+        android:layout_width="0dp"
         android:layout_height="27dp"
-        android:layout_marginLeft="8dp"
         android:layout_gravity="center"
-        android:textSize="20sp"
+        android:layout_marginEnd="4dp"
         android:text=""
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtn_alertTerapia"
+        app:layout_constraintStart_toEndOf="@+id/view2"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imgBtn_excluirTerapia"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/light_blue"
-        app:srcCompat="@drawable/ic_delete"/>
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgBtn_alertTerapia"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_delete" />
 
-</LinearLayout>
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imgBtn_alertTerapia"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/light_blue"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluirTerapia"
+        app:layout_constraintStart_toEndOf="@+id/tv_nomeTerapia"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_alarm" />
+
+    <TextView
+        android:id="@+id/tv_diasSemana"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_horaTerapia"
+        app:layout_constraintEnd_toEndOf="@+id/tv_horaTerapia"
+        app:layout_constraintStart_toStartOf="@+id/tv_horaTerapia"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_horaTerapia"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/view2"
+        app:layout_constraintStart_toEndOf="@+id/v_indicadorTerapia"
+        app:layout_constraintTop_toBottomOf="@+id/tv_diasSemana" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

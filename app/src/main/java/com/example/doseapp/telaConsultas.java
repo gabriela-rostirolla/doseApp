@@ -25,7 +25,7 @@ import java.util.List;
 
 public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemClick {
 
-    private static List<Consulta> consultaList;
+    private List<Consulta> consultaList;
     private static RecyclerView rv_listaConsulta;
     private static ConsultaAdapter consultaAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
