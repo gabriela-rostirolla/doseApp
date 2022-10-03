@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,11 +35,12 @@ import java.util.regex.Pattern;
 
 public class telaCadastroConsulta extends AppCompatActivity {
 
-    private EditText et_nome, et_profissional, et_end, et_tel, et_data, et_horario;
+    private EditText et_nome, et_profissional, et_end, et_tel;
     private Button btn_salvar;
     private String [] mensagens = {"Preencha todos os dados"};
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private ImageButton imgBtn_dataConsul, img_horaConsul;
+    private TextView et_data, et_horario;
+    private Switch swt_lembreConculta;
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
@@ -50,7 +53,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
         actionBar.setTitle(R.string.cadastrar_consulta);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        imgBtn_dataConsul.setOnClickListener(new View.OnClickListener() {
+        et_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -67,11 +70,19 @@ public class telaCadastroConsulta extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1++;
-                et_data.setText(i2 + "/" + i1 + "/" + i);
+
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_data.setText(dia + "/" + mes + "/" + i);
+                et_data.setTextColor(Color.BLACK);
             }
         };
 
-        img_horaConsul.setOnClickListener(new View.OnClickListener() {
+        et_horario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -82,8 +93,13 @@ public class telaCadastroConsulta extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int i, int i2) {
-                                et_horario.setText(i + ":" + i2);
-                            }
+                                if (i2 < 10) {
+                                    et_horario.setText(i + ":" + 0 + i2);
+                                    et_horario.setTextColor(Color.BLACK);
+                                } else {
+                                    et_horario.setText(i + ":" + i2);
+                                    et_horario.setTextColor(Color.BLACK);
+                                }                            }
                         }, hora, min, false);
                 timePickerDialog.show();
             }
@@ -116,6 +132,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
         consultaMap.put("telefone", tel);
         consultaMap.put("profissional", profissional);
         consultaMap.put("horario", horario);
+        consultaMap.put("lembre-me", swt_lembreConculta.isChecked());
         consultaMap.put("id do idoso", id);
 
         firebaseFirestore.collection("Consultas")
@@ -140,10 +157,9 @@ public class telaCadastroConsulta extends AppCompatActivity {
         et_end = findViewById(R.id.et_enderecoConsulta);
         et_tel = findViewById(R.id.et_telefoneConsulta);
         et_data = findViewById(R.id.et_dataConsul);
+        swt_lembreConculta = findViewById(R.id.swt_lembreConculta);
         et_horario = findViewById(R.id.et_horaConsulta);
         btn_salvar = findViewById(R.id.btn_salvarConsulta);
-        img_horaConsul = findViewById(R.id.imgBtn_horarioConsul);
-        imgBtn_dataConsul = findViewById(R.id.imgBtn_dataConsul);
     }
     protected void gerarSnackBar(View view, String texto) {
         Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);

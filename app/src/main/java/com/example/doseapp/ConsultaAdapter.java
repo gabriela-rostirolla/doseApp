@@ -43,6 +43,9 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ConsultaAdapter.ConsultaViewHolder viewHolder = (ConsultaAdapter.ConsultaViewHolder) holder;
         Consulta consulta = consultaList.get(position);
+        if (consulta.isLembre() == false) {
+            viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
+        }
         viewHolder.tv_nomeConsulta.setText(consulta.getNome());
         viewHolder.tv_horaConsulta.setText(consulta.getHorario());
         String [] dataFormat = consulta.getData().split("/");
@@ -57,8 +60,9 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
     public static class ConsultaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView tv_diaConsulta, tv_horaConsulta, tv_nomeConsulta;
-        ImageButton imgBtn_excluirConsulta;
+        ImageButton imgBtn_excluirConsulta, imgBtn_alarme;
         OnItemClick onItemClick;
+
 
         public ConsultaViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
@@ -66,6 +70,24 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
             tv_horaConsulta = itemView.findViewById(R.id.tv_horaConsulta);
             tv_nomeConsulta = itemView.findViewById(R.id.tv_nomeConsulta);
             imgBtn_excluirConsulta = itemView.findViewById(R.id.imgBtn_excluirConsul);
+            imgBtn_alarme = itemView.findViewById(R.id.imgBtn_alertConsul);
+
+            imgBtn_alarme.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (consultaList.get(getAbsoluteAdapterPosition()).isLembre() == true) {
+                        imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
+                        firebaseFirestore.collection("Consultas").document(consultaList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", false);
+                        consultaList.get(getAbsoluteAdapterPosition()).setLembre(false);
+                        gerarSnackBar(view, "Alarme atualizado com sucesso!");
+                    } else if (consultaList.get(getAbsoluteAdapterPosition()).isLembre() == false) {
+                        consultaList.get(getAbsoluteAdapterPosition()).setLembre(true);
+                        firebaseFirestore.collection("Consultas").document(consultaList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", true);
+                        imgBtn_alarme.setImageResource(R.drawable.ic_alarm);
+                        gerarSnackBar(view, "Alarme atualizado com sucesso!");
+                    }
+                }
+            });
 
             imgBtn_excluirConsulta.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,5 +134,11 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
 
     public interface OnItemClick{
         void OnItemClick(int position);
+    }
+    public static void gerarSnackBar(View view, String texto) {
+        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.WHITE);
+        snackbar.setTextColor(Color.BLACK);
+        snackbar.show();
     }
 }

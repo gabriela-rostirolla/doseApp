@@ -83,7 +83,7 @@
         android:backgroundTint="@color/light_blue"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluirMed"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluirConsul"
         app:layout_constraintStart_toEndOf="@+id/tv_nomeConsulta"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_alarm" />

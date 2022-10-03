@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,13 +36,14 @@ import java.util.regex.Pattern;
 
 public class telaEditarConsulta extends AppCompatActivity {
 
-    private EditText et_nome, et_profissional, et_end, et_tel, et_data, et_horario;
+    private EditText et_nome, et_profissional, et_end, et_tel;
     private Button btn_salvar;
     private String[] mensagens = {"Preencha todos os dados"};
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String idConsulta;
-    private ImageButton imgBtn_dataConsul, img_horaConsul;
+    private Switch swt_lembre;
     private DatePickerDialog.OnDateSetListener dateSetListener;
+    private TextView et_data, et_horario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class telaEditarConsulta extends AppCompatActivity {
         preencherDadosConsulta();
 
 
-        imgBtn_dataConsul.setOnClickListener(new View.OnClickListener() {
+        et_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -72,11 +75,19 @@ public class telaEditarConsulta extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1++;
-                et_data.setText(i2 + "/" + i1 + "/" + i);
+
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_data.setText(dia + "/" + mes + "/" + i);
+                et_data.setTextColor(Color.BLACK);
             }
         };
 
-        img_horaConsul.setOnClickListener(new View.OnClickListener() {
+        et_horario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
@@ -87,7 +98,13 @@ public class telaEditarConsulta extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int i, int i2) {
-                                et_horario.setText(i + ":" + i2);
+                                if (i2 < 10) {
+                                    et_horario.setText(i + ":" + 0 + i2);
+                                    et_horario.setTextColor(Color.BLACK);
+                                } else {
+                                    et_horario.setText(i + ":" + i2);
+                                    et_horario.setTextColor(Color.BLACK);
+                                }
                             }
                         }, hora, min, false);
                 timePickerDialog.show();
@@ -115,8 +132,8 @@ public class telaEditarConsulta extends AppCompatActivity {
         et_horario = findViewById(R.id.et_horaConsulta);
         btn_salvar = findViewById(R.id.btn_salvarConsulta);
         btn_salvar.setText("editar");
-        img_horaConsul = findViewById(R.id.imgBtn_horarioConsul);
-        imgBtn_dataConsul = findViewById(R.id.imgBtn_dataConsul);
+        swt_lembre = findViewById(R.id.swt_lembreConculta);
+
     }
 
     public void preencherDadosConsulta() {
@@ -130,6 +147,8 @@ public class telaEditarConsulta extends AppCompatActivity {
                 et_tel.setText(value.getString("telefone"));
                 et_data.setText(value.getString("data"));
                 et_horario.setText(value.getString("horario"));
+                swt_lembre.setChecked(value.getBoolean("lembre-me"));
+
             }
         });
     }
@@ -141,9 +160,10 @@ public class telaEditarConsulta extends AppCompatActivity {
         String tel = et_tel.getText().toString();
         String data = et_data.getText().toString();
         String horario = et_horario.getText().toString();
+        boolean lembre = swt_lembre.isChecked();
 
         firebaseFirestore.collection("Consultas").document(idConsulta)
-                .update("nome", nome, "profissional", profissional, "endereco", end, "telefonen", tel, "data", data, "horario", horario)
+                .update("nome", nome, "profissional", profissional, "endereco", end, "telefonen", tel, "data", data, "horario", horario, "lembre-me", lembre)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -173,7 +193,7 @@ public class telaEditarConsulta extends AppCompatActivity {
         } else if (nome.length() < 4) {
             gerarSnackBar(view, "Digite um nome com mais de três letras");
             return false;
-        } else if (validarTelefone(tel) == false || tel.length() <11) {
+        } else if (validarTelefone(tel) == false || tel.length() < 11) {
             gerarSnackBar(view, "Digite um número de telefone válido");
             return false;
         } else if (endereco.length() < 4) {
