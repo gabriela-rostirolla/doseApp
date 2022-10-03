@@ -203,7 +203,7 @@ public class telaEditarMedicamento extends AppCompatActivity {
         boolean lembre = swt_lembre.isChecked();
 
         firebaseFirestore.collection("Medicamento").document(idMed)
-                .update("via", via, "nome", nome, "concentracao", concentracao, "recomendacao/finalidade", recomendacao, "dose", dose, "intervalo", intervalo, "unidade intervalo", unidade_intervalo, "hora inicial", hora_inicial, "uso continuo", uso_continuo, "data inicio", data_inicio, "data fim", data_fim, "observacoes", observacoes, "lembre-me", lembre)
+                .update("via", via, "nome", nome, "concentracao", concentracao, "recomendacao ou finalidade", recomendacao, "dose", dose, "intervalo", intervalo, "unidade intervalo", unidade_intervalo, "hora inicial", hora_inicial, "uso continuo", uso_continuo, "data inicio", data_inicio, "data fim", data_fim, "observacoes", observacoes, "lembre-me", lembre)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
