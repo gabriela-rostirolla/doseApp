@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,8 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class telaEditarTerapia extends AppCompatActivity {
-    private EditText et_nome, et_profissional, et_endereco, et_telefone, et_horario;
+    private EditText et_nome, et_profissional, et_endereco, et_telefone;
     private Button btn_salvar;
+    private TextView et_horario;
+    private Switch swt_lembre;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String[] mensagens ={"Preencha todos os campos"};
     private String idTerapia;
@@ -52,6 +56,7 @@ public class telaEditarTerapia extends AppCompatActivity {
         et_profissional = findViewById(R.id.et_profissionalTerapia);
         et_horario = findViewById(R.id.et_horaTerapia);
         et_telefone = findViewById(R.id.et_telefoneTerapia);
+        swt_lembre = findViewById(R.id.swt_lembreTerapia);
         btn_salvar = findViewById(R.id.btn_salvarTerapia);
         btn_salvar.setText("Editar");
     }
@@ -66,6 +71,7 @@ public class telaEditarTerapia extends AppCompatActivity {
                 et_endereco.setText(value.getString("endereco"));
                 et_horario.setText(value.getString("horario"));
                 et_telefone.setText(value.getString("telefone"));
+                swt_lembre.setChecked(value.getBoolean("lembre-me"));
             }
         });
     }
@@ -76,9 +82,10 @@ public class telaEditarTerapia extends AppCompatActivity {
         String end = et_endereco.getText().toString();
         String horario = et_horario.getText().toString();
         String tel = et_telefone.getText().toString();
+        boolean lembre = swt_lembre.isChecked();
 
         firebaseFirestore.collection("Terapias").document(idTerapia)
-                .update("nome",nome,"profissional",profissional,"endereco",end,"horario",horario,"telefone", tel)
+                .update("nome",nome,"profissional",profissional,"endereco",end,"horario",horario,"telefone", tel, "lembre-me", lembre)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

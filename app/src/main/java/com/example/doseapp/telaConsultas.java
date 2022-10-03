@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -64,7 +65,7 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
 
         firebaseFirestore.collection("Consultas")
                 .whereEqualTo("id do idoso", id)
-                //.orderBy("dia de criacao", Query.Direction.DESCENDING)
+                .orderBy("dia de criacao", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -81,9 +82,9 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                                 System.out.println(consulta.getNome());
                                 consultaList.add(consulta);
                             }
-                            if(consultaList.isEmpty()){
+                            if (consultaList.isEmpty()) {
                                 tv_nenhumConsulCad.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 tv_nenhumConsulCad.setVisibility(View.INVISIBLE);
                             }
                             consultaAdapter = new ConsultaAdapter(getContext(), consultaList, telaConsultas.this::OnItemClick);
@@ -110,7 +111,6 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tela_consultas, container, false);
         id = getActivity().getIntent().getStringExtra("id");
-
         inicializarComponentes(v);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +122,6 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                 startActivity(intent);
             }
         });
-
         return v;
     }
 
