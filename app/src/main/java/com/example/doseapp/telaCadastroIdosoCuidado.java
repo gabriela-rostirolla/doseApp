@@ -156,6 +156,7 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         idosoCuidadoMap.put("data de criacao", new Date());
         idosoCuidadoMap.put("observacoes", obs);
         idosoCuidadoMap.put("genero", genero);
+        idosoCuidadoMap.put("cuidado", false);
         idosoCuidadoMap.put("cuidador id", userId);
         firebaseFirestore.collection("Idosos cuidados")
                 .add(idosoCuidadoMap)

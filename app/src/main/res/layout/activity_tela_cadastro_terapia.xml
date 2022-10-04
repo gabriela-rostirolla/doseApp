@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,21 +17,21 @@
             android:id="@+id/et_nomeTerapia"
             style="@style/Edit_text"
             android:hint="@string/nome"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_profissionalTerapia"
             style="@style/Edit_text"
             android:hint="@string/profissional"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_enderecoTerapia"
             style="@style/Edit_text"
             android:hint="@string/endereco"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
@@ -67,7 +68,9 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_blue"
                     android:text="D"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -75,7 +78,9 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_blue"
                     android:text="S"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -83,7 +88,9 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_blue"
                     android:text="T"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -91,7 +98,9 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_blue"
                     android:text="Q"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -99,7 +108,9 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_blue"
                     android:text="Q"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -107,7 +118,9 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_blue"
                     android:text="S"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -115,7 +128,9 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/dark_blue"
                     android:text="S"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
 
             </com.google.android.material.chip.ChipGroup>
@@ -123,7 +138,8 @@
 
         <Switch
             android:id="@+id/swt_lembreTerapia"
-            style="@style/Switch" />
+            style="@style/Switch"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_salvarTerapia"

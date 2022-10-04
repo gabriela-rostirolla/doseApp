@@ -50,8 +50,12 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
         IdosoCuidadoViewHolder viewHolderClass = (IdosoCuidadoViewHolder) holder;
         IdosoCuidado idosoCuidado = idosoCuidadoList.get(position);
+        if (idosoCuidado.isCuidado() == false) {
+            viewHolderClass.imgBtn_cuidado.setImageResource(R.drawable.ic_baseline_work_off_24);
+        }
         viewHolderClass.tv_nomeIdoso.setText(idosoCuidado.getNome());
     }
 
@@ -62,7 +66,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
 
     public class IdosoCuidadoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_nomeIdoso;
-        ImageButton imgBtn_editar, imgBtn_excluir, imgBtn_compartilhar;
+        ImageButton imgBtn_editar, imgBtn_excluir, imgBtn_compartilhar, imgBtn_cuidado;
         OnItemClick onItemClick;
 
         public IdosoCuidadoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
@@ -71,6 +75,24 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
             imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluir);
             imgBtn_compartilhar = itemView.findViewById(R.id.imgBtn_compartilhar);
             imgBtn_editar = itemView.findViewById(R.id.imgBtn_editar);
+            imgBtn_cuidado = itemView.findViewById(R.id.imgBtn_trabalho);
+
+            imgBtn_cuidado.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (idosoCuidadoList.get(getAbsoluteAdapterPosition()).isCuidado() == true) {
+                        imgBtn_cuidado.setImageResource(R.drawable.ic_baseline_work_off_24);
+                        firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidado", false);
+                        idosoCuidadoList.get(getAbsoluteAdapterPosition()).setCuidado(false);
+                        gerarSnackBar(view, "Período de cuidado finalizado!");
+                    } else if (idosoCuidadoList.get(getAbsoluteAdapterPosition()).isCuidado() == false) {
+                        idosoCuidadoList.get(getAbsoluteAdapterPosition()).setCuidado(true);
+                        firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidado", true);
+                        imgBtn_cuidado.setImageResource(R.drawable.ic_baseline_work_24);
+                        gerarSnackBar(view, "Período de cuidado inicializado!");
+                    }
+                }
+            });
 
             imgBtn_excluir.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -183,5 +205,11 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
 
     public interface OnItemClick {
         void OnItemClick(int position);
+    }
+    public static void gerarSnackBar(View view, String texto) {
+        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.WHITE);
+        snackbar.setTextColor(Color.BLACK);
+        snackbar.show();
     }
 }

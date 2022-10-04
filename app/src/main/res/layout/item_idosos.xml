@@ -15,6 +15,7 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:backgroundTint="@color/light_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_nomeIdoso"
@@ -27,15 +28,14 @@
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="5dp"
         android:text=""
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/imgBtn_compartilhar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtn_trabalho"
         app:layout_constraintStart_toEndOf="@+id/imgBtn_editar"
-        app:layout_constraintTop_toTopOf="@+id/imgBtn_editar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imgBtn_compartilhar"
@@ -43,11 +43,23 @@
         android:layout_height="48dp"
         android:backgroundTint="@color/light_blue"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/imgBtn_excluir"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluir"
-        app:layout_constraintStart_toEndOf="@+id/tv_nomeIdoso"
-        app:layout_constraintTop_toTopOf="@+id/imgBtn_excluir"
+        app:layout_constraintStart_toEndOf="@+id/imgBtn_trabalho"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_share" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/imgBtn_trabalho"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/light_blue"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtn_compartilhar"
+        app:layout_constraintStart_toEndOf="@+id/tv_nomeIdoso"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_work_24" />
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/imgBtn_excluir"
@@ -59,15 +71,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imgBtn_compartilhar"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete"/>
-
-
-    <!--androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/imgBtn_excluir"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:backgroundTint="@color/light_blue"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_delete" /!-->
+        app:srcCompat="@drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

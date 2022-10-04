@@ -11,6 +11,7 @@ public class IdosoCuidado {
     private String genero;
     private String id_usuario;
     private String obs;
+    private boolean cuidado;
     public IdosoCuidado() {
     }
 
@@ -23,6 +24,14 @@ public class IdosoCuidado {
         this.genero=genero;
         this.id_usuario = id_usuario;
         this.id = id;
+    }
+
+    public boolean isCuidado() {
+        return cuidado;
+    }
+
+    public void setCuidado(boolean cuidado) {
+        this.cuidado = cuidado;
     }
 
     public String getId() {

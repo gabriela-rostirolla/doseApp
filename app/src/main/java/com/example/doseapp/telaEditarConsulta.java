@@ -129,7 +129,9 @@ public class telaEditarConsulta extends AppCompatActivity {
         et_end = findViewById(R.id.et_enderecoConsulta);
         et_tel = findViewById(R.id.et_telefoneConsulta);
         et_data = findViewById(R.id.et_dataConsul);
+        et_data.setTextColor(Color.BLACK);
         et_horario = findViewById(R.id.et_horaConsulta);
+        et_horario.setTextColor(Color.BLACK);
         btn_salvar = findViewById(R.id.btn_salvarConsulta);
         btn_salvar.setText("editar");
         swt_lembre = findViewById(R.id.swt_lembreConculta);

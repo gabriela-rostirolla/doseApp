@@ -78,6 +78,8 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                                 IdosoCuidado ic = new IdosoCuidado();
                                 ic.setNome(document.getString("nome"));
                                 ic.setId(document.getId());
+                                boolean aux =document.getBoolean("cuidado");
+                                ic.setCuidado(aux);
                                 idosoCuidadoList.add(ic);
                             }
                             if(idosoCuidadoList.isEmpty()){

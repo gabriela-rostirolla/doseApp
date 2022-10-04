@@ -71,7 +71,8 @@ public class telaEditarTerapia extends AppCompatActivity {
                 et_endereco.setText(value.getString("endereco"));
                 et_horario.setText(value.getString("horario"));
                 et_telefone.setText(value.getString("telefone"));
-                swt_lembre.setChecked(value.getBoolean("lembre-me"));
+                boolean aux = value.getBoolean("lembre-me");
+                swt_lembre.setChecked(aux);
             }
         });
     }
