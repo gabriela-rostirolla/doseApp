@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,7 +34,7 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
     private ReceitaAdapter receitaAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String mParam1;
-    private static List<Receita> receitaList;
+    private static List<Receita> receitaList= new ArrayList<>();
     private String mParam2;
     private static String id;
     private TextView tv_nenhumRecCad;
@@ -61,7 +62,6 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
 
     protected void listarReceitas(){
         rv_listaReceita.setLayoutManager(new LinearLayoutManager(getActivity()));
-        receitaList= new ArrayList<>();
         firebaseFirestore.collection("Receitas")
                 .whereEqualTo("id do idoso", id)
                 //.orderBy("dia de criacao", Query.Direction.DESCENDING)
@@ -83,6 +83,8 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
                                 tv_nenhumRecCad.setVisibility(View.INVISIBLE);
                             }
                             receitaAdapter = new ReceitaAdapter(getContext(),receitaList, telaReceitas.this::OnItemClick);
+                            rv_listaReceita.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            rv_listaReceita.setHasFixedSize(false);
                             rv_listaReceita.setAdapter(receitaAdapter);
                         }
                     }
@@ -92,6 +94,7 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
     @Override
     public void onResume() {
         super.onResume();
+        receitaList.clear();
         listarReceitas();
     }
 

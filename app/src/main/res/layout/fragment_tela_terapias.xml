@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:id="@+id/tv_nenhumTerCad"
+            android:textColor="@color/light_grey"
             android:text="Nenhuma terapia cadastrada"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/rv_listaTerapia"

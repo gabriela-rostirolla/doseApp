@@ -3,8 +3,10 @@ package com.example.doseapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +32,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     private FloatingActionButton fab_addIdosoCuidado;
     private RecyclerView rv_listaIdosos;
     private TextView tv_nenhumIdosoCad;
-    private List<IdosoCuidado> idosoCuidadoList;
+    private List<IdosoCuidado> idosoCuidadoList = new ArrayList<>();
     private IdosoCuidadoAdapter idosoCuidadoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -53,19 +57,19 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     @Override
     protected void onStart() {
         super.onStart();
+        idosoCuidadoList.clear();
         listarIdososCuidados();
     }
 
-    protected void inicializarComponentes(){
+    protected void inicializarComponentes() {
         fab_addIdosoCuidado = findViewById(R.id.fab_addIdosoCuidado);
-        rv_listaIdosos=findViewById(R.id.rv_listaIdoso);
-        tv_nenhumIdosoCad=findViewById(R.id.tv_nenhumIdosoCad);
+        rv_listaIdosos = findViewById(R.id.rv_listaIdoso);
+        tv_nenhumIdosoCad = findViewById(R.id.tv_nenhumIdosoCad);
     }
 
-    protected void listarIdososCuidados(){
+    protected void listarIdososCuidados() {
         rv_listaIdosos.setLayoutManager(new LinearLayoutManager(this));
-        idosoCuidadoList = new ArrayList<>();
-        String userId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseFirestore.collection("Idosos cuidados")
                 .whereEqualTo("cuidador id", userId)
                 .orderBy("data de criacao", Query.Direction.DESCENDING)
@@ -78,16 +82,18 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                                 IdosoCuidado ic = new IdosoCuidado();
                                 ic.setNome(document.getString("nome"));
                                 ic.setId(document.getId());
-                                boolean aux =document.getBoolean("cuidado");
+                                boolean aux = document.getBoolean("cuidado");
                                 ic.setCuidado(aux);
                                 idosoCuidadoList.add(ic);
                             }
-                            if(idosoCuidadoList.isEmpty()){
+                            if (idosoCuidadoList.isEmpty()) {
                                 tv_nenhumIdosoCad.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 tv_nenhumIdosoCad.setVisibility(View.INVISIBLE);
                             }
                             idosoCuidadoAdapter = new IdosoCuidadoAdapter(idosoCuidadoList, telaInicial.this::OnItemClick, telaInicial.this);
+                            rv_listaIdosos.addItemDecoration(new DividerItemDecoration(telaInicial.this, DividerItemDecoration.VERTICAL));
+                            rv_listaIdosos.setHasFixedSize(false);
                             rv_listaIdosos.setAdapter(idosoCuidadoAdapter);
                         }
                     }

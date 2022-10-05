@@ -57,11 +57,11 @@ public class telaCadastroDiario extends AppCompatActivity {
                     snackbar.show();
                 }
                 if(rb_atividade.isChecked()){
-                    Intent intent = new Intent(telaCadastroDiario.this, telaCadastroDiarioAtividade.class);
+                    Intent intent = new Intent(telaCadastroDiario.this, telaDiarios.class);
                     intent.putExtra("titulo",titulo);
                     startActivity(intent);
                 }else if(rb_refeicao.isChecked()){
-                    Intent intent = new Intent(telaCadastroDiario.this, telaCadastroDiarioAlimentacao.class);
+                    Intent intent = new Intent(telaCadastroDiario.this, telaDiarios.class);
                     intent.putExtra("titulo",titulo);
                     startActivity(intent);
                 }else{

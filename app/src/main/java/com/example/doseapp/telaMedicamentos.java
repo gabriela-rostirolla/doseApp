@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ import java.util.List;
     private String mParam1;
     private String mParam2;
     private RecyclerView rv_listaRemedio;
-    private List<Medicamento> medicamentoList;
+    private List<Medicamento> medicamentoList= new ArrayList<>();
     private MedicamentoAdapter medicamentoAdapter;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String id;
@@ -64,7 +65,6 @@ import java.util.List;
 
     public void listarMedicamentos(){
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
-        medicamentoList= new ArrayList<>();
         firebaseFirestore.collection("Medicamento")
                 .whereEqualTo("id do idoso", id)
                 .orderBy("dia de criacao", Query.Direction.DESCENDING)
@@ -90,6 +90,8 @@ import java.util.List;
                                 tv_nenhumMedCad.setVisibility(View.INVISIBLE);
                             }
                             medicamentoAdapter = new MedicamentoAdapter(getContext(),medicamentoList, telaMedicamentos.this::OnItemClick);
+                            rv_listaRemedio.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            rv_listaRemedio.setHasFixedSize(false);
                             rv_listaRemedio.setAdapter(medicamentoAdapter);
                         }
                     }
@@ -99,6 +101,7 @@ import java.util.List;
     @Override
     public void onResume() {
         super.onResume();
+        medicamentoList.clear();
         listarMedicamentos();
     }
 

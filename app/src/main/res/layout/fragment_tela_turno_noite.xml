@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_blue"
         android:orientation="vertical"
-        tools:context=".telaConsultas">
-
+        tools:context=".telaTurnoNoite">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_listaConsulta"
+            android:id="@+id/rv_listaTurnoNoite"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
 
         <TextView
-            android:id="@+id/tv_nenhumConsulCad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nenhuma consulta cadastrada"
-            android:textColor="@color/light_grey"
             android:visibility="invisible"
+            android:id="@+id/tv_nenhumDiarioNoite"
+            android:text="Nenhum Diário de cuidado cadastrado"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/rv_listaConsulta"
+            app:layout_constraintEnd_toEndOf="@+id/rv_listaTurnoNoite"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_addConsulta"
+            android:id="@+id/fab_addDiarioNoite"
             style="@style/floatingactionbutton"
             android:layout_marginRight="50dp"
             android:layout_marginBottom="50dp"

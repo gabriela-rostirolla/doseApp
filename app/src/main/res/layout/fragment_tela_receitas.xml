@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,15 +18,15 @@
             android:id="@+id/rv_listaReceita"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_receita"
-            />
+            tools:listitem="@layout/item_receita" />
 
         <TextView
+            android:id="@+id/tv_nenhumRecCad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:id="@+id/tv_nenhumRecCad"
             android:text="Nenhuma receita cadastrada"
+            android:textColor="@color/light_grey"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/rv_listaReceita"
             app:layout_constraintStart_toStartOf="parent"

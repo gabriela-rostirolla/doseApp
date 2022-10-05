@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class telaTerapias extends Fragment  implements TerapiaAdapter.OnItemClick{
+public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -49,9 +50,9 @@ public class telaTerapias extends Fragment  implements TerapiaAdapter.OnItemClic
         return fragment;
     }
 
-    protected void listarTerapias(){
+    protected void listarTerapias() {
         rv_listaTerapia.setLayoutManager(new LinearLayoutManager(getActivity()));
-        terapiaList= new ArrayList<>();
+        terapiaList = new ArrayList<>();
 
         firebaseFirestore.collection("Terapias")
                 .whereEqualTo("id do idoso", id)
@@ -69,12 +70,14 @@ public class telaTerapias extends Fragment  implements TerapiaAdapter.OnItemClic
                                 ter.setId(document.getId());
                                 terapiaList.add(ter);
                             }
-                            if(terapiaList.isEmpty()){
+                            if (terapiaList.isEmpty()) {
                                 tv_nenhumTerCad.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 tv_nenhumTerCad.setVisibility(View.INVISIBLE);
                             }
-                            terapiaAdapter = new TerapiaAdapter(getContext(),terapiaList, telaTerapias.this::OnItemClick);
+                            terapiaAdapter = new TerapiaAdapter(getContext(), terapiaList, telaTerapias.this::OnItemClick);
+                            rv_listaTerapia.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            rv_listaTerapia.setHasFixedSize(false);
                             rv_listaTerapia.setAdapter(terapiaAdapter);
                         }
                     }
@@ -96,7 +99,7 @@ public class telaTerapias extends Fragment  implements TerapiaAdapter.OnItemClic
         }
     }
 
-    protected void inicializarComponentes(View v){
+    protected void inicializarComponentes(View v) {
         floatingActionButton = v.findViewById(R.id.fab_addTerapia);
         rv_listaTerapia = v.findViewById(R.id.rv_listaTerapia);
         tv_nenhumTerCad = v.findViewById(R.id.tv_nenhumTerCad);
@@ -107,7 +110,7 @@ public class telaTerapias extends Fragment  implements TerapiaAdapter.OnItemClic
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tela_terapias, container, false);
         inicializarComponentes(v);
-        id= getActivity().getIntent().getStringExtra("id");
+        id = getActivity().getIntent().getStringExtra("id");
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
