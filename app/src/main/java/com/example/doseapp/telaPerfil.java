@@ -48,11 +48,6 @@ public class telaPerfil extends AppCompatActivity {
         actionBar.setTitle(R.string.perfil);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DocumentReference value = banco_dados.collection("Usuarios").document(userID);
         value.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -123,10 +118,7 @@ public class telaPerfil extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Snackbar snackbar = Snackbar.make(view, "Nome atualizado com sucesso", Snackbar.LENGTH_SHORT);
-                            snackbar.setBackgroundTint(Color.WHITE);
-                            snackbar.setTextColor(Color.BLACK);
-                            snackbar.show();
+                            gerarSnackBar(view, "Nome atualizado com sucesso");
                             Log.d("documento_atualizado", "DocumentSnapshot successfully updated!");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -136,11 +128,14 @@ public class telaPerfil extends AppCompatActivity {
                         }
                     });
         }else{
-            Snackbar snackbar = Snackbar.make(view, "Digite um nome válido", Snackbar.LENGTH_SHORT);
-            snackbar.setBackgroundTint(Color.WHITE);
-            snackbar.setTextColor(Color.BLACK);
-            snackbar.show();
+            gerarSnackBar(view, "Digite um nome válido");
 
         }
+    }
+    public void gerarSnackBar(View view, String texto){
+        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.WHITE);
+        snackbar.setTextColor(Color.BLACK);
+        snackbar.show();
     }
 }

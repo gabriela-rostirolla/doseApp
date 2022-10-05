@@ -25,6 +25,7 @@ public class telaCadastroDiarioAlimentacao extends AppCompatActivity {
     private EditText et_refeicao, et_lanche, et_outro, et_obs;
     private TextView tv_titulo;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +36,8 @@ public class telaCadastroDiarioAlimentacao extends AppCompatActivity {
 
         inicializarComponentes();
 
-        String titulo = getIntent().getStringExtra("titulo");
-        tv_titulo.setText(titulo);
+//        String titulo = getIntent().getStringExtra("titulo");
+ //       tv_titulo.setText(titulo);
         btn_salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,16 +48,16 @@ public class telaCadastroDiarioAlimentacao extends AppCompatActivity {
 
     }
 
-    protected void inicializarComponentes(){
+    protected void inicializarComponentes() {
         btn_salvar = findViewById(R.id.btn_salvarAlimentacao);
-        tv_titulo = findViewById(R.id.tv_diaTurnoDiarioEt02);
+//        tv_titulo = findViewById(R.id.tv_diaTurnoDiarioEt02);
         et_refeicao = findViewById(R.id.et_refeicao);
         et_lanche = findViewById(R.id.et_lancheDiario);
         et_outro = findViewById(R.id.et_outrosDiario);
         et_obs = findViewById(R.id.et_obsDiario);
     }
 
-    protected void salvarBancoDeDados(){
+    protected void salvarBancoDeDados() {
         String refeicao = et_refeicao.getText().toString();
         String lanche = et_lanche.getText().toString();
         String outro = et_outro.getText().toString();
@@ -72,7 +73,7 @@ public class telaCadastroDiarioAlimentacao extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d("banco_dados_salvos", "Sucesso ao salvar dados!"+documentReference.getId());
+                        Log.d("banco_dados_salvos", "Sucesso ao salvar dados!" + documentReference.getId());
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

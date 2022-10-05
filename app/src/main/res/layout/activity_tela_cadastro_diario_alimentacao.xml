@@ -14,24 +14,12 @@
         android:orientation="vertical"
         tools:context=".telaCadastroDiarioAlimentacao">
 
-        <TextView
-            android:id="@+id/tv_diaTurnoDiarioEt02"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:text=""
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/alimentacao"
-            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/et_cuidadorResp"
+            android:layout_marginTop="40dp"
+            style="@style/Edit_text"
+            android:hint="@string/cuidadorResp"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/et_refeicao"
@@ -50,6 +38,12 @@
             style="@style/Edit_text"
             android:hint="@string/outro"
             android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/et_horarioRef"
+            style="@style/Edit_text"
+            android:drawableRight="@drawable/ic_watch"
+            android:hint="@string/horario" />
 
         <EditText
             android:id="@+id/et_obsDiario"

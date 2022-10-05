@@ -4,9 +4,36 @@ public class Alimentacao {
     private String refeicaoPrincipal;
     private String lanche;
     private String outro;
+    private String cuidadorResponsavel;
+    private String id;
     private String observacao;
+    private String horario;
 
     public Alimentacao() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCuidadorResponsavel() {
+        return cuidadorResponsavel;
+    }
+
+    public void setCuidadorResponsavel(String cuidadorResponsavel) {
+        this.cuidadorResponsavel = cuidadorResponsavel;
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
     }
 
     public Alimentacao(String refeicaoPrincipal, String lanche, String outro, String observacao) {

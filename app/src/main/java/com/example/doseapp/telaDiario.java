@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class telaDiario extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -18,6 +22,7 @@ public class telaDiario extends Fragment {
     private FloatingActionButton floatingActionButton;
     private String mParam1;
     private String mParam2;
+    private DateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public telaDiario() {
     }
@@ -44,12 +49,15 @@ public class telaDiario extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tela_diario, container, false);
         floatingActionButton = v.findViewById(R.id.fab_addDiario);
+        Date data = new Date();
+        String dia = dataFormat.format(data);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), telaCadastroDiario.class);
+                intent.setClass(getActivity(), telaDiarios.class);
+                intent.putExtra("dia", dia);
                 startActivity(intent);
             }
         });

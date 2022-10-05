@@ -93,7 +93,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                             }
                             idosoCuidadoAdapter = new IdosoCuidadoAdapter(idosoCuidadoList, telaInicial.this::OnItemClick, telaInicial.this);
                             rv_listaIdosos.addItemDecoration(new DividerItemDecoration(telaInicial.this, DividerItemDecoration.VERTICAL));
-                            rv_listaIdosos.setHasFixedSize(false);
+                            rv_listaIdosos.setHasFixedSize(true);
                             rv_listaIdosos.setAdapter(idosoCuidadoAdapter);
                         }
                     }

@@ -5,8 +5,7 @@
     android:layout_height="80dp"
     android:orientation="horizontal"
     android:layout_marginTop="8dp"
-    android:background="@color/light_blue"
-    android:elevation="1dp">
+    android:background="@color/light_blue" >
 
     <TextView
         android:id="@+id/tv_nomeConsulta"

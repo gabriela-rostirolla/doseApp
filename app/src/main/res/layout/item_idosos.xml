@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:layout_marginTop="10dp"
-    android:background="@color/light_blue"
-    android:elevation="@dimen/cardview_compat_inset_shadow">
-
+    android:background="@color/light_blue" >
 
     <ImageButton
         android:id="@+id/imgBtn_editar"
