@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:orientation="horizontal"
-    android:layout_marginTop="8dp"
-    android:background="@color/light_blue" >
+    android:layout_height="90dp"
+    android:background="@color/light_blue">
 
     <TextView
-        android:id="@+id/tv_nomeConsulta"
-        android:layout_width="320dp"
+        android:id="@+id/tv_dataDiario"
+        android:layout_width="0dp"
         android:layout_height="27dp"
-        android:layout_marginLeft="8dp"
-        android:layout_gravity="center"
-        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="15dp"
         android:text=""
-        android:textColor="@color/black"/>
-
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluirDiario"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/imgBtn_excluirConsul"
+        android:id="@+id/imgBtn_excluirDiario"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/light_blue"
-        app:srcCompat="@drawable/ic_delete"/>
-</LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_dataDiario"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_delete" />
+</androidx.constraintlayout.widget.ConstraintLayout>

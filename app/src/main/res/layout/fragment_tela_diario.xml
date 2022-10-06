@@ -14,6 +14,25 @@
         android:orientation="vertical"
         tools:context=".telaDiario">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_listaDiario"
+            android:layout_width="match_parent"
+            tools:listitem="@layout/item_diario"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tv_nenhumDiarioCad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nenhum Diário de cuidado cadastrado"
+            android:textColor="@color/light_grey"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rv_listaDiario"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_addDiario"
             style="@style/floatingactionbutton"

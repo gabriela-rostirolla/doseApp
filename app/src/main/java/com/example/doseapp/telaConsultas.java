@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -88,6 +89,8 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                                 tv_nenhumConsulCad.setVisibility(View.INVISIBLE);
                             }
                             consultaAdapter = new ConsultaAdapter(getContext(), consultaList, telaConsultas.this::OnItemClick);
+                            rv_listaConsulta.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            rv_listaConsulta.setHasFixedSize(false);
                             rv_listaConsulta.setAdapter(consultaAdapter);
                         }
                     }

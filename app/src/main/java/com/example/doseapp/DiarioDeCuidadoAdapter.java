@@ -48,9 +48,7 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder viewHolder = (DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder) holder;
         DiarioDeCuidado diario = diarioList.get(position);
-//        viewHolder.tv_nomeTerapia.setText(terapia.getNome());
-//        viewHolder.tv_horaTerapia.setText(terapia.getHorario());
-        //viewHolder.tv_diaConsulta.setText(terapia.getDiasSemana());
+        viewHolder.tv_dataDiario.setText("Dia: "+ diario.getData());
     }
 
     @Override
@@ -60,24 +58,22 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
 
     public static class DiarioDeCuidadoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
-        TextView tv_diasTerapia, tv_horaTerapia, tv_nomeTerapia;
-        ImageButton imgBtn_excluirTerapia;
+        TextView tv_dataDiario;
+        ImageButton imgBtn_excluir;
 
         public DiarioDeCuidadoViewHolder(@NonNull View itemView) {
             super(itemView);
-            //tv_diasTerapia = itemView.findViewById(R.id.tv_diasSemana);
-            tv_horaTerapia = itemView.findViewById(R.id.tv_horaTerapia);
-            tv_nomeTerapia = itemView.findViewById(R.id.tv_nomeTerapia);
-            imgBtn_excluirTerapia = itemView.findViewById(R.id.imgBtn_excluirTerapia);
+            tv_dataDiario = itemView.findViewById(R.id.tv_dataDiario);
+            imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluirDiario);
 
-            imgBtn_excluirTerapia.setOnClickListener(new View.OnClickListener() {
+            imgBtn_excluir.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
                     builder.setMessage("Deseja realmente excluir?")
                             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    DocumentReference document = firebaseFirestore.collection("Diario de cuidado").document(diarioList.get(getAbsoluteAdapterPosition()).getId());
+                                    DocumentReference document = firebaseFirestore.collection("Diarios").document(diarioList.get(getAbsoluteAdapterPosition()).getId());
                                     document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
