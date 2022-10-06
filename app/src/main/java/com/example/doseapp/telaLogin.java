@@ -32,50 +32,28 @@ public class telaLogin extends AppCompatActivity {
     private EditText et_email, et_senha;
     private Button btn_entrar;
     private TextView tv_redefinirSenha;
-    String [] mensagens = {"Preencha todos os campos"};
+    String[] mensagens = {"Preencha todos os campos"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_login);
         getSupportActionBar().hide();
+        boolean desconectado = getIntent().getBooleanExtra("Sair", false);
+        if (desconectado == true) {
+            FirebaseAuth.getInstance().signOut();
+//            finish();
+        }
+        FirebaseUser userAtual = FirebaseAuth.getInstance().getCurrentUser();
+        if (userAtual != null) {
+            telaPrincipal();
+        }
         iniciarComponentes();
 
         tv_redefinirSenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(et_email.getText().toString().isEmpty()){
-                    Snackbar snackbar = Snackbar.make(view, "Digite um email", Snackbar.LENGTH_SHORT);
-                    snackbar.setBackgroundTint(Color.WHITE);
-                    snackbar.setTextColor(Color.BLACK);
-                    snackbar.show();
-                }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(telaLogin.this);
-                    builder.setTitle("Recuperar Senha")
-                            .setMessage("Um email será enviado para o endereço de email: "+et_email.getText().toString()+"! Deseja continuar?")
-                            .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    FirebaseAuth auth = FirebaseAuth.getInstance();
-                                    auth.sendPasswordResetEmail(et_email.getText().toString())
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d("email_enviado", "Email sent.");
-                                                    }
-                                                }
-                                            });
-                                }
-                            }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                }
-                            });
-                    builder.create();
-                    builder.show();
-                }
+                redefinirSenha(view);
             }
         });
 
@@ -92,29 +70,57 @@ public class telaLogin extends AppCompatActivity {
             public void onClick(View view) {
                 String email = et_email.getText().toString();
                 String senha = et_senha.getText().toString();
-
-                if(email.isEmpty() || senha.isEmpty()){
+                if (email.isEmpty() || senha.isEmpty()) {
                     Snackbar snackbar = Snackbar.make(view, mensagens[0], Snackbar.LENGTH_SHORT);
                     snackbar.setBackgroundTint(Color.WHITE);
                     snackbar.setTextColor(Color.BLACK);
                     snackbar.show();
-                }else{
+                } else {
                     autenticarUsuario(view);
                 }
             }
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser userAtual = FirebaseAuth.getInstance().getCurrentUser();
-        if(userAtual != null){
-            telaPrincipal();
+    protected void redefinirSenha(View view) {
+        if (et_email.getText().toString().isEmpty()) {
+            Snackbar snackbar = Snackbar.make(view, "Digite um email", Snackbar.LENGTH_SHORT);
+            snackbar.setBackgroundTint(Color.WHITE);
+            snackbar.setTextColor(Color.BLACK);
+            snackbar.show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(telaLogin.this);
+            builder.setTitle("Recuperar Senha")
+                    .setMessage("Um email será enviado para o endereço de email: " + et_email.getText().toString() + "! Deseja continuar?")
+                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            FirebaseAuth auth = FirebaseAuth.getInstance();
+                            auth.sendPasswordResetEmail(et_email.getText().toString())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d("email_enviado", "Email sent.");
+                                                Snackbar snackbar = Snackbar.make(view, "O email foi enviado! Verifique sua caixa de spam", Snackbar.LENGTH_SHORT);
+                                                snackbar.setBackgroundTint(Color.WHITE);
+                                                snackbar.setTextColor(Color.BLACK);
+                                                snackbar.show();
+                                            }
+                                        }
+                                    });
+                        }
+                    }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+            builder.create();
+            builder.show();
         }
     }
 
-    protected void iniciarComponentes(){
+    protected void iniciarComponentes() {
         txt_fazer_cadastro = findViewById(R.id.txt_fazer_cadastro);
         et_email = findViewById(R.id.et_email);
         et_senha = findViewById(R.id.et_senha);
@@ -122,24 +128,24 @@ public class telaLogin extends AppCompatActivity {
         tv_redefinirSenha = findViewById(R.id.txt_recuperar_senha);
     }
 
-    protected void autenticarUsuario(View view){
+    protected void autenticarUsuario(View view) {
         String email = et_email.getText().toString();
         String senha = et_senha.getText().toString();
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     telaPrincipal();
-                }else{
+                } else {
                     String erro;
-                    try{
+                    try {
                         throw task.getException();
-                    }catch (FirebaseAuthInvalidUserException exception){
-                        erro="Este E-mail não existe";
-                    }catch (FirebaseAuthWeakPasswordException exception){
-                        erro="Senha incorreta";
-                    }catch (Exception exception){
+                    } catch (FirebaseAuthInvalidUserException exception) {
+                        erro = "Este E-mail não existe";
+                    } catch (FirebaseAuthWeakPasswordException exception) {
+                        erro = "Senha incorreta";
+                    } catch (Exception exception) {
                         erro = "Não foi possível realizar login";
                     }
                     Snackbar snackbar = Snackbar.make(view, erro, Snackbar.LENGTH_SHORT);
@@ -152,7 +158,7 @@ public class telaLogin extends AppCompatActivity {
 
     }
 
-    protected void telaPrincipal(){
+    protected void telaPrincipal() {
         Intent intent = new Intent(telaLogin.this, telaInicial.class);
         startActivity(intent);
         finish();

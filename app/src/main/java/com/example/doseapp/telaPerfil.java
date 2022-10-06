@@ -57,7 +57,6 @@ public class telaPerfil extends AppCompatActivity {
                 String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                 et_editNome.setText(nome);
                 et_editEmail.setText(email);
-
                 et_editEmail.setEnabled(false);
                 et_editEmail.setTextColor(Color.GRAY);
                 btn_editar.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +85,8 @@ public class telaPerfil extends AppCompatActivity {
                                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        FirebaseAuth.getInstance().signOut();
                                         Intent intent = new Intent(telaPerfil.this, telaLogin.class);
+                                        intent.putExtra("Sair", true);
                                         startActivity(intent);
                                         finish();
                                     }

@@ -7,7 +7,6 @@
     android:fillViewport="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,12 +19,14 @@
             style="@style/Edit_text"
             android:hint="@string/nome"
             android:inputType="textCapWords"
+            android:drawableRight="@drawable/ic_consulta"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_profissionalConsulta"
             style="@style/Edit_text"
             android:hint="@string/profissional"
+            android:drawableRight="@drawable/ic_profissional"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
@@ -33,11 +34,13 @@
             android:id="@+id/et_enderecoConsulta"
             style="@style/Edit_text"
             android:hint="@string/endereco"
+            android:drawableRight="@drawable/ic_house"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_telefoneConsulta"
+            android:drawableRight="@drawable/ic_phone"
             style="@style/Edit_text"
             android:hint="@string/telefone"
             android:inputType="phone"
@@ -51,14 +54,12 @@
             android:text="@string/data"
             android:textColor="@color/light_grey" />
 
-
         <TextView
             android:id="@+id/et_horaConsulta"
             style="@style/Edit_text"
             android:drawableRight="@drawable/ic_watch"
             android:text="@string/horario"
-            android:textColor="@color/light_grey"
-            />
+            android:textColor="@color/light_grey" />
 
         <Switch
             android:id="@+id/swt_lembreConculta"

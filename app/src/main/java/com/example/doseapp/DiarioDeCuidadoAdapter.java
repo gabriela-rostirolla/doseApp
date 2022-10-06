@@ -27,12 +27,12 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
     private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static Context context;
     private static List<DiarioDeCuidado> diarioList;
-    //private IdosoCuidadoAdapter.OnItemClick onItemClick;
+    private OnItemClick onItemClick;
 
-    public DiarioDeCuidadoAdapter(Context context, List<DiarioDeCuidado> diarioList) {
+    public DiarioDeCuidadoAdapter(Context context, List<DiarioDeCuidado> diarioList, OnItemClick onItemClick) {
         this.context = context;
         this.diarioList = diarioList;
-        //this.onItemClick = onItemClick;
+        this.onItemClick = onItemClick;
     }
 
     @NonNull
@@ -40,7 +40,7 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_diario, parent, false);
-        DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder viewHolder = new DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder(view);
+        DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder viewHolder = new DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder(view, onItemClick);
         return viewHolder;
     }
 
@@ -48,7 +48,7 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder viewHolder = (DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder) holder;
         DiarioDeCuidado diario = diarioList.get(position);
-        viewHolder.tv_dataDiario.setText("Dia: "+ diario.getData());
+        viewHolder.tv_dataDiario.setText("Dia: " + diario.getData());
     }
 
     @Override
@@ -57,11 +57,11 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
     }
 
     public static class DiarioDeCuidadoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
+        private final OnItemClick onItemClick;
         TextView tv_dataDiario;
         ImageButton imgBtn_excluir;
 
-        public DiarioDeCuidadoViewHolder(@NonNull View itemView) {
+        public DiarioDeCuidadoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
             tv_dataDiario = itemView.findViewById(R.id.tv_dataDiario);
             imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluirDiario);
@@ -100,13 +100,17 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            //  this.onItemClick = onItemClick;
+            this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            //    onItemClick.OnItemClick(getAbsoluteAdapterPosition());
+            onItemClick.OnItemClick(getAbsoluteAdapterPosition());
         }
+    }
+
+    public interface OnItemClick {
+        void OnItemClick(int position);
     }
 }

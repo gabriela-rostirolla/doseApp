@@ -1,6 +1,7 @@
 package com.example.doseapp;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class telaDiario extends Fragment {
+public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnItemClick {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -81,17 +83,41 @@ public class telaDiario extends Fragment {
         inicializarComponentes(v);
         String dia = dataFormat.format(data);
         id = getActivity().getIntent().getStringExtra("id");
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("dia", dia);
-                map.put("id do idoso", id);
-                firebaseFirestore.collection("Diarios").add(map);
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), telaDiarios.class);
-                intent.putExtra("dia", dia);
-                startActivity(intent);
+                diarioDeCuidadoList.clear();
+                firebaseFirestore.collection("Diarios")
+                        .whereEqualTo("id do idoso", id)
+                        .orderBy("dia", Query.Direction.DESCENDING)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        DiarioDeCuidado diario = new DiarioDeCuidado();
+                                        diario.setData(document.getString("dia"));
+                                        diario.setId(document.getId());
+                                        diarioDeCuidadoList.add(diario);
+                                    }
+                                }
+                            }
+                        });
+                if (diarioDeCuidadoList.get(diarioDeCuidadoList.size()-1).getData() == dia){
+                    gerarSnackBar(v, "Um diário de cuidado já foi feito no dia " + dia);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("dia", dia);
+                    map.put("id do idoso", id);
+                    firebaseFirestore.collection("Diarios").add(map);
+                    Intent intent = new Intent();
+                    intent.setClass(getActivity(), telaDiarios.class);
+                    intent.putExtra("dia", dia);
+                    startActivity(intent);
+                } else {
+                    gerarSnackBar(v, "Um diário de cuidado já foi feito no dia " + dia);
+                }
             }
         });
 
@@ -126,12 +152,27 @@ public class telaDiario extends Fragment {
                             } else {
                                 tv_nenhumDiarioCad.setVisibility(View.INVISIBLE);
                             }
-                            adapter = new DiarioDeCuidadoAdapter(getContext(), diarioDeCuidadoList);
+                            adapter = new DiarioDeCuidadoAdapter(getContext(), diarioDeCuidadoList, telaDiario.this::OnItemClick);
                             rv_listaDiario.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
                             rv_listaDiario.setHasFixedSize(false);
                             rv_listaDiario.setAdapter(adapter);
                         }
                     }
                 });
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), telaDiarios.class);
+        intent.putExtra("dia", diarioDeCuidadoList.get(position).getData());
+        startActivity(intent);
+    }
+
+    protected void gerarSnackBar(View view, String texto) {
+        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.WHITE);
+        snackbar.setTextColor(Color.BLACK);
+        snackbar.show();
     }
 }

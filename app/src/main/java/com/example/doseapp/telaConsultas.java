@@ -80,7 +80,6 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                                 boolean aux = document.getBoolean("lembre-me");
                                 consulta.setLembre(aux);
                                 consulta.setId(document.getId());
-                                System.out.println(consulta.getNome());
                                 consultaList.add(consulta);
                             }
                             if (consultaList.isEmpty()) {
