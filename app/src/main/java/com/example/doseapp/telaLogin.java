@@ -62,6 +62,7 @@ public class telaLogin extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(telaLogin.this, telaCadastro.class);
                 startActivity(intent);
+                finish();
             }
         });
 

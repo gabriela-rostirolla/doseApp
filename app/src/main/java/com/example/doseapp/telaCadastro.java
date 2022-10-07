@@ -118,10 +118,12 @@ public class telaCadastro extends AppCompatActivity {
 
     private void salvarDadosNoBancoDeDados(){
         String nome = et_cadNome.getText().toString();
+        String email = et_cadEmail.getText().toString();
         FirebaseFirestore banco_dados = FirebaseFirestore.getInstance();
         Map<String, Object> usuario = new HashMap<>();
         nome = nome.substring(0,1).toUpperCase().concat(nome.substring(1));
         usuario.put("nome", nome);
+        usuario.put("email", email);
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DocumentReference documentReference = banco_dados.collection("Usuarios").document(userID);

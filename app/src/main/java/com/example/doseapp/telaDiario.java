@@ -87,26 +87,8 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                diarioDeCuidadoList.clear();
-                firebaseFirestore.collection("Diarios")
-                        .whereEqualTo("id do idoso", id)
-                        .orderBy("dia", Query.Direction.DESCENDING)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        DiarioDeCuidado diario = new DiarioDeCuidado();
-                                        diario.setData(document.getString("dia"));
-                                        diario.setId(document.getId());
-                                        diarioDeCuidadoList.add(diario);
-                                    }
-                                }
-                            }
-                        });
-                if (diarioDeCuidadoList.get(diarioDeCuidadoList.size()-1).getData() == dia){
-                    gerarSnackBar(v, "Um diário de cuidado já foi feito no dia " + dia);
+                if (diarioDeCuidadoList.isEmpty()||!diarioDeCuidadoList.get(diarioDeCuidadoList.size()-1).getData().equals(dia) ){
+                    //gerarSnackBar(v, "Um diário de cuidado já foi feito no dia " + dia);
                     Map<String, Object> map = new HashMap<>();
                     map.put("dia", dia);
                     map.put("id do idoso", id);

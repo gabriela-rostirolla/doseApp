@@ -21,9 +21,12 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -147,7 +150,8 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         String dataNasc = et_dataNascIdoso.getText().toString();
         String obs = et_obsIdoso.getText().toString();
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+        List<String> cuidadores = new ArrayList<>();
+        cuidadores.add(userId);
         Map<String, Object> idosoCuidadoMap = new HashMap<>();
         idosoCuidadoMap.put("nome", nome);
         idosoCuidadoMap.put("endereco", end);
@@ -157,7 +161,7 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         idosoCuidadoMap.put("observacoes", obs);
         idosoCuidadoMap.put("genero", genero);
         idosoCuidadoMap.put("cuidado", false);
-        idosoCuidadoMap.put("cuidador id", userId);
+        idosoCuidadoMap.put("cuidador id", cuidadores);
         firebaseFirestore.collection("Idosos cuidados")
                 .add(idosoCuidadoMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

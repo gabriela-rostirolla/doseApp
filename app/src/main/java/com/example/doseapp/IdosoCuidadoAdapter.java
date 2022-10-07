@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,6 +20,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -27,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Collections;
 import java.util.List;
 
 public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
@@ -35,6 +40,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
     private List<IdosoCuidado> idosoCuidadoList;
     private OnItemClick onItemClick;
     public Context context;
+    private String idNovoCuidador;
 
     public IdosoCuidadoAdapter(List<IdosoCuidado> idosoCuidadoList, OnItemClick onItemClick, Context context) {
         this.idosoCuidadoList = idosoCuidadoList;
@@ -180,13 +186,57 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                 }
             });
 
-//            imgBtn_compartilhar.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(itemView.getContext(), telaDadosDosIdosos.class);
-//                    context.startActivity(intent);
-//                }
-//            });
+            imgBtn_compartilhar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    builder.setTitle("Digite o email do destinatário");
+                    final View inflater = builder.create().getLayoutInflater().inflate(R.layout.dialog_compartilhar, null);
+                    builder.setView(inflater);
+
+                    builder.setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    EditText et_email = inflater.findViewById(R.id.et_emailComp);
+                                    firebaseFirestore.collection("Usuarios")
+                                            .whereEqualTo("email", et_email.getText().toString())
+                                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        idNovoCuidador = document.getId();
+
+                                                        firebaseFirestore.collection("Idosos cuidados")
+                                                                .document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> t) {
+                                                                        List<String> list = (List<String>) t.getResult().get("cuidador id");
+                                                                        list.add(idNovoCuidador);
+                                                                        firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidador id", list);
+                                                                        gerarSnackBar(view, idosoCuidadoList.get(getAbsoluteAdapterPosition()).getNome()+" compartilhado com sucesso!");
+                                                                    }
+                                                                });
+                                                    }
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    gerarSnackBar(view, "Não foi possível compartilhar!");
+                                                }
+                                            });
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    builder.create();
+                    builder.show();
+
+                }
+            });
 
             this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
