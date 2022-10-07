@@ -68,9 +68,8 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/dark_blue"
                     android:text="D"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -78,9 +77,8 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/dark_blue"
                     android:text="S"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -88,9 +86,8 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/dark_blue"
                     android:text="T"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -98,9 +95,8 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/dark_blue"
                     android:text="Q"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -108,9 +104,8 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/dark_blue"
                     android:text="Q"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -118,9 +113,8 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/dark_blue"
                     android:text="S"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
 
                 <com.google.android.material.chip.Chip
@@ -128,9 +122,8 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/dark_blue"
                     android:text="S"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="15sp" />
 
             </com.google.android.material.chip.ChipGroup>

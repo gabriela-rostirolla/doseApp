@@ -13,28 +13,10 @@
         android:orientation="vertical"
         tools:context=".telaCadastroDiarioAtividade">
 
-        <TextView
-            android:id="@+id/tv_diaTurnoDiarioEt03"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:text=""
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/atividades_diarias"
-            android:textSize="20sp" />
-
         <EditText
             android:id="@+id/et_sonoDiario"
             style="@style/Edit_text"
+            android:layout_marginTop="40dp"
             android:hint="@string/sono"
             android:inputType="textPersonName" />
 

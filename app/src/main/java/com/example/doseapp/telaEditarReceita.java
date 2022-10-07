@@ -5,11 +5,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,10 +24,15 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Calendar;
+
 public class telaEditarReceita extends AppCompatActivity {
-    private EditText et_nome, et_data, et_hospital,et_tel, et_profissional,et_dataRen;
+    private EditText et_nome, et_hospital, et_tel, et_profissional;
     private Button btn_salvar;
-    private String[]mensagens = {"Preencha todos os campos"};
+    private TextView et_data, et_dataRen;
+    private DatePickerDialog.OnDateSetListener dateSetListenerData;
+    private DatePickerDialog.OnDateSetListener dateSetListenerDataRen;
+    private String[] mensagens = {"Preencha todos os campos"};
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String idRec;
 
@@ -38,6 +48,63 @@ public class telaEditarReceita extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         preencherDadosReceita();
 
+        et_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int anoIni = calendar.get(Calendar.YEAR);
+                int diaIni = calendar.get(Calendar.DAY_OF_MONTH);
+                int mesIni = calendar.get(Calendar.MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(telaEditarReceita.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerData, diaIni, mesIni, anoIni);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateSetListenerData = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                i1++;
+
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_data.setText(dia + "/" + mes + "/" + i);
+                et_data.setTextColor(Color.BLACK);
+            }
+        };
+
+        et_dataRen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int anoFim = calendar.get(Calendar.YEAR);
+                int diaFim = calendar.get(Calendar.DAY_OF_MONTH);
+                int mesFim = calendar.get(Calendar.MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(telaEditarReceita.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerDataRen, diaFim, mesFim, anoFim);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateSetListenerDataRen = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                i1++;
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_dataRen.setText(dia + "/" + mes + "/" + i);
+                et_dataRen.setTextColor(Color.BLACK);
+            }
+        };
+
         btn_salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,27 +115,29 @@ public class telaEditarReceita extends AppCompatActivity {
 
     }
 
-    protected void inicializarComponentes () {
+    protected void inicializarComponentes() {
         et_nome = findViewById(R.id.et_nomeReceita);
         et_data = findViewById(R.id.et_dataReceita);
         et_hospital = findViewById(R.id.et_hospitalReceita);
         et_tel = findViewById(R.id.et_telefoneHospital);
         et_profissional = findViewById(R.id.et_profissionalReceita);
         et_dataRen = findViewById(R.id.et_dataRenReceita);
+        et_dataRen.setTextColor(Color.BLACK);
+        et_data.setTextColor(Color.BLACK);
         btn_salvar = findViewById(R.id.btn_salvarCadReceita);
         btn_salvar.setText("Editar");
     }
 
-    public void editarBancoDeDados(){
+    public void editarBancoDeDados() {
         String nome = et_nome.getText().toString();
-        String data =  et_data.getText().toString();
+        String data = et_data.getText().toString();
         String hosp = et_hospital.getText().toString();
         String tel = et_tel.getText().toString();
         String profissional = et_profissional.getText().toString();
         String dataRen = et_dataRen.getText().toString();
 
         firebaseFirestore.collection("Receitas").document(idRec)
-                .update("nome",nome,"data",data,"hospital",hosp,"telefone",tel,"profissional", profissional, "data para renovar", dataRen)
+                .update("nome", nome, "data", data, "hospital", hosp, "telefone", tel, "profissional", profissional, "data para renovar", dataRen)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -22,7 +22,6 @@ import java.util.Map;
 
 public class telaCadastroDiarioAtividade extends AppCompatActivity {
     private Button btn_salvar;
-    private TextView tv_titulo;
     private EditText et_sono, et_exercicios, et_passeio, et_saude, et_outro, et_obs;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     @Override
@@ -30,8 +29,6 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_cadastro_diario_atividade);
         inicializarComponentes();
-        String titulo = getIntent().getStringExtra("titulo");
-        tv_titulo.setText(titulo);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Cadastrar Atividade");
@@ -48,7 +45,6 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
 
     protected void inicializarComponentes(){
         btn_salvar = findViewById(R.id.btn_salvarDiario);
-        tv_titulo = findViewById(R.id.tv_diaTurnoDiarioEt03);
         et_sono = findViewById(R.id.et_sonoDiario);
         et_exercicios = findViewById(R.id.et_exercicioDiario);
         et_passeio = findViewById(R.id.et_passeioDiario);

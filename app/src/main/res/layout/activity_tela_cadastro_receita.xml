@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -21,15 +22,18 @@
             android:inputType="textCapWords"
             android:maxLength="250" />
 
-        <EditText
+        <TextView
             android:id="@+id/et_dataReceita"
             style="@style/Edit_text"
-            android:hint="@string/data"
-            android:inputType="textPersonName"
-            android:maxLength="8" />
+            android:layout_marginLeft="20dp"
+            android:drawableRight="@drawable/ic_calendar"
+            android:text="@string/data"
+            android:textColor="@color/light_grey" />
+
 
         <EditText
             android:id="@+id/et_hospitalReceita"
+            android:drawableRight="@drawable/ic_hospital"
             style="@style/Edit_text"
             android:hint="@string/hospital"
             android:inputType="textCapWords"
@@ -40,25 +44,29 @@
             style="@style/Edit_text"
             android:hint="@string/telefone"
             android:inputType="phone"
-            android:maxLength="11" />
+            android:drawableRight="@drawable/ic_phone"
+            />
 
         <EditText
             android:id="@+id/et_profissionalReceita"
             style="@style/Edit_text"
             android:hint="@string/profissional"
+            android:drawableRight="@drawable/ic_profissional"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
-        <EditText
+        <TextView
             android:id="@+id/et_dataRenReceita"
             style="@style/Edit_text"
-            android:hint="@string/data_renovar_receita"
-            android:inputType="textPersonName"
-            android:maxLength="8" />
+            android:layout_marginLeft="20dp"
+            android:drawableRight="@drawable/ic_calendar"
+            android:text="@string/data_renovar_receita"
+            android:textColor="@color/light_grey" />
 
         <Switch
             android:id="@+id/swt_adicionarNaAgendaReceita"
-            style="@style/Switch" />
+            style="@style/Switch"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_salvarCadReceita"

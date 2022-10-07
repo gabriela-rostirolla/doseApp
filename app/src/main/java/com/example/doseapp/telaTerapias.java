@@ -55,7 +55,7 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
         terapiaList = new ArrayList<>();
 
         firebaseFirestore.collection("Terapias")
-                .whereEqualTo("id do idoso", id)
+                .whereArrayContains("id do idoso", id)
                 //.orderBy("dia de criacao", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

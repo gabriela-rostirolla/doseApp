@@ -204,20 +204,25 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                                         idNovoCuidador = document.getId();
-
-                                                        firebaseFirestore.collection("Idosos cuidados")
-                                                                .document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
-                                                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> t) {
-                                                                        List<String> list = (List<String>) t.getResult().get("cuidador id");
-                                                                        list.add(idNovoCuidador);
-                                                                        firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidador id", list);
-                                                                        gerarSnackBar(view, idosoCuidadoList.get(getAbsoluteAdapterPosition()).getNome()+" compartilhado com sucesso!");
-                                                                    }
-                                                                });
+                                                        if (idNovoCuidador.isEmpty()) {
+                                                            gerarSnackBar(view, "O email inserido não está vinculado a nenhuma conta");
+                                                        } else {
+                                                            firebaseFirestore.collection("Idosos cuidados")
+                                                                    .document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<DocumentSnapshot> t) {
+                                                                            List<String> list = (List<String>) t.getResult().get("cuidador id");
+                                                                            list.add(idNovoCuidador);
+                                                                            firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidador id", list);
+                                                                            gerarSnackBar(view, idosoCuidadoList.get(getAbsoluteAdapterPosition()).getNome() + " compartilhado com sucesso!");
+                                                                        }
+                                                                    });
+                                                        }
+                                                        return;
                                                     }
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {

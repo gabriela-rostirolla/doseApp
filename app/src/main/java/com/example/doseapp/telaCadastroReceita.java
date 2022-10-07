@@ -4,13 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,13 +22,17 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class telaCadastroReceita extends AppCompatActivity {
 
-    private EditText et_nome, et_data, et_hospital,et_tel, et_profissional,et_dataRen;
+    private EditText et_nome, et_hospital,et_tel, et_profissional;
+    private TextView et_data,et_dataRen;
     private Button btn_salvar;
+    private DatePickerDialog.OnDateSetListener dateSetListenerData;
+    private DatePickerDialog.OnDateSetListener dateSetListenerDataRen;
     private String[]mensagens = {"Preencha todos os campos"};
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -37,6 +45,63 @@ public class telaCadastroReceita extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.cadastrar_receita);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        et_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int anoIni = calendar.get(Calendar.YEAR);
+                int diaIni = calendar.get(Calendar.DAY_OF_MONTH);
+                int mesIni = calendar.get(Calendar.MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(telaCadastroReceita.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerData, diaIni, mesIni, anoIni);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateSetListenerData = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                i1++;
+
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_data.setText(dia + "/" + mes + "/" + i);
+                et_data.setTextColor(Color.BLACK);
+            }
+        };
+
+        et_dataRen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int anoFim = calendar.get(Calendar.YEAR);
+                int diaFim = calendar.get(Calendar.DAY_OF_MONTH);
+                int mesFim = calendar.get(Calendar.MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(telaCadastroReceita.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerDataRen, diaFim, mesFim, anoFim);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        dateSetListenerDataRen = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                i1++;
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_dataRen.setText(dia + "/" + mes + "/" + i);
+                et_dataRen.setTextColor(Color.BLACK);
+            }
+        };
 
         btn_salvar.setOnClickListener(new View.OnClickListener() {
             @Override

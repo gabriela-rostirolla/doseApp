@@ -99,7 +99,8 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
                     builder.setMessage("Deseja realmente excluir?")
                             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    DocumentReference document = firebaseFirestore.collection("Medicamento").document(medicamentoList.get(getAbsoluteAdapterPosition()).getId());
+                                    DocumentReference document = firebaseFirestore.collection("Medicamento")
+                                            .document(medicamentoList.get(getAbsoluteAdapterPosition()).getId());
                                     document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {

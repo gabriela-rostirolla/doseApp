@@ -6,7 +6,7 @@
     android:background="@color/light_blue">
 
     <TextView
-        android:id="@+id/tv_dataDiario"
+        android:id="@+id/tv_alimentacaoHorario"
         android:layout_width="0dp"
         android:layout_height="27dp"
         android:layout_marginStart="20dp"
@@ -15,12 +15,12 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluirDiario"
+        app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluirAlimentacao"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/imgBtn_excluirDiario"
+        android:id="@+id/imgBtn_excluirAlimentacao"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_gravity="center"
@@ -28,7 +28,7 @@
         android:backgroundTint="@color/light_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_dataDiario"
+        app:layout_constraintStart_toEndOf="@+id/tv_alimentacaoHorario"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_delete" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,15 +23,15 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.List;
 
-public class ReceitaAdapter extends RecyclerView.Adapter {
+public class AlimentacaoAdapter extends RecyclerView.Adapter {
     private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static Context context;
-    private static List<Receita> receitaList;
+    private static List<Alimentacao> alimentacaoList;
     private OnItemClick onItemClick;
 
-    public ReceitaAdapter(Context context, List<Receita> receitaList, OnItemClick onItemClick) {
+    public AlimentacaoAdapter(Context context, List<Alimentacao> alimentacaoList, OnItemClick onItemClick) {
         this.context = context;
-        this.receitaList = receitaList;
+        this.alimentacaoList = alimentacaoList;
         this.onItemClick = onItemClick;
     }
 
@@ -39,44 +39,41 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
     @Override
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_receita, parent, false);
-        ReceitaAdapter.ReceitaViewHolder viewHolder = new ReceitaAdapter.ReceitaViewHolder(view, onItemClick);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_alimentacao, parent, false);
+        AlimentacaoAdapter.AlimentacaoViewHolder viewHolder = new AlimentacaoAdapter.AlimentacaoViewHolder(view, onItemClick);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ReceitaAdapter.ReceitaViewHolder viewHolder = (ReceitaAdapter.ReceitaViewHolder) holder;
-        Receita receita = receitaList.get(position);
-        viewHolder.tv_nomeReceita.setText(receita.getNome());
-        String [] dataFormat = receita.getDataRenovar().split("/");
-        viewHolder.tv_receitaData.setText(dataFormat[0]+"/"+dataFormat[1]);
+        AlimentacaoAdapter.AlimentacaoViewHolder viewHolder = (AlimentacaoAdapter.AlimentacaoViewHolder) holder;
+        Alimentacao alimentacao = alimentacaoList.get(position);
+        viewHolder.tv_alimentacaoHorario.setText("Alimentação: " + alimentacao.getHorario());
     }
 
     @Override
     public int getItemCount() {
-        return receitaList.size();
+        return alimentacaoList.size();
     }
 
-    public static class ReceitaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tv_receitaData, tv_nomeReceita;
-        ImageButton imgBtn_excluirReceita;
-        OnItemClick onItemClick;
+    public static class AlimentacaoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final OnItemClick onItemClick;
+        TextView tv_alimentacaoHorario;
+        ImageButton imgBtn_excluir;
 
-        public ReceitaViewHolder(@NonNull View itemView,  OnItemClick onItemClick) {
+        public AlimentacaoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
-            tv_nomeReceita = itemView.findViewById(R.id.tv_nomeReceita);
-            tv_receitaData = itemView.findViewById(R.id.tv_dataRenovacao);
-            imgBtn_excluirReceita = itemView.findViewById(R.id.imgBtn_excluirReceita);
+            tv_alimentacaoHorario = itemView.findViewById(R.id.tv_alimentacaoHorario);
+            imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluirAlimentacao);
 
-            imgBtn_excluirReceita.setOnClickListener(new View.OnClickListener() {
+            imgBtn_excluir.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
                     builder.setMessage("Deseja realmente excluir?")
                             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    DocumentReference document = firebaseFirestore.collection("Receitas").document(receitaList.get(getAbsoluteAdapterPosition()).getId());
+                                    DocumentReference document = firebaseFirestore.collection("Alimentacao").document(alimentacaoList.get(getAbsoluteAdapterPosition()).getId());
                                     document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -112,7 +109,7 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public interface OnItemClick{
+    public interface OnItemClick {
         void OnItemClick(int position);
     }
 }

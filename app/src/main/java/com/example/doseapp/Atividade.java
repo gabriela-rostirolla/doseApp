@@ -5,10 +5,37 @@ public class Atividade {
     private String exercicios;
     private String passeio;
     private String saude;
+    private String id;
+    private String horario;
     private String outro;
+    private String turno;
     private String observacao;
 
     public Atividade() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
     }
 
     public Atividade(String sono, String exercicios, String passeio, String saude, String outro, String observacao) {
