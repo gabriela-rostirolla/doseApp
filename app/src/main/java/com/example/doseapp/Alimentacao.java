@@ -6,10 +6,37 @@ public class Alimentacao {
     private String outro;
     private String cuidadorResponsavel;
     private String id;
+    private String DiarioId;
     private String observacao;
     private String horario;
+    private String dia;
+    private String turno;
 
     public Alimentacao() {
+    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+
+    public String getDiarioId() {
+        return DiarioId;
+    }
+
+    public void setDiarioId(String diarioId) {
+        DiarioId = diarioId;
+    }
+
+    public String getDia() {
+        return dia;
+    }
+
+    public void setDia(String dia) {
+        this.dia = dia;
     }
 
     public String getId() {

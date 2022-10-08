@@ -45,7 +45,7 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
     private RecyclerView rv_listaDiario;
     private DiarioDeCuidadoAdapter adapter;
     private String mParam2;
-    private static List<DiarioDeCuidado> diarioDeCuidadoList = new ArrayList<>();
+    private List<DiarioDeCuidado> diarioDeCuidadoList = new ArrayList<>();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private DateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -88,7 +88,6 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
             @Override
             public void onClick(View view) {
                 if (diarioDeCuidadoList.isEmpty()||!diarioDeCuidadoList.get(diarioDeCuidadoList.size()-1).getData().equals(dia) ){
-                    //gerarSnackBar(v, "Um diário de cuidado já foi feito no dia " + dia);
                     Map<String, Object> map = new HashMap<>();
                     map.put("dia", dia);
                     map.put("id do idoso", id);
@@ -148,6 +147,7 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
         Intent intent = new Intent();
         intent.setClass(getActivity(), telaDiarios.class);
         intent.putExtra("dia", diarioDeCuidadoList.get(position).getData());
+        intent.putExtra("diario id", diarioDeCuidadoList.get(position).getId());
         startActivity(intent);
     }
 

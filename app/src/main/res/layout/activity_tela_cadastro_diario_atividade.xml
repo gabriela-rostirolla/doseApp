@@ -5,7 +5,6 @@
     android:fillViewport="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,41 +13,53 @@
         tools:context=".telaCadastroDiarioAtividade">
 
         <EditText
-            android:id="@+id/et_sonoDiario"
+            android:id="@+id/et_cuidadorResp"
             style="@style/Edit_text"
             android:layout_marginTop="40dp"
+            android:hint="@string/cuidadorResp"
+            android:inputType="textCapWords" />
+
+        <TextView
+            android:id="@+id/et_horario"
+            style="@style/Edit_text"
+            android:drawableRight="@drawable/ic_watch"
+            android:hint="@string/horario" />
+
+        <EditText
+            android:id="@+id/et_sonoDiario"
+            style="@style/Edit_text"
             android:hint="@string/sono"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_exercicioDiario"
             style="@style/Edit_text"
             android:hint="@string/exercicios"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_passeioDiario"
             style="@style/Edit_text"
             android:hint="@string/passeio"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_saudeDiario"
             style="@style/Edit_text"
             android:hint="@string/saude"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_outrosDiarioEt03"
             style="@style/Edit_text"
             android:hint="@string/outro"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_obsDiarioEt03"
             style="@style/Edit_text"
             android:hint="@string/obs"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_salvarDiario"

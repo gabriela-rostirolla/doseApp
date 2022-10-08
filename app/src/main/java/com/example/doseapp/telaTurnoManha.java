@@ -20,23 +20,29 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class telaTurnoManha extends Fragment {
+public class telaTurnoManha extends Fragment implements AlimentacaoAdapter.OnItemClick {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
+    private static String diario_id;
     private RecyclerView rv_listaManha;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FloatingActionButton fabAdd;
     private Spinner spiAcao;
     private TextView tv_nenhumCadastro;
-    private List<Alimentacao> alimentacaoList;
+    private static List<Atividade> atividadeList = new ArrayList<>();
+    private static List<Alimentacao> alimentacaoList = new ArrayList<>();
+    private AlimentacaoAdapter alimentacaoAdapter;
+    private AtividadeAdapter atividadeAdapter;
 
     public telaTurnoManha() {
     }
@@ -78,29 +84,48 @@ public class telaTurnoManha extends Fragment {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String data = getActivity().getIntent().getStringExtra("dia");
+                diario_id = getActivity().getIntent().getStringExtra("diario id");
                 if (spiAcao.getSelectedItem().toString().equals("Alimentação")) {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
-//                  intent.putExtra("id", id);
+                    intent.putExtra("Turno", "Manha");
+                    intent.putExtra("dia", data);
+                    intent.putExtra("diario id", diario_id);
                     startActivity(intent);
-
-                }else{
+                } else {
                     Intent intent = new Intent();
                     intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
-//                  intent.putExtra("id", id);
+                    intent.putExtra("Turno", "Manha");
+                    intent.putExtra("dia", data);
+                    intent.putExtra("diario id", diario_id);
                     startActivity(intent);
                 }
             }
         });
-
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (spiAcao.getSelectedItem().toString().equals("Alimentação")) {
+            alimentacaoList.clear();
+            atividadeList.clear();
+            listarAlimentacao();
+        }else{
+            alimentacaoList.clear();
+            atividadeList.clear();
+            listarAtividades();
+        }
     }
 
     protected void listarAlimentacao() {
         rv_listaManha.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Alimentacao")
-                .whereEqualTo("turno", "manha")
-                //.orderBy("dia de criacao", Query.Direction.DESCENDING)
+                .whereEqualTo("diario id", diario_id)
+                .whereEqualTo("turno", "Manha")
+                .orderBy("dia", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -108,53 +133,75 @@ public class telaTurnoManha extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Alimentacao alimentacao = new Alimentacao();
-//                                alimentacao.set(document.getString("nome"));
-//                                rec.setDataRenovar(document.getString("data para renovar"));
-//                                rec.setId(document.getId());
+                                alimentacao.setCuidadorResponsavel(document.getString("cuidador"));
+                                alimentacao.setDia(document.getString("dia"));
+                                alimentacao.setDiarioId(document.getString("diario id"));
+                                alimentacao.setHorario(document.getString("horario"));
+                                alimentacao.setLanche(document.getString("lanche"));
+                                alimentacao.setObservacao(document.getString("observacao"));
+                                alimentacao.setId(document.getId());
+                                alimentacao.setTurno(document.getString("turno"));
+                                alimentacao.setOutro(document.getString("outro"));
+                                alimentacao.setRefeicaoPrincipal(document.getString("refeicao"));
                                 alimentacaoList.add(alimentacao);
                             }
-                            if (alimentacaoList.isEmpty()) {
-                                tv_nenhumCadastro.setVisibility(View.VISIBLE);
-                            } else {
-                                tv_nenhumCadastro.setVisibility(View.INVISIBLE);
-                            }
-//                            receitaAdapter = new ReceitaAdapter(getContext(), receitaList, telaReceitas.this::OnItemClick);
-//                            rv_listaReceita.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-//                            rv_listaReceita.setHasFixedSize(false);
-//                            rv_listaReceita.setAdapter(receitaAdapter);
+//                            if (alimentacaoList.isEmpty()) {
+//                                tv_nenhumCadastro.setVisibility(View.VISIBLE);
+//                            } else {
+//                                tv_nenhumCadastro.setVisibility(View.INVISIBLE);
+//                            }
+                            alimentacaoAdapter = new AlimentacaoAdapter(getContext(), alimentacaoList, telaTurnoManha.this::OnItemClick);
+                            rv_listaManha.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            rv_listaManha.setHasFixedSize(false);
+                            rv_listaManha.setAdapter(alimentacaoAdapter);
                         }
                     }
                 });
     }
-//
-//    protected void listarAtividades() {
-//        rv_listaReceita.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        firebaseFirestore.collection("Receitas")
-//                .whereEqualTo("id do idoso", id)
-//                //.orderBy("dia de criacao", Query.Direction.DESCENDING)
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Receita rec = new Receita();
-//                                rec.setNome(document.getString("nome"));
-//                                rec.setDataRenovar(document.getString("data para renovar"));
-//                                rec.setId(document.getId());
-//                                receitaList.add(rec);
-//                            }
-//                            if (receitaList.isEmpty()) {
-//                                tv_nenhumRecCad.setVisibility(View.VISIBLE);
+
+    protected void listarAtividades() {
+        rv_listaManha.setLayoutManager(new LinearLayoutManager(getActivity()));
+        firebaseFirestore.collection("Diario atividades")
+                .whereEqualTo("diario id", diario_id)
+                .whereEqualTo("turno", "Manha")
+                .orderBy("dia", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Atividade atividade = new Atividade();
+                                atividade.setCuidadorResp(document.getString("cuidador"));
+                                atividade.setDia(document.getString("dia"));
+                                atividade.setDiarioId(document.getString("diario id"));
+                                atividade.setHorario(document.getString("horario"));
+                                atividade.setSaude(document.getString("saude"));
+                                atividade.setObservacao(document.getString("observacao"));
+                                atividade.setId(document.getId());
+                                atividade.setTurno(document.getString("turno"));
+                                atividade.setOutro(document.getString("outro"));
+                                atividade.setSono(document.getString("sono"));
+                                atividade.setExercicios(document.getString("exercicios"));
+                                atividade.setPasseio(document.getString("passeio"));
+                                atividadeList.add(atividade);
+                            }
+//                            if (alimentacaoList.isEmpty() &&) {
+//                                tv_nenhumCadastro.setVisibility(View.VISIBLE);
 //                            } else {
-//                                tv_nenhumRecCad.setVisibility(View.INVISIBLE);
+//                                tv_nenhumCadastro.setVisibility(View.INVISIBLE);
 //                            }
-//                            receitaAdapter = new ReceitaAdapter(getContext(), receitaList, telaReceitas.this::OnItemClick);
-//                            rv_listaReceita.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-//                            rv_listaReceita.setHasFixedSize(false);
-//                            rv_listaReceita.setAdapter(receitaAdapter);
-//                        }
-//                    }
-//                });
-//    }
+                            atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList, telaTurnoManha.this::OnItemClick);
+                            rv_listaManha.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            rv_listaManha.setHasFixedSize(false);
+                            rv_listaManha.setAdapter(atividadeAdapter);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+
+    }
 }

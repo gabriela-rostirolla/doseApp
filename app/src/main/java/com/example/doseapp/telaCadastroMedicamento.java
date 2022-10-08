@@ -232,13 +232,24 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String data_inicio = et_dataInicio.getText().toString();
         String data_fim = et_dataFim.getText().toString();
 
-        if (nome.isEmpty() || concentracao.isEmpty() || dose.isEmpty() || intervalo.isEmpty() || hora_inicial.isEmpty() || data_inicio.isEmpty() || data_fim.isEmpty()) {
-            gerarSnackBar(view, mensagens[0]);
-            return false;
-        } else if (nome.length() < 3) {
-            et_nomeMed.setFocusable(true);
-            gerarSnackBar(view, mensagens[2]);
-            return false;
+        if (usoContinuo.isChecked()) {
+            if (nome.isEmpty() || concentracao.isEmpty() || dose.isEmpty() || intervalo.isEmpty() || hora_inicial.isEmpty() || data_inicio.isEmpty()) {
+                gerarSnackBar(view, mensagens[0]);
+                return false;
+            } else if (nome.length() < 3) {
+                et_nomeMed.setFocusable(true);
+                gerarSnackBar(view, mensagens[2]);
+                return false;
+            }
+        } else {
+            if (nome.isEmpty() || concentracao.isEmpty() || dose.isEmpty() || intervalo.isEmpty() || hora_inicial.isEmpty() || data_inicio.isEmpty() || data_fim.isEmpty()) {
+                gerarSnackBar(view, mensagens[0]);
+                return false;
+            } else if (nome.length() < 3) {
+                et_nomeMed.setFocusable(true);
+                gerarSnackBar(view, mensagens[2]);
+                return false;
+            }
         }
         return true;
     }

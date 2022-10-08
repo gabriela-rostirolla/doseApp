@@ -69,7 +69,14 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 i1++;
-                et_dataNascIdoso.setText(i2 + "/" + i1 + "/" + i);
+
+                String mes = "";
+                String dia = "";
+                if (i1 < 10) mes = "0" + i1;
+                else mes = String.valueOf(i1);
+                if (i2 < 10) dia = "0" + i2;
+                else dia = String.valueOf(i2);
+                et_dataNascIdoso.setText(dia + "/" + mes + "/" + i);
                 et_dataNascIdoso.setTextColor(Color.BLACK);
             }
         };

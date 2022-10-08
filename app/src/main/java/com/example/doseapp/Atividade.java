@@ -4,7 +4,10 @@ public class Atividade {
     private String sono;
     private String exercicios;
     private String passeio;
+    private String cuidadorResp;
     private String saude;
+    private String dia;
+    private String diarioId;
     private String id;
     private String horario;
     private String outro;
@@ -12,6 +15,30 @@ public class Atividade {
     private String observacao;
 
     public Atividade() {
+    }
+
+    public String getCuidadorResp() {
+        return cuidadorResp;
+    }
+
+    public void setCuidadorResp(String cuidadorResp) {
+        this.cuidadorResp = cuidadorResp;
+    }
+
+    public String getDia() {
+        return dia;
+    }
+
+    public void setDia(String dia) {
+        this.dia = dia;
+    }
+
+    public String getDiarioId() {
+        return diarioId;
+    }
+
+    public void setDiarioId(String diarioId) {
+        this.diarioId = diarioId;
     }
 
     public String getId() {

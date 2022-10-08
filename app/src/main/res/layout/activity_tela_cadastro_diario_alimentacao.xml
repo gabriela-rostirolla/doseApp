@@ -16,28 +16,10 @@
 
         <EditText
             android:id="@+id/et_cuidadorResp"
+            style="@style/Edit_text"
             android:layout_marginTop="40dp"
-            style="@style/Edit_text"
             android:hint="@string/cuidadorResp"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/et_refeicao"
-            style="@style/Edit_text"
-            android:hint="@string/refeicao"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/et_lancheDiario"
-            style="@style/Edit_text"
-            android:hint="@string/lanche"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/et_outrosDiario"
-            style="@style/Edit_text"
-            android:hint="@string/outro"
-            android:inputType="textPersonName" />
+            android:inputType="textCapWords" />
 
         <TextView
             android:id="@+id/et_horarioRef"
@@ -46,10 +28,28 @@
             android:hint="@string/horario" />
 
         <EditText
+            android:id="@+id/et_refeicao"
+            style="@style/Edit_text"
+            android:hint="@string/refeicao"
+            android:inputType="textCapSentences" />
+
+        <EditText
+            android:id="@+id/et_lancheDiario"
+            style="@style/Edit_text"
+            android:hint="@string/lanche"
+            android:inputType="textCapSentences" />
+
+        <EditText
+            android:id="@+id/et_outrosDiario"
+            style="@style/Edit_text"
+            android:hint="@string/outro"
+            android:inputType="textPersonName" />
+
+        <EditText
             android:id="@+id/et_obsDiario"
             style="@style/Edit_text"
             android:hint="@string/obs"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_salvarAlimentacao"
