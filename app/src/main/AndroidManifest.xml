@@ -16,23 +16,23 @@
         <activity
             android:name=".telaDiarios"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaEditarTerapia"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaEditarConsulta"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaEditarReceita"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaEditarMedicamento"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaEditarIdoso"
             android:exported="false"
@@ -40,23 +40,23 @@
         <activity
             android:name=".telaCadastroDiarioAtividade"
             android:exported="false"
-            android:parentActivityName=".telaCadastroDiario" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaCadastroConsulta"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaCadastroDiarioAlimentacao"
             android:exported="false"
-            android:parentActivityName=".telaCadastroDiario" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaCadastroTerapia"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaCadastroReceita"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaDadosDosIdosos"
             android:exported="false"
@@ -64,7 +64,7 @@
         <activity
             android:name=".telaCadastroMedicamento"
             android:exported="false"
-            android:parentActivityName=".telaDadosDosIdosos" />
+            android:parentActivityName=".telaInicial" />
         <activity
             android:name=".telaCadastroIdosoCuidado"
             android:exported="false"

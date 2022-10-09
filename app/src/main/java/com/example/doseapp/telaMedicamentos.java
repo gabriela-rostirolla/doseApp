@@ -64,6 +64,7 @@ import java.util.List;
     }
 
     public void listarMedicamentos(){
+        medicamentoList.clear();
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Medicamento")
                 .whereEqualTo("id do idoso", id)
@@ -101,7 +102,6 @@ import java.util.List;
     @Override
     public void onResume() {
         super.onResume();
-        medicamentoList.clear();
         listarMedicamentos();
     }
 

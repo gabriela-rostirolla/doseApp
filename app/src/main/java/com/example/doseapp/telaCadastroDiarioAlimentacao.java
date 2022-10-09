@@ -90,7 +90,7 @@ public class telaCadastroDiarioAlimentacao extends AppCompatActivity {
         String obs = et_obs.getText().toString();
         String data = getIntent().getStringExtra("dia");
         String diario_id = getIntent().getStringExtra("diario id");
-        String turno = getIntent().getStringExtra("Turno");
+        String turno = getIntent().getStringExtra("turno");
         String cuidador = et_cuidador.getText().toString();
 
         Map<String, Object> alimentacaoMap = new HashMap<>();

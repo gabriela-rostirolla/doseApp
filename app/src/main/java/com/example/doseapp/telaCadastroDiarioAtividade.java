@@ -93,7 +93,7 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
         atividadesMap.put("saude", et_saude.getText().toString());
         atividadesMap.put("outro", et_outro.getText().toString());
         atividadesMap.put("observacao", et_obs.getText().toString());
-        atividadesMap.put("turno", getIntent().getStringExtra("Turno"));
+        atividadesMap.put("turno", getIntent().getStringExtra("turno"));
         atividadesMap.put("dia", getIntent().getStringExtra("dia"));
         atividadesMap.put("diario id", getIntent().getStringExtra("diario id"));
         atividadesMap.put("cuidador", et_cuidador.getText().toString());
