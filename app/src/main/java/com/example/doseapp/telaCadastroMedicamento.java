@@ -1,6 +1,7 @@
 package com.example.doseapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,11 +24,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,6 +57,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener dateSetListenerFim;
     private CheckBox usoContinuo;
     private Switch swt_lembre;
+    private static String idMed;
     private ArrayAdapter<CharSequence> adapter, adapter2;
 
     @Override
@@ -59,10 +66,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         setContentView(R.layout.activity_tela_cadastro_medicamento);
         inicializarComponentes();
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.cadastrar_medicamento);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
         adapter = ArrayAdapter.createFromResource(this, R.array.unidade_intervalo, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiIntervalo.setAdapter(adapter);
@@ -70,6 +73,41 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         adapter2 = ArrayAdapter.createFromResource(this, R.array.op_via, android.R.layout.simple_spinner_dropdown_item);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiVia.setAdapter(adapter2);
+
+        idMed = getIntent().getStringExtra("id medicamento");
+
+        if(idMed == null){
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setTitle(R.string.cadastrar_medicamento);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            btn_salvar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (validarCampos(view) == true) {
+                        salvarNoBancoDeDados();
+                        finish();
+                    }
+                }
+            });
+        }else {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setTitle(R.string.editar);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            preencherDadosMedicamento();
+            btn_salvar.setText("Editar");
+            et_dataFim.setTextColor(Color.BLACK);
+            et_dataInicio.setTextColor(Color.BLACK);
+            et_hrInicial.setTextColor(Color.BLACK);
+            btn_salvar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (validarCampos(view) == true) {
+                        editarBancoDeDados();
+                        finish();
+                    }
+                }
+            });
+        }
 
 
         et_dataInicio.setOnClickListener(new View.OnClickListener() {
@@ -153,15 +191,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             }
         };
 
-        btn_salvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validarCampos(view) == true) {
-                    salvarNoBancoDeDados();
-                    finish();
-                }
-            }
-        });
     }
 
     protected void gerarSnackBar(View view, String texto) {
@@ -223,7 +252,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 });
     }
 
-    public boolean validarCampos(View view) {
+    protected boolean validarCampos(View view) {
         String nome = et_nomeMed.getText().toString();
         String concentracao = et_concentracao.getText().toString();
         String dose = et_dose.getText().toString();
@@ -252,5 +281,53 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    protected void preencherDadosMedicamento() {
+        DocumentReference document = firebaseFirestore.collection("Medicamento").document(idMed);
+        document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                spiVia.setSelection(adapter2.getPosition(value.getString("via")));
+                et_nomeMed.setText(value.getString("nome"));
+                et_concentracao.setText(value.getString("concentracao"));
+                et_recomendacao.setText(value.getString("recomendacao ou finalidade"));
+                et_dose.setText(value.getString("dose"));
+                et_intervalo.setText(value.getString("intervalo"));
+                spiIntervalo.setSelection(adapter.getPosition(value.getString("unidade intervalo")));
+                et_hrInicial.setText(value.getString("hora inicial"));
+                boolean uso = value.getBoolean("uso continuo");
+                usoContinuo.setChecked(uso);
+                et_dataInicio.setText(value.getString("data inicio"));
+                et_dataFim.setText(value.getString("data fim"));
+                swt_lembre.setChecked(value.getBoolean("lembre-me"));
+                et_observacoes.setText(value.getString("observacoes"));
+            }
+        });
+    }
+
+    protected void editarBancoDeDados() {
+        String via = spiVia.getSelectedItem().toString();
+        String nome = et_nomeMed.getText().toString();
+        String concentracao = et_concentracao.getText().toString();
+        String recomendacao = et_recomendacao.getText().toString();
+        String dose = et_dose.getText().toString();
+        String intervalo = et_intervalo.getText().toString();
+        String unidade_intervalo = spiIntervalo.getSelectedItem().toString();
+        String hora_inicial = et_hrInicial.getText().toString();
+        boolean uso_continuo = usoContinuo.isChecked();
+        String data_inicio = et_dataInicio.getText().toString();
+        String data_fim = et_dataFim.getText().toString();
+        String observacoes = et_observacoes.getText().toString();
+        boolean lembre = swt_lembre.isChecked();
+
+        firebaseFirestore.collection("Medicamento").document(idMed)
+                .update("via", via, "nome", nome, "concentracao", concentracao, "recomendacao ou finalidade", recomendacao, "dose", dose, "intervalo", intervalo, "unidade intervalo", unidade_intervalo, "hora inicial", hora_inicial, "uso continuo", uso_continuo, "data inicio", data_inicio, "data fim", data_fim, "observacoes", observacoes, "lembre-me", lembre)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("banco_dados_salvos", "Sucesso ao atualizar dados!");
+                    }
+                });
     }
 }

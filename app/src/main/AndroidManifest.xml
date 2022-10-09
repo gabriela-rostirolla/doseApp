@@ -17,26 +17,7 @@
             android:name=".telaDiarios"
             android:exported="false"
             android:parentActivityName=".telaInicial" />
-        <activity
-            android:name=".telaEditarTerapia"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
-        <activity
-            android:name=".telaEditarConsulta"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
-        <activity
-            android:name=".telaEditarReceita"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
-        <activity
-            android:name=".telaEditarMedicamento"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
-        <activity
-            android:name=".telaEditarIdoso"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+
         <activity
             android:name=".telaCadastroDiarioAtividade"
             android:exported="false"

@@ -125,7 +125,7 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
     @Override
     public void OnItemClick(int position) {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), telaEditarReceita.class);
+        intent.setClass(getActivity(), telaCadastroReceita.class);
         intent.putExtra("id receita", receitaList.get(position).getId());
         startActivity(intent);
     }

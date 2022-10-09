@@ -1,8 +1,10 @@
 package com.example.doseapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,12 +17,16 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,6 +46,7 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String[] mensagens = {"Preencha todos os campos", "Cadastro realizado com sucesso", "Falha no cadastro", "O número de telefone deve seguir o exemplo: (00) 0000-0000", "Digite um endereço válido", "Digite um nome com mais de três letras"};
     private String userId;
+    private String id;
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
@@ -48,9 +55,61 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_idoso_cuidado);
         inicializarComponentes();
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(R.string.cadastrar_idoso);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        id = getIntent().getStringExtra("id");
+
+        if (id == null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setTitle(R.string.cadastrar_idoso);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+            btn_cadastrarIdoso.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String genero = "";
+                    if (rb_feminino.isChecked()) {
+                        genero = "feminino";
+                    } else if (rb_masculino.isChecked()) {
+                        genero = "masculino";
+                    } else if (rb_outro.isChecked()) {
+                        genero = "outro";
+                    }
+
+                    String nome = et_nomeIdoso.getText().toString();
+                    String end = et_enderecoIdoso.getText().toString();
+                    String tel = et_telefoneIdoso.getText().toString();
+                    String dataNasc = et_dataNascIdoso.getText().toString();
+
+                    if (nome.isEmpty() || end.isEmpty() || dataNasc.isEmpty() || tel.isEmpty() || genero.isEmpty()) {
+                        gerarSnackBar(view, mensagens[0]);
+                    } else if (validarTelefone(tel) == false || tel.length() < 11) {
+                        gerarSnackBar(view, mensagens[3]);
+                    } else if (nome.length() < 3) {
+                        gerarSnackBar(view, mensagens[4]);
+                    } else if (end.length() < 4) {
+                        gerarSnackBar(view, mensagens[5]);
+                    } else {
+                        gerarSnackBar(view, mensagens[1]);
+                        salvarNoBancoDeDados();
+                        finish();
+                    }
+                }
+            });
+        } else {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setTitle(R.string.editar);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            preencherCampos();
+            et_dataNascIdoso.setTextColor(Color.BLACK);
+            btn_cadastrarIdoso.setText("Editar");
+            btn_cadastrarIdoso.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editarIdoso(view);
+                    finish();
+                }
+            });
+        }
+
 
         et_dataNascIdoso.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,39 +139,6 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
                 et_dataNascIdoso.setTextColor(Color.BLACK);
             }
         };
-
-        btn_cadastrarIdoso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String genero = "";
-                if (rb_feminino.isChecked()) {
-                    genero = "feminino";
-                } else if (rb_masculino.isChecked()) {
-                    genero = "masculino";
-                } else if (rb_outro.isChecked()) {
-                    genero = "outro";
-                }
-
-                String nome = et_nomeIdoso.getText().toString();
-                String end = et_enderecoIdoso.getText().toString();
-                String tel = et_telefoneIdoso.getText().toString();
-                String dataNasc = et_dataNascIdoso.getText().toString();
-
-                if (nome.isEmpty() || end.isEmpty() || dataNasc.isEmpty() || tel.isEmpty() || genero.isEmpty()) {
-                    gerarSnackBar(view, mensagens[0]);
-                } else if (validarTelefone(tel) == false || tel.length() <11) {
-                    gerarSnackBar(view, mensagens[3]);
-                } else if (nome.length() < 3) {
-                    gerarSnackBar(view, mensagens[4]);
-                } else if (end.length() < 4) {
-                    gerarSnackBar(view, mensagens[5]);
-                } else {
-                    gerarSnackBar(view, mensagens[1]);
-                    salvarNoBancoDeDados();
-                    finish();
-                }
-            }
-        });
     }
 
     protected void gerarSnackBar(View v, String s) {
@@ -183,5 +209,64 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
                         Log.d("erro_banco_dados", "Erro ao salvar dados!", e);
                     }
                 });
+    }
+
+    protected void preencherCampos() {
+        DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(id);
+        document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                IdosoCuidado ic = new IdosoCuidado();
+                et_nomeIdoso.setText(value.getString("nome"));
+                et_enderecoIdoso.setText(value.getString("endereco"));
+                et_telefoneIdoso.setText(value.getString("telefone"));
+                et_dataNascIdoso.setText(value.getString("data de nascimento"));
+                et_obsIdoso.setText(value.getString("observacoes"));
+                String genero = value.getString("genero");
+                if (genero.equals("feminino")) rb_feminino.setChecked(true);
+                else if (genero.equals("masculino")) rb_masculino.setChecked(true);
+                else if (genero.equals("outro")) rb_outro.setChecked(true);
+            }
+        });
+    }
+
+    protected void editarIdoso(View view) {
+        String genero = "";
+        if (rb_feminino.isChecked()) {
+            genero = "feminino";
+        } else if (rb_masculino.isChecked()) {
+            genero = "masculino";
+        } else if (rb_outro.isChecked()) {
+            genero = "outro";
+        }
+        String nome = et_nomeIdoso.getText().toString();
+        String end = et_enderecoIdoso.getText().toString();
+        String tel = et_telefoneIdoso.getText().toString();
+        String dataNasc = et_dataNascIdoso.getText().toString();
+        String obs = et_obsIdoso.getText().toString();
+
+        if (nome.isEmpty() || end.isEmpty() || tel.isEmpty() || dataNasc.isEmpty()) {
+            gerarSnackBar(view, "Preencha todos os campos");
+        } else if (validarTelefone(tel) == false || tel.length() < 11) {
+            gerarSnackBar(view, "Digite um telefone válido");
+        } else if (nome.length() < 4) {
+            gerarSnackBar(view, "Digite um nome com mais de 3 letras");
+        } else {
+            firebaseFirestore.collection("Idosos cuidados").document(id)
+                    .update("nome", nome, "endereco", end, "telefone", tel, "data de nascimento", dataNasc, "observacoes", obs, "genero", genero)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("firebase_update", "Sucesso ao atualizar dados");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            gerarSnackBar(view, "Falha ao editar");
+                            Log.w("firebase_failed_update", "Falha ao atualizar dados", e);
+                        }
+                    });
+        }
     }
 }

@@ -59,6 +59,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
 
         IdosoCuidadoViewHolder viewHolderClass = (IdosoCuidadoViewHolder) holder;
         IdosoCuidado idosoCuidado = idosoCuidadoList.get(position);
+
         if (idosoCuidado.isCuidado() == false) {
             viewHolderClass.imgBtn_cuidado.setImageResource(R.drawable.ic_baseline_work_off_24);
         }
@@ -180,7 +181,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
             imgBtn_editar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), telaEditarIdoso.class);
+                    Intent intent = new Intent(itemView.getContext(), telaCadastroIdosoCuidado.class);
                     intent.putExtra("id", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
                     context.startActivity(intent);
                 }

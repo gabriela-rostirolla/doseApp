@@ -66,7 +66,7 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
 
         firebaseFirestore.collection("Consultas")
                 .whereEqualTo("id do idoso", id)
-                .orderBy("dia de criacao", Query.Direction.ASCENDING)
+                .orderBy("dia de criacao", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -130,7 +130,7 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
     @Override
     public void OnItemClick(int position) {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), telaEditarConsulta.class);
+        intent.setClass(getActivity(), telaCadastroConsulta.class);
         intent.putExtra("id consulta", consultaList.get(position).getId());
         startActivity(intent);
     }

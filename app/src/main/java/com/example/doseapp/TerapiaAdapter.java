@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,6 +28,7 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
     public static Context context;
     private static List<Terapia> terapiaList;
     private OnItemClick onItemClick;
+
     public TerapiaAdapter(Context context, List<Terapia> terapiaList, OnItemClick onItemClick) {
         this.context = context;
         this.terapiaList = terapiaList;
@@ -47,7 +50,16 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         Terapia terapia = terapiaList.get(position);
         viewHolder.tv_nomeTerapia.setText(terapia.getNome());
         viewHolder.tv_horaTerapia.setText(terapia.getHorario());
-        //viewHolder.tv_diaConsulta.setText(terapia.getDiasSemana());
+        List<String> list = terapia.getDiasSemana();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).equals("dom")) viewHolder.tv_dom.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("seg")) viewHolder.tv_seg.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("ter")) viewHolder.tv_ter.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("qua")) viewHolder.tv_qua.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("qui")) viewHolder.tv_qui.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("sex")) viewHolder.tv_sex.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("sab")) viewHolder.tv_sab.setTextColor(Color.parseColor("#6495ED"));
+        }
     }
 
     @Override
@@ -57,17 +69,22 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
 
     public static class TerapiaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
-        TextView tv_diasTerapia, tv_horaTerapia, tv_nomeTerapia;
+        TextView tv_horaTerapia, tv_nomeTerapia, tv_dom, tv_seg, tv_ter, tv_qua, tv_qui, tv_sex, tv_sab;
         ImageButton imgBtn_excluirTerapia;
         OnItemClick onItemClick;
 
         public TerapiaViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
-            //tv_diasTerapia = itemView.findViewById(R.id.tv_diasSemana);
+            tv_dom = itemView.findViewById(R.id.tv_dom);
+            tv_seg = itemView.findViewById(R.id.tv_seg);
+            tv_ter = itemView.findViewById(R.id.tv_ter);
+            tv_qua = itemView.findViewById(R.id.tv_qua);
+            tv_qui = itemView.findViewById(R.id.tv_qui);
+            tv_sex = itemView.findViewById(R.id.tv_sex);
+            tv_sab = itemView.findViewById(R.id.tv_qua);
             tv_horaTerapia = itemView.findViewById(R.id.tv_horaTerapia);
             tv_nomeTerapia = itemView.findViewById(R.id.tv_nomeTerapia);
             imgBtn_excluirTerapia = itemView.findViewById(R.id.imgBtn_excluirTerapia);
-
 
 
             imgBtn_excluirTerapia.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +131,7 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public interface OnItemClick{
+    public interface OnItemClick {
         void OnItemClick(int position);
     }
 }

@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -33,8 +34,8 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
     private RecyclerView rv_listaTerapia;
     private String mParam1;
     private String mParam2;
-    private String id;
-    private List<Terapia> terapiaList;
+    private static String id;
+    private List<Terapia> terapiaList = new ArrayList<>();
     private TerapiaAdapter terapiaAdapter;
     private TextView tv_nenhumTerCad;
 
@@ -51,12 +52,11 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
     }
 
     protected void listarTerapias() {
+        terapiaList.clear();
         rv_listaTerapia.setLayoutManager(new LinearLayoutManager(getActivity()));
-        terapiaList = new ArrayList<>();
-
         firebaseFirestore.collection("Terapias")
-                .whereArrayContains("id do idoso", id)
-                //.orderBy("dia de criacao", Query.Direction.DESCENDING)
+                .whereEqualTo("id do idoso", id)
+                .orderBy("dia de criacao", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -66,6 +66,7 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
                                 Terapia ter = new Terapia();
                                 ter.setNome(document.getString("nome"));
                                 //ter.setDiasSemana(document.getString("dias"));
+                                ter.setDiasSemana((List<String>) document.get("dias da semana"));
                                 ter.setHorario(document.getString("horario"));
                                 ter.setId(document.getId());
                                 terapiaList.add(ter);
@@ -111,7 +112,6 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
         View v = inflater.inflate(R.layout.fragment_tela_terapias, container, false);
         inicializarComponentes(v);
         id = getActivity().getIntent().getStringExtra("id");
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +127,7 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
     @Override
     public void OnItemClick(int position) {
         Intent intent = new Intent();
-        intent.setClass(getActivity(), telaEditarTerapia.class);
+        intent.setClass(getActivity(), telaCadastroTerapia.class);
         intent.putExtra("id terapia", terapiaList.get(position).getId());
         startActivity(intent);
     }

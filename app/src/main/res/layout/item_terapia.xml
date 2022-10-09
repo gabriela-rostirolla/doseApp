@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:background="@color/light_blue">
@@ -72,17 +73,70 @@
         app:srcCompat="@drawable/ic_alarm" />
 
     <TextView
-        android:id="@+id/tv_diasSemana"
-        android:layout_width="70dp"
+        android:id="@+id/tv_qua"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text=""
+        android:text="Q"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_horaTerapia"
-        app:layout_constraintEnd_toEndOf="@+id/tv_horaTerapia"
-        app:layout_constraintStart_toStartOf="@+id/tv_horaTerapia"
+        app:layout_constraintStart_toEndOf="@id/tv_ter"
+        app:layout_constraintTop_toTopOf="@+id/tv_seg" />
+
+    <TextView
+        android:id="@+id/tv_seg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="S"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/tv_dom"
+        app:layout_constraintTop_toTopOf="@+id/tv_dom" />
+
+    <TextView
+        android:id="@+id/tv_ter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="T"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/tv_seg"
+        app:layout_constraintTop_toTopOf="@+id/tv_seg" />
+
+    <TextView
+        android:id="@+id/tv_dom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
+        android:text="D"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/v_indicadorTerapia"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_sab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="S"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/tv_sex"
+        app:layout_constraintTop_toTopOf="@+id/tv_sex" />
+
+    <TextView
+        android:id="@+id/tv_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="S"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/tv_qui"
+        app:layout_constraintTop_toTopOf="@+id/tv_qui" />
+
+    <TextView
+        android:id="@+id/tv_qui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Q"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/tv_qua"
+        app:layout_constraintTop_toTopOf="@+id/tv_qua" />
 
     <TextView
         android:id="@+id/tv_horaTerapia"
@@ -96,6 +150,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/view2"
         app:layout_constraintStart_toEndOf="@+id/v_indicadorTerapia"
-        app:layout_constraintTop_toBottomOf="@+id/tv_diasSemana" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dom" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

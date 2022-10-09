@@ -21,6 +21,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MedicamentoAdapter extends RecyclerView.Adapter {
@@ -28,6 +32,7 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
     public static Context context;
     private static List<Medicamento> medicamentoList;
     private OnItemClick onItemClick;
+    private SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
 
     public MedicamentoAdapter(Context context, List<Medicamento> medicamentoList, OnItemClick onItemClick) {
         this.context = context;
@@ -51,6 +56,21 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
         if (medicamento.isLembre() == false) {
             viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
         }
+
+//        Date aux = null;
+//        try {
+//            aux = formatter.parse(medicamento.getHoraInicial() + medicamento.getIntervalo());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        String data = formatter.format(aux);
+//        Calendar calendar = Calendar.getInstance();
+//        String date = formatter.format(calendar);
+//
+//        if(date.equals(data)){
+//
+//        }
+
         viewHolder.tv_nomeMedicamento.setText(medicamento.getNome());
         viewHolder.tv_dose.setText(medicamento.getDose());
         viewHolder.tv_posologia.setText(medicamento.getIntervalo() + " " + medicamento.getUnidade_intervalo());

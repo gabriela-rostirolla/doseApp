@@ -63,7 +63,7 @@ import java.util.List;
         tv_nenhumMedCad = v.findViewById(R.id.tv_nenhumMedCad);
     }
 
-    public void listarMedicamentos(){
+    protected void listarMedicamentos(){
         medicamentoList.clear();
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Medicamento")
@@ -130,7 +130,7 @@ import java.util.List;
      @Override
      public void OnItemClick(int position) {
          Intent intent = new Intent();
-         intent.setClass(getActivity(), telaEditarMedicamento.class);
+         intent.setClass(getActivity(), telaCadastroMedicamento.class);
          intent.putExtra("id medicamento", medicamentoList.get(position).getId());
          startActivity(intent);
      }
