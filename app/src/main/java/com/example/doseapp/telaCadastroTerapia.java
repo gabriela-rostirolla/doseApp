@@ -110,12 +110,10 @@ public class telaCadastroTerapia extends AppCompatActivity {
                                     et_horario.setTextColor(Color.BLACK);
                                 }
                             }
-                        }, hora, min, false);
+                        }, hora, min, true);
                 timePickerDialog.show();
             }
         });
-
-
     }
 
     protected void inicializarComponentes() {

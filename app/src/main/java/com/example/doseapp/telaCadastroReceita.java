@@ -96,57 +96,58 @@ public class telaCadastroReceita extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                int anoIni = calendar.get(Calendar.YEAR);
-                int diaIni = calendar.get(Calendar.DAY_OF_MONTH);
-                int mesIni = calendar.get(Calendar.MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(telaCadastroReceita.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerData, diaIni, mesIni, anoIni);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                int ano = calendar.get(Calendar.YEAR);
+                int mes = calendar.get(Calendar.MONTH);
+                int dia = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroReceita.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int i, int i2, int i3) {
+                                i2++;
+
+                                String mes = "";
+                                String dia = "";
+                                if (i2 < 10) mes = "0" + i2;
+                                else mes = String.valueOf(i2);
+                                if (i3 < 10) dia = "0" + i3;
+                                else dia = String.valueOf(i3);
+                                et_data.setText(dia + "/" + mes + "/" + i);
+                                et_data.setTextColor(Color.BLACK);
+                            }
+                        }, ano, mes, dia);
+                datePickerDialog.show();
             }
         });
-
-        dateSetListenerData = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                i1++;
-                String mes = "";
-                String dia = "";
-                if (i1 < 10) mes = "0" + i1;
-                else mes = String.valueOf(i1);
-                if (i2 < 10) dia = "0" + i2;
-                else dia = String.valueOf(i2);
-                et_data.setText(dia + "/" + mes + "/" + i);
-                et_data.setTextColor(Color.BLACK);
-            }
-        };
 
         et_dataRen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                int anoFim = calendar.get(Calendar.YEAR);
-                int diaFim = calendar.get(Calendar.DAY_OF_MONTH);
-                int mesFim = calendar.get(Calendar.MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(telaCadastroReceita.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerDataRen, diaFim, mesFim, anoFim);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                int ano = calendar.get(Calendar.YEAR);
+                int mes = calendar.get(Calendar.MONTH);
+                int dia = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroReceita.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int i, int i2, int i3) {
+                                i2++;
+
+                                String mes = "";
+                                String dia = "";
+                                if (i2 < 10) mes = "0" + i2;
+                                else mes = String.valueOf(i2);
+                                if (i3 < 10) dia = "0" + i3;
+                                else dia = String.valueOf(i3);
+                                et_dataRen.setText(dia + "/" + mes + "/" + i);
+                                et_dataRen.setTextColor(Color.BLACK);
+                            }
+                        }, ano, mes, dia);
+                datePickerDialog.show();
             }
         });
 
-        dateSetListenerDataRen = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                i1++;
-                String mes = "";
-                String dia = "";
-                if (i1 < 10) mes = "0" + i1;
-                else mes = String.valueOf(i1);
-                if (i2 < 10) dia = "0" + i2;
-                else dia = String.valueOf(i2);
-                et_dataRen.setText(dia + "/" + mes + "/" + i);
-                et_dataRen.setTextColor(Color.BLACK);
-            }
-        };
     }
 
     protected void inicializarComponentes() {

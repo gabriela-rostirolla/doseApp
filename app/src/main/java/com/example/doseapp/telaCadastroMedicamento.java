@@ -76,7 +76,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
 
         idMed = getIntent().getStringExtra("id medicamento");
 
-        if(idMed == null){
+        if (idMed == null) {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(R.string.cadastrar_medicamento);
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -89,7 +89,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                     }
                 }
             });
-        }else {
+        } else {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(R.string.editar);
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -109,46 +109,59 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             });
         }
 
+        et_dataFim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int ano = calendar.get(Calendar.YEAR);
+                int mes = calendar.get(Calendar.MONTH);
+                int dia = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroMedicamento.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int i, int i2, int i3) {
+                                i2++;
+
+                                String mes = "";
+                                String dia = "";
+                                if (i2 < 10) mes = "0" + i2;
+                                else mes = String.valueOf(i2);
+                                if (i3 < 10) dia = "0" + i3;
+                                else dia = String.valueOf(i3);
+                                et_dataFim.setText(dia + "/" + mes + "/" + i);
+                                et_dataFim.setTextColor(Color.BLACK);
+                            }
+                        }, ano, mes, dia);
+                datePickerDialog.show();
+            }
+        });
 
         et_dataInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                int anoIni = calendar.get(Calendar.YEAR);
-                int diaIni = calendar.get(Calendar.DAY_OF_MONTH);
-                int mesIni = calendar.get(Calendar.MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(telaCadastroMedicamento.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerInicio, diaIni, mesIni, anoIni);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
+                int ano = calendar.get(Calendar.YEAR);
+                int mes = calendar.get(Calendar.MONTH);
+                int dia = calendar.get(Calendar.DAY_OF_MONTH);
 
-        dateSetListenerInicio = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                i1++;
+                DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroMedicamento.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int i, int i2, int i3) {
+                                i2++;
 
-                String mes = "";
-                String dia = "";
-                if (i1 < 10) mes = "0" + i1;
-                else mes = String.valueOf(i1);
-                if (i2 < 10) dia = "0" + i2;
-                else dia = String.valueOf(i2);
-                et_dataInicio.setText(dia + "/" + mes + "/" + i);
-                et_dataInicio.setTextColor(Color.BLACK);
-            }
-        };
-
-        et_dataFim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int anoFim = calendar.get(Calendar.YEAR);
-                int diaFim = calendar.get(Calendar.DAY_OF_MONTH);
-                int mesFim = calendar.get(Calendar.MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(telaCadastroMedicamento.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListenerFim, diaFim, mesFim, anoFim);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                                String mes = "";
+                                String dia = "";
+                                if (i2 < 10) mes = "0" + i2;
+                                else mes = String.valueOf(i2);
+                                if (i3 < 10) dia = "0" + i3;
+                                else dia = String.valueOf(i3);
+                                et_dataInicio.setText(dia + "/" + mes + "/" + i);
+                                et_dataInicio.setTextColor(Color.BLACK);
+                            }
+                        }, ano, mes, dia);
+                datePickerDialog.show();
             }
         });
 
@@ -175,21 +188,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
-
-        dateSetListenerFim = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                i1++;
-                String mes = "";
-                String dia = "";
-                if (i1 < 10) mes = "0" + i1;
-                else mes = String.valueOf(i1);
-                if (i2 < 10) dia = "0" + i2;
-                else dia = String.valueOf(i2);
-                et_dataFim.setText(dia + "/" + mes + "/" + i);
-                et_dataFim.setTextColor(Color.BLACK);
-            }
-        };
 
     }
 

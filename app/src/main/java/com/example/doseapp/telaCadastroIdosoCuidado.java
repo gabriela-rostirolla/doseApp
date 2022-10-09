@@ -109,36 +109,34 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
                 }
             });
         }
-
-
         et_dataNascIdoso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
                 int ano = calendar.get(Calendar.YEAR);
-                int dia = calendar.get(Calendar.DAY_OF_MONTH);
                 int mes = calendar.get(Calendar.MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(telaCadastroIdosoCuidado.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, dia, mes, ano);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                int dia = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroIdosoCuidado.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int i, int i2, int i3) {
+                                i2++;
+
+                                String mes = "";
+                                String dia = "";
+                                if (i2 < 10) mes = "0" + i2;
+                                else mes = String.valueOf(i2);
+                                if (i3 < 10) dia = "0" + i3;
+                                else dia = String.valueOf(i3);
+                                et_dataNascIdoso.setText(dia + "/" + mes + "/" + i);
+                                et_dataNascIdoso.setTextColor(Color.BLACK);
+                            }
+                        }, ano, mes, dia);
+                datePickerDialog.show();
             }
         });
 
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                i1++;
-
-                String mes = "";
-                String dia = "";
-                if (i1 < 10) mes = "0" + i1;
-                else mes = String.valueOf(i1);
-                if (i2 < 10) dia = "0" + i2;
-                else dia = String.valueOf(i2);
-                et_dataNascIdoso.setText(dia + "/" + mes + "/" + i);
-                et_dataNascIdoso.setTextColor(Color.BLACK);
-            }
-        };
     }
 
     protected void gerarSnackBar(View v, String s) {

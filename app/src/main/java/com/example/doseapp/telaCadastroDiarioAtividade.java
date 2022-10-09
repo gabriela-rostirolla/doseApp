@@ -58,7 +58,7 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
                                     tv_horario.setTextColor(Color.BLACK);
                                 }
                             }
-                        }, hora, min, false);
+                        }, hora, min, true);
                 timePickerDialog.show();
             }
         });

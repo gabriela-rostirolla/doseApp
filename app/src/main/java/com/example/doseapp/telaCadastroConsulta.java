@@ -94,29 +94,30 @@ public class telaCadastroConsulta extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Calendar calendar = Calendar.getInstance();
-                int anoIni = calendar.get(Calendar.YEAR);
-                int diaIni = calendar.get(Calendar.DAY_OF_MONTH);
-                int mesIni = calendar.get(Calendar.MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(telaCadastroConsulta.this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, diaIni, mesIni, anoIni);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                int ano = calendar.get(Calendar.YEAR);
+                int mes = calendar.get(Calendar.MONTH);
+                int dia = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroConsulta.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int i, int i2, int i3) {
+                                i2++;
+
+                                String mes = "";
+                                String dia = "";
+                                if (i2 < 10) mes = "0" + i2;
+                                else mes = String.valueOf(i2);
+                                if (i3 < 10) dia = "0" + i3;
+                                else dia = String.valueOf(i3);
+                                et_data.setText(dia + "/" + mes + "/" + i);
+                                et_data.setTextColor(Color.BLACK);
+                            }
+                        }, ano, mes, dia);
+                datePickerDialog.show();
             }
         });
 
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                i1++;
-                String mes = "";
-                String dia = "";
-                if (i1 < 10) mes = "0" + i1;
-                else mes = String.valueOf(i1);
-                if (i2 < 10) dia = "0" + i2;
-                else dia = String.valueOf(i2);
-                et_data.setText(dia + "/" + mes + "/" + i);
-                et_data.setTextColor(Color.BLACK);
-            }
-        };
 
         et_horario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +138,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
                                     et_horario.setTextColor(Color.BLACK);
                                 }
                             }
-                        }, hora, min, false);
+                        }, hora, min, true);
                 timePickerDialog.show();
             }
         });
