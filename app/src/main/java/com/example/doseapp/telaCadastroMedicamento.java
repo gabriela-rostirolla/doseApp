@@ -171,7 +171,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                                     et_hrInicial.setTextColor(Color.BLACK);
                                 }
                             }
-                        }, hora, min, false);
+                        }, hora, min, true);
                 timePickerDialog.show();
             }
         });

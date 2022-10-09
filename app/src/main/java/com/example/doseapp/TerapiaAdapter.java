@@ -21,6 +21,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class TerapiaAdapter extends RecyclerView.Adapter {
@@ -51,6 +52,21 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         viewHolder.tv_nomeTerapia.setText(terapia.getNome());
         viewHolder.tv_horaTerapia.setText(terapia.getHorario());
         List<String> list = terapia.getDiasSemana();
+        Calendar calendar = Calendar.getInstance();
+
+        int diaSemana = calendar.get(Calendar.DAY_OF_WEEK);
+        String diaSemAt = "";
+
+        if(diaSemana == 1) diaSemAt = "dom";
+        else if(diaSemana == 2) diaSemAt = "seg";
+        else if(diaSemana == 3) diaSemAt = "ter";
+        else if(diaSemana == 4) diaSemAt = "qua";
+        else if(diaSemana == 5) diaSemAt = "qui";
+        else if(diaSemana == 6) diaSemAt = "sex";
+        else if(diaSemana == 7) diaSemAt = "sab";
+
+        if(list.contains(diaSemAt)) viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).equals("dom")) viewHolder.tv_dom.setTextColor(Color.parseColor("#6495ED"));
             else if (list.get(i).equals("seg")) viewHolder.tv_seg.setTextColor(Color.parseColor("#6495ED"));
@@ -68,10 +84,10 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
     }
 
     public static class TerapiaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        //private final IdosoCuidadoAdapter.OnItemClick onItemClick;
         TextView tv_horaTerapia, tv_nomeTerapia, tv_dom, tv_seg, tv_ter, tv_qua, tv_qui, tv_sex, tv_sab;
         ImageButton imgBtn_excluirTerapia;
         OnItemClick onItemClick;
+        View v_indicador;
 
         public TerapiaViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
@@ -85,7 +101,7 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
             tv_horaTerapia = itemView.findViewById(R.id.tv_horaTerapia);
             tv_nomeTerapia = itemView.findViewById(R.id.tv_nomeTerapia);
             imgBtn_excluirTerapia = itemView.findViewById(R.id.imgBtn_excluirTerapia);
-
+            v_indicador = itemView.findViewById(R.id.v_indicadorTerapia);
 
             imgBtn_excluirTerapia.setOnClickListener(new View.OnClickListener() {
                 @Override
