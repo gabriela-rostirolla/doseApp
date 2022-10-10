@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -69,6 +70,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     protected void listarIdososCuidados() {
         idosoCuidadoList.clear();
         rv_listaIdosos.setLayoutManager(new LinearLayoutManager(this));
+
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseFirestore.collection("Idosos cuidados")
                 .whereArrayContains("cuidador id", userId)

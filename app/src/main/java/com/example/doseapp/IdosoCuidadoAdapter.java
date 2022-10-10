@@ -99,6 +99,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+
             imgBtn_excluir.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,65 +107,82 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                     builder.setMessage("Deseja realmente excluir?")
                             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
-                                    document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            document.delete();
-                                            Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
-                                            snackbar.setBackgroundTint(Color.WHITE);
-                                            snackbar.setTextColor(Color.BLACK);
-                                            snackbar.show();
-                                            firebaseFirestore.collection("Medicamento")
-                                                    .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
-                                                    .get()
-                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
-                                                                    Medicamento medicamento = new Medicamento();
-                                                                    medicamento.setId(doc.getId());
-                                                                    firebaseFirestore.collection("Medicamento").document(medicamento.getId()).delete();
-                                                                }
+                                    firebaseFirestore.collection("Idosos cuidados")
+                                            .document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> t) {
+                                                    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                                    List<String> list = (List<String>) t.getResult().get("cuidador id");
+                                                    System.out.println(list.get(0));
+                                                    System.out.println(userId);
+                                                    if (!list.get(0).equals(userId)) {
+                                                        list.remove(userId);
+                                                        gerarSnackBar(view, "Excluido com sucesso!");
+                                                        firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidador id", list);
+                                                    } else {
+                                                        DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
+                                                        document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                                                document.delete();
+                                                                Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
+                                                                snackbar.setBackgroundTint(Color.WHITE);
+                                                                snackbar.setTextColor(Color.BLACK);
+                                                                snackbar.show();
+                                                                firebaseFirestore.collection("Medicamento")
+                                                                        .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                                        Medicamento medicamento = new Medicamento();
+                                                                                        medicamento.setId(doc.getId());
+                                                                                        firebaseFirestore.collection("Medicamento").document(medicamento.getId()).delete();
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                firebaseFirestore.collection("Consultas")
+                                                                        .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                                        Consulta consulta = new Consulta();
+                                                                                        consulta.setId(doc.getId());
+                                                                                        firebaseFirestore.collection("Consultas").document(consulta.getId()).delete();
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                firebaseFirestore.collection("Receitas")
+                                                                        .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                                        Receita receita = new Receita();
+                                                                                        receita.setId(doc.getId());
+                                                                                        firebaseFirestore.collection("Consultas").document(receita.getId()).delete();
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
                                                             }
-                                                        }
-                                                    });
-                                            firebaseFirestore.collection("Consultas")
-                                                    .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
-                                                    .get()
-                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
-                                                                    Consulta consulta = new Consulta();
-                                                                    consulta.setId(doc.getId());
-                                                                    firebaseFirestore.collection("Consultas").document(consulta.getId()).delete();
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-                                            firebaseFirestore.collection("Receitas")
-                                                    .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
-                                                    .get()
-                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
-                                                                    Receita receita = new Receita();
-                                                                    receita.setId(doc.getId());
-                                                                    firebaseFirestore.collection("Consultas").document(receita.getId()).delete();
-                                                                }
-                                                            }
-                                                        }
-                                                    });
-                                        }
-                                    });
+                                                        });
+
+                                                    }
+                                                }
+                                            });
                                 }
-                            })
-                            .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                            }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     //return;
                                     Snackbar snackbar = Snackbar.make(view, "Operação cancelada", Snackbar.LENGTH_SHORT);
@@ -240,7 +258,6 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                             });
                     builder.create();
                     builder.show();
-
                 }
             });
 

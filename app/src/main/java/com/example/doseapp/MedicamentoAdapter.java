@@ -56,21 +56,23 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
         if (medicamento.isLembre() == false) {
             viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
         }
-
-//        Date aux = null;
-//        try {
-//            aux = formatter.parse(medicamento.getHoraInicial() + medicamento.getIntervalo());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        String data = formatter.format(aux);
-//        Calendar calendar = Calendar.getInstance();
-//        String date = formatter.format(calendar);
-//
-//        if(date.equals(data)){
-//
-//        }
-
+        if (medicamento.getUnidade_intervalo().equals("h")) {
+            String hr = medicamento.getProxMed();
+            String proxHr[] = hr.split(":");
+            Calendar calendar = Calendar.getInstance();
+            System.out.println(proxHr[0]);
+            if (calendar.get(Calendar.HOUR_OF_DAY) == Integer.parseInt(proxHr[0]) && calendar.get(Calendar.MINUTE)<Integer.parseInt(proxHr[1])) {
+                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+            } else if (calendar.get(Calendar.HOUR_OF_DAY) == Integer.parseInt(proxHr[0])&& calendar.get(Calendar.MINUTE) == Integer.parseInt(proxHr[1])) {
+                int novaHr = Integer.parseInt(proxHr[0]) + Integer.parseInt(medicamento.getIntervalo());
+                if (novaHr > 24) {
+                    novaHr = novaHr - 24;
+                }
+                firebaseFirestore.collection("Medicamento").document(medicamento.getId()).update("horario proximo medicamento", (novaHr + ":" + proxHr[1]).toString());
+                medicamento.setProxMed(novaHr + ":" + proxHr[1]);
+            }
+        }
+        viewHolder.tv_proximoMed.setText("Próximo às "+ medicamento.getProxMed());
         viewHolder.tv_nomeMedicamento.setText(medicamento.getNome());
         viewHolder.tv_dose.setText(medicamento.getDose());
         viewHolder.tv_posologia.setText(medicamento.getIntervalo() + " " + medicamento.getUnidade_intervalo());
@@ -82,9 +84,10 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
     }
 
     public static class MedicamentoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tv_dose, tv_posologia, tv_nomeMedicamento;
+        TextView tv_dose, tv_posologia, tv_nomeMedicamento, tv_proximoMed;
         ImageButton imgBtn_excluirMed, imgBtn_alarme;
         OnItemClick onItemClick;
+        View v_indicador;
 
         public MedicamentoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
@@ -93,7 +96,8 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
             tv_nomeMedicamento = itemView.findViewById(R.id.tv_nomeMedicamento);
             imgBtn_excluirMed = itemView.findViewById(R.id.imgBtn_excluirMed);
             imgBtn_alarme = itemView.findViewById(R.id.imgBtn_alert);
-
+            v_indicador = itemView.findViewById(R.id.v_indicador);
+            tv_proximoMed = itemView.findViewById(R.id.tv_hrProxMed);
 
             imgBtn_alarme.setOnClickListener(new View.OnClickListener() {
                 @Override

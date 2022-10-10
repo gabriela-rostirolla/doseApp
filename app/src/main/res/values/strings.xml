@@ -5,6 +5,26 @@
         <item>Dia</item>
     </string-array>
 
+    <string-array name="status_med">
+        <item>Inativo</item> <!--Cor cinza-->
+        <item>Administrado</item> <!--Cor rosa-->
+        <item>Pendente</item> <!--Cor vermelha-->
+    </string-array>
+
+    <string-array name="status_consultas">
+        <item>Inativo</item>
+        <item>Ativo</item>
+        <item>Finalizado</item>
+        <item>Pendente</item>
+    </string-array>
+
+<!--    <string-array name="status_terapia">-->
+<!--        <item>Inativo</item>-->
+<!--        <item>Ativo</item>-->
+<!--        <item>Finalizado</item>-->
+<!--        <item>Pendente</item>-->
+<!--    </string-array>-->
+
     <string-array name="unidades_medicamentos">
         <item>mg</item>
         <item>ml</item>

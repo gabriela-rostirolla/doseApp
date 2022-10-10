@@ -233,6 +233,13 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         medicamentoMap.put("lembre-me", swt_lembre.isChecked());
         medicamentoMap.put("id do idoso", getIntent().getStringExtra("id"));
         medicamentoMap.put("dia de criacao", new Date());
+        String hr = et_hrInicial.getText().toString();
+        String proxHr[] = hr.split(":");
+        int novaHr = Integer.parseInt(proxHr[0]) + Integer.parseInt(et_intervalo.getText().toString());
+        if (novaHr > 24) {
+            novaHr = novaHr - 24;
+        }
+        medicamentoMap.put("horario proximo medicamento", (novaHr + ":" + proxHr[1]));
 
         firebaseFirestore.collection("Medicamento")
                 .add(medicamentoMap)

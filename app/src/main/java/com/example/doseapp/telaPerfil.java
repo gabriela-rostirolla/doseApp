@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -82,15 +83,15 @@ public class telaPerfil extends AppCompatActivity {
             case R.id.item_sair:
                 android.app.AlertDialog.Builder builder = new AlertDialog.Builder(telaPerfil.this);
                 builder.setMessage("Deseja mesmo sair da sua conta?")
-                                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent intent = new Intent(telaPerfil.this, telaLogin.class);
-                                        intent.putExtra("Sair", true);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                })
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                FirebaseAuth auth = FirebaseAuth.getInstance();
+                                auth.signOut();
+                                startActivity(new Intent(telaPerfil.this, telaLogin.class));
+                                finish();
+                            }
+                        })
                         .setNegativeButton("Não", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -104,14 +105,14 @@ public class telaPerfil extends AppCompatActivity {
         }
     }
 
-    protected void inicializarComponentes(){
+    protected void inicializarComponentes() {
         et_editNome = findViewById(R.id.et_editNome);
         et_editEmail = findViewById(R.id.et_editEmail);
         btn_editar = findViewById(R.id.btn_editar);
     }
 
-    protected void editar_perfil(View view){
-        if(et_editNome.getText().toString().isEmpty()==false ){
+    protected void editar_perfil(View view) {
+        if (et_editNome.getText().toString().isEmpty() == false) {
             firebaseFirestore.collection("Usuarios").document(userID)
                     .update("nome", et_editNome.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -126,12 +127,13 @@ public class telaPerfil extends AppCompatActivity {
                             Log.d("falha_ao_atualizar", "DocumentSnapshot failure updated!");
                         }
                     });
-        }else{
+        } else {
             gerarSnackBar(view, "Digite um nome válido");
 
         }
     }
-    public void gerarSnackBar(View view, String texto){
+
+    public void gerarSnackBar(View view, String texto) {
         Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
         snackbar.setBackgroundTint(Color.WHITE);
         snackbar.setTextColor(Color.BLACK);

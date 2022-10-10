@@ -51,30 +51,44 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         Terapia terapia = terapiaList.get(position);
         viewHolder.tv_nomeTerapia.setText(terapia.getNome());
         viewHolder.tv_horaTerapia.setText(terapia.getHorario());
+
         List<String> list = terapia.getDiasSemana();
         Calendar calendar = Calendar.getInstance();
 
         int diaSemana = calendar.get(Calendar.DAY_OF_WEEK);
         String diaSemAt = "";
 
-        if(diaSemana == 1) diaSemAt = "dom";
-        else if(diaSemana == 2) diaSemAt = "seg";
-        else if(diaSemana == 3) diaSemAt = "ter";
-        else if(diaSemana == 4) diaSemAt = "qua";
-        else if(diaSemana == 5) diaSemAt = "qui";
-        else if(diaSemana == 6) diaSemAt = "sex";
-        else if(diaSemana == 7) diaSemAt = "sab";
+        if (diaSemana == 1) diaSemAt = "dom";
+        else if (diaSemana == 2) diaSemAt = "seg";
+        else if (diaSemana == 3) diaSemAt = "ter";
+        else if (diaSemana == 4) diaSemAt = "qua";
+        else if (diaSemana == 5) diaSemAt = "qui";
+        else if (diaSemana == 6) diaSemAt = "sex";
+        else if (diaSemana == 7) diaSemAt = "sab";
 
-        if(list.contains(diaSemAt)) viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-
+        String hr[] = terapia.getHorario().split(":");
+        if (list.contains(diaSemAt)) {
+            if (calendar.get(Calendar.HOUR_OF_DAY) <= Integer.parseInt(hr[0])) {
+                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+            }else{
+                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+            }
+        }
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).equals("dom")) viewHolder.tv_dom.setTextColor(Color.parseColor("#6495ED"));
-            else if (list.get(i).equals("seg")) viewHolder.tv_seg.setTextColor(Color.parseColor("#6495ED"));
-            else if (list.get(i).equals("ter")) viewHolder.tv_ter.setTextColor(Color.parseColor("#6495ED"));
-            else if (list.get(i).equals("qua")) viewHolder.tv_qua.setTextColor(Color.parseColor("#6495ED"));
-            else if (list.get(i).equals("qui")) viewHolder.tv_qui.setTextColor(Color.parseColor("#6495ED"));
-            else if (list.get(i).equals("sex")) viewHolder.tv_sex.setTextColor(Color.parseColor("#6495ED"));
-            else if (list.get(i).equals("sab")) viewHolder.tv_sab.setTextColor(Color.parseColor("#6495ED"));
+            if (list.get(i).equals("dom"))
+                viewHolder.tv_dom.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("seg"))
+                viewHolder.tv_seg.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("ter"))
+                viewHolder.tv_ter.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("qua"))
+                viewHolder.tv_qua.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("qui"))
+                viewHolder.tv_qui.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("sex"))
+                viewHolder.tv_sex.setTextColor(Color.parseColor("#6495ED"));
+            else if (list.get(i).equals("sab"))
+                viewHolder.tv_sab.setTextColor(Color.parseColor("#6495ED"));
         }
     }
 
@@ -97,7 +111,7 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
             tv_qua = itemView.findViewById(R.id.tv_qua);
             tv_qui = itemView.findViewById(R.id.tv_qui);
             tv_sex = itemView.findViewById(R.id.tv_sex);
-            tv_sab = itemView.findViewById(R.id.tv_qua);
+            tv_sab = itemView.findViewById(R.id.tv_sab);
             tv_horaTerapia = itemView.findViewById(R.id.tv_horaTerapia);
             tv_nomeTerapia = itemView.findViewById(R.id.tv_nomeTerapia);
             imgBtn_excluirTerapia = itemView.findViewById(R.id.imgBtn_excluirTerapia);

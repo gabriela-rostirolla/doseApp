@@ -5,6 +5,7 @@ import android.net.wifi.WifiManager;
 public class Medicamento {
 
     private String nome;
+    private String proxMed;
     private String concentracao;
     private String recomendacao;
     private String dose;
@@ -51,6 +52,14 @@ public class Medicamento {
 
     public void setDose(String dose) {
         this.dose = dose;
+    }
+
+    public String getProxMed() {
+        return proxMed;
+    }
+
+    public void setProxMed(String proxMed) {
+        this.proxMed = proxMed;
     }
 
     public String getIntervalo() {

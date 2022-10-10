@@ -42,7 +42,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
     private TextView et_horario;
     private Switch swt_lembre;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private String[] mensagens = {"Preencha todos os campos"};
+    private String[] mensagens = {"Preencha todos os campos", "Digite um nome mais longo", "Digite um endereço válido", "Digite um nome válido de profissional", "Digite um número de telefone válido"};
     private Chip chipDom, chipSeg, chipTer, chipQua, chipQui, chipSex, chipSab;
     private static String idTerapia;
 
@@ -60,21 +60,11 @@ public class telaCadastroTerapia extends AppCompatActivity {
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String nome = et_nome.getText().toString();
-                    String end = et_endereco.getText().toString();
-                    String profissional = et_profissional.getText().toString();
-                    String horario = et_horario.getText().toString();
-                    String tel = et_telefone.getText().toString();
-
-                    if (nome.isEmpty() || end.isEmpty() || profissional.isEmpty() || horario.isEmpty() || tel.isEmpty()) {
-                        Snackbar snackbar = Snackbar.make(view, mensagens[0], Snackbar.LENGTH_SHORT);
-                        snackbar.setBackgroundTint(Color.WHITE);
-                        snackbar.setTextColor(Color.BLACK);
-                        snackbar.show();
-                    } else {
+                    if (validarCampos(view) == true) {
                         salvarNoBancoDeDados();
                         finish();
                     }
+
                 }
             });
         } else {
@@ -228,5 +218,37 @@ public class telaCadastroTerapia extends AppCompatActivity {
                         Log.d("banco_dados_salvos", "Sucesso ao atualizar dados!");
                     }
                 });
+    }
+
+    public boolean validarCampos(View view) {
+        String nome = et_nome.getText().toString();
+        String end = et_endereco.getText().toString();
+        String profissional = et_profissional.getText().toString();
+        String horario = et_horario.getText().toString();
+        String tel = et_telefone.getText().toString();
+
+        if (nome.isEmpty() || end.isEmpty() || profissional.isEmpty() || horario.isEmpty() || tel.isEmpty()) {
+            gerarSnackBar(view, mensagens[0]);
+        } else if(nome.length() <2){
+            gerarSnackBar(view, mensagens[1]);
+            return false;
+        }else if(end.length()<3){
+            gerarSnackBar(view, mensagens[2]);
+            return false;
+        }else if(profissional.length() <2){
+            gerarSnackBar(view, mensagens[3]);
+            return false;
+        }else if(tel.length() <11){
+            gerarSnackBar(view, mensagens[4]);
+        }
+
+        return true;
+    }
+
+    public void gerarSnackBar(View view, String texto){
+        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(Color.WHITE);
+        snackbar.setTextColor(Color.BLACK);
+        snackbar.show();
     }
 }

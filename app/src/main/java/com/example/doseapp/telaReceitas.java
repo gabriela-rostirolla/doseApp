@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -61,10 +62,11 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
     }
 
     protected void listarReceitas(){
+        receitaList.clear();
         rv_listaReceita.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Receitas")
                 .whereEqualTo("id do idoso", id)
-                //.orderBy("dia de criacao", Query.Direction.DESCENDING)
+                .orderBy("dia de criacao", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

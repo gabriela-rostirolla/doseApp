@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -176,6 +177,7 @@ public class telaCadastroReceita extends AppCompatActivity {
         receitaMap.put("profissional", profissional);
         receitaMap.put("data para renovar", dataRen);
         receitaMap.put("id do idoso", id);
+        receitaMap.put("dia de criacao", new Date());
 
         firebaseFirestore.collection("Receitas")
                 .add(receitaMap)

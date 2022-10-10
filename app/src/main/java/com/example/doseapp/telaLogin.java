@@ -39,13 +39,16 @@ public class telaLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_login);
         getSupportActionBar().hide();
-        boolean desconectado = getIntent().getBooleanExtra("Sair", false);
-        if (desconectado == true) {
-            FirebaseAuth.getInstance().signOut();
+//        boolean desconectado = getIntent().getBooleanExtra("Sair", false);
+//        if (desconectado == true) {
+//            FirebaseAuth.getInstance().signOut();
+//            Intent intent = new Intent(telaLogin.this, telaLogin.class);
+//            startActivity(intent);
 //            finish();
-        }
+//        }
         FirebaseUser userAtual = FirebaseAuth.getInstance().getCurrentUser();
         if (userAtual != null) {
+//            System.out.println(userAtual.getUid());
             telaPrincipal();
         }
         iniciarComponentes();
