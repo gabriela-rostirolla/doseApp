@@ -51,13 +51,11 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         Terapia terapia = terapiaList.get(position);
         viewHolder.tv_nomeTerapia.setText(terapia.getNome());
         viewHolder.tv_horaTerapia.setText(terapia.getHorario());
-
         List<String> list = terapia.getDiasSemana();
         Calendar calendar = Calendar.getInstance();
 
         int diaSemana = calendar.get(Calendar.DAY_OF_WEEK);
         String diaSemAt = "";
-
         if (diaSemana == 1) diaSemAt = "dom";
         else if (diaSemana == 2) diaSemAt = "seg";
         else if (diaSemana == 3) diaSemAt = "ter";
@@ -68,12 +66,19 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
 
         String hr[] = terapia.getHorario().split(":");
         if (list.contains(diaSemAt)) {
-            if (calendar.get(Calendar.HOUR_OF_DAY) <= Integer.parseInt(hr[0])) {
+            if (Calendar.HOUR_OF_DAY == Integer.parseInt(hr[0])) {
+                if (Calendar.MINUTE >= Integer.parseInt(hr[1])) {
+                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+                }else{
+                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+                }
+            } else if (calendar.get(Calendar.HOUR_OF_DAY) < Integer.parseInt(hr[0])) {
                 viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-            }else{
+            } else {
                 viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
             }
         }
+
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).equals("dom"))
                 viewHolder.tv_dom.setTextColor(Color.parseColor("#6495ED"));
@@ -150,11 +155,9 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
                     builder.show();
                 }
             });
-
             this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }
-
         @Override
         public void onClick(View view) {
             onItemClick.OnItemClick(getAbsoluteAdapterPosition());

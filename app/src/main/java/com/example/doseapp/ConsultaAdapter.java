@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +66,17 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
             if (Integer.parseInt(dataAt[1]) <= Integer.parseInt(dataCad[1])) {
                 if (data.equals(consulta.getData())) {
                     viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor("#32CD32"));
+//                    if (Calendar.HOUR_OF_DAY == Integer.parseInt(hr[0])) {
+//                        if (Calendar.MINUTE >= Integer.parseInt(hr[1])) {
+//                            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+//                        }else{
+//                            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+//                        }
+//                    } else if (calendar.get(Calendar.HOUR_OF_DAY) < Integer.parseInt(hr[0])) {
+//                        viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+//                    } else {
+//                        viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+//                    }
                 } else if (Integer.parseInt(dataAt[0]) < Integer.parseInt(dataCad[0])) {
                     viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor("#6495ED"));
                 } else {

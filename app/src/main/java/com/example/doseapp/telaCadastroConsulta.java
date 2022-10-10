@@ -163,7 +163,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
         consultaMap.put("lembre-me", swt_lembreConsulta.isChecked());
         consultaMap.put("id do idoso", id);
         consultaMap.put("dia de criacao", new Date());
-
+//        consultaMap.put("status", "ativ")
         firebaseFirestore.collection("Consultas")
                 .add(consultaMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
