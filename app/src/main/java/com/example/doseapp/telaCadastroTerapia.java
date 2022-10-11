@@ -9,6 +9,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,12 +25,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,7 +48,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private String[] mensagens = {"Preencha todos os campos", "Digite um nome mais longo", "Digite um endereço válido", "Digite um nome válido de profissional", "Digite um número de telefone válido"};
     private Chip chipDom, chipSeg, chipTer, chipQua, chipQui, chipSex, chipSab;
-    private static String idTerapia;
+    private static String idTerapia, nomeIdoso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,25 @@ public class telaCadastroTerapia extends AppCompatActivity {
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+                    String[] hr = et_horario.getText().toString().split(":");
+                    if (swt_lembre.isChecked()) {
+                        ArrayList<Integer> list = new ArrayList<>();
+                        if (chipDom.isChecked()) list.add(Calendar.SUNDAY);
+                        if (chipSeg.isChecked()) list.add(Calendar.MONDAY);
+                        if (chipTer.isChecked()) list.add(Calendar.TUESDAY);
+                        if (chipQua.isChecked()) list.add(Calendar.WEDNESDAY);
+                        if (chipQui.isChecked()) list.add(Calendar.THURSDAY);
+                        if (chipSex.isChecked()) list.add(Calendar.SUNDAY);
+                        if (chipSab.isChecked()) list.add(Calendar.SATURDAY);
+
+                        intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
+                        intent.putExtra(AlarmClock.EXTRA_DAYS, list);
+                        intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
+                        intent.putExtra(AlarmClock.EXTRA_MESSAGE,et_nome.getText().toString());
+
+                        startActivity(intent);
+                    }
                     editarBancoDeDados();
                     finish();
                 }
@@ -229,23 +252,22 @@ public class telaCadastroTerapia extends AppCompatActivity {
 
         if (nome.isEmpty() || end.isEmpty() || profissional.isEmpty() || horario.isEmpty() || tel.isEmpty()) {
             gerarSnackBar(view, mensagens[0]);
-        } else if(nome.length() <2){
+        } else if (nome.length() < 2) {
             gerarSnackBar(view, mensagens[1]);
             return false;
-        }else if(end.length()<3){
+        } else if (end.length() < 3) {
             gerarSnackBar(view, mensagens[2]);
             return false;
-        }else if(profissional.length() <2){
+        } else if (profissional.length() < 2) {
             gerarSnackBar(view, mensagens[3]);
             return false;
-        }else if(tel.length() <11){
+        } else if (tel.length() < 11) {
             gerarSnackBar(view, mensagens[4]);
         }
-
         return true;
     }
 
-    public void gerarSnackBar(View view, String texto){
+    public void gerarSnackBar(View view, String texto) {
         Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
         snackbar.setBackgroundTint(Color.WHITE);
         snackbar.setTextColor(Color.BLACK);
