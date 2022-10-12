@@ -26,8 +26,9 @@ public class visualizarFotoReceita extends AppCompatActivity {
 
         String img = getIntent().getStringExtra("foto");
 
-        if(img == null){
+        if(img == null||img.isEmpty()){
             Toast.makeText(this, "Nenhuma imagem encontrada", Toast.LENGTH_SHORT).show();
+            finish();
         }else{
             byte[] imgBytes;
             imgBytes = Base64.decode(img, Base64.DEFAULT);

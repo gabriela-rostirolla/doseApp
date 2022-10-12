@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -65,12 +66,11 @@ public class telaCadastroReceita extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        foto = "";
         idRec = getIntent().getStringExtra("id receita");
 
         if (idRec == null) {
             actionBar.setTitle(R.string.cadastrar_receita);
-
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -85,6 +85,7 @@ public class telaCadastroReceita extends AppCompatActivity {
             preencherDadosReceita();
             tv_dataRen.setTextColor(Color.BLACK);
             tv_data.setTextColor(Color.BLACK);
+            tv_fotoReceita.setText(R.string.atualizarFoto);
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -94,7 +95,6 @@ public class telaCadastroReceita extends AppCompatActivity {
                     }
                 }
             });
-
         }
 
         tv_data.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +225,10 @@ public class telaCadastroReceita extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 foto = value.getString("foto");
+                byte[] imgBytes;
+                imgBytes = Base64.decode(foto, Base64.DEFAULT);
+                Bitmap imgBitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.length);
+                imgBtn_visRec.setImageBitmap(imgBitmap);
                 et_nome.setText(value.getString("nome"));
                 et_hospital.setText(value.getString("hospital"));
                 et_tel.setText(value.getString("telefone"));
@@ -266,6 +270,7 @@ public class telaCadastroReceita extends AppCompatActivity {
                         Intent data = result.getData();
                         try {
                             Bitmap fotoBitmap = (Bitmap) data.getExtras().get("data");
+                            imgBtn_visRec.setImageBitmap(fotoBitmap);
                             ByteArrayOutputStream fotoStream = new ByteArrayOutputStream();
                             fotoBitmap.compress(Bitmap.CompressFormat.PNG, 90, fotoStream);
                             byte[] fotoByte = fotoStream.toByteArray();

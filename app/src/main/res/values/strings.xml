@@ -66,6 +66,7 @@
         <item>Alimentação</item>
     </string-array>
 
+    <string name="atualizarFoto">Atualizar foto</string>
     <string name="cuidadorResp">Cuidador Responsável</string>
     <string name="recomendacao">Recomendação/Finalidade</string>
     <string name="nome_idoso">Nome idoso</string>

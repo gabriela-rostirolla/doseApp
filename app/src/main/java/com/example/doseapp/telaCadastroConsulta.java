@@ -33,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -42,7 +43,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
 
     private EditText et_nome, et_profissional, et_end, et_tel;
     private Button btn_salvar;
-    private String[] mensagens = {"Preencha todos os dados",
+    private String[] mensagens = {"Preencha todos os campos",
             "Digite um nome com mais de três letras",
             "Digite um número de telefone válido",
             "Digite um endereço válido",
@@ -134,15 +135,26 @@ public class telaCadastroConsulta extends AppCompatActivity {
     }
 
     protected void definirEvento() {
+        String nomeIdoso = getIntent().getStringExtra("nome idoso");
         String[] data = tv_data.getText().toString().split("/");
-        String aux = data[2] + data[1] + data[0];
+        String[] hr = tv_horario.getText().toString().split(":");
+        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(data[2]),
+                Integer.parseInt(data[1]) - 1,
+                Integer.parseInt(data[0]),
+                Integer.parseInt(hr[0]),
+                Integer.parseInt(hr[1]));
+
         Intent intent = new Intent(Intent.ACTION_INSERT)
                 .setData(CalendarContract.Events.CONTENT_URI)
-                .putExtra(CalendarContract.Events.TITLE, et_nome.getText().toString())
+                .putExtra(CalendarContract.Events.TITLE, nomeIdoso+" - "+et_nome.getText().toString())
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, et_end.getText().toString())
-                .putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, tv_horario.getText().toString())
-                .putExtra(CalendarContract.Events.DTSTART, Integer.parseInt(aux))
-                .putExtra(CalendarContract.Events.CALENDAR_COLOR, android.R.color.holo_blue_dark);
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calDate.getTimeInMillis())
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calDate.getTimeInMillis())
+                .putExtra(CalendarContract.Events.DESCRIPTION, "Profissional: " +
+                        et_profissional.getText().toString() +
+                        "\nTelefone: " +
+                        et_tel.getText().toString());
+
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }

@@ -118,9 +118,12 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String nomeIdoso = getActivity().getIntent().getStringExtra("nome");
+                System.out.println(nomeIdoso);
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), telaCadastroConsulta.class);
                 intent.putExtra("id", id);
+                intent.putExtra("nome idoso", nomeIdoso);
                 startActivity(intent);
             }
         });
@@ -132,6 +135,7 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
         Intent intent = new Intent();
         intent.setClass(getActivity(), telaCadastroConsulta.class);
         intent.putExtra("id consulta", consultaList.get(position).getId());
+        intent.putExtra("nome idoso", getActivity().getIntent().getStringExtra("nome"));
         startActivity(intent);
     }
 }
