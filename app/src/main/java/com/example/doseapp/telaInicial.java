@@ -70,7 +70,6 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     protected void listarIdososCuidados() {
         idosoCuidadoList.clear();
         rv_listaIdosos.setLayoutManager(new LinearLayoutManager(this));
-
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseFirestore.collection("Idosos cuidados")
                 .whereArrayContains("cuidador id", userId)

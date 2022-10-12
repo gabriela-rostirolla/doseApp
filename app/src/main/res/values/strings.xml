@@ -18,12 +18,12 @@
         <item>Pendente</item>
     </string-array>
 
-<!--    <string-array name="status_terapia">-->
-<!--        <item>Inativo</item>-->
-<!--        <item>Ativo</item>-->
-<!--        <item>Finalizado</item>-->
-<!--        <item>Pendente</item>-->
-<!--    </string-array>-->
+    <!--    <string-array name="status_terapia">-->
+    <!--        <item>Inativo</item>-->
+    <!--        <item>Ativo</item>-->
+    <!--        <item>Finalizado</item>-->
+    <!--        <item>Pendente</item>-->
+    <!--    </string-array>-->
 
     <string-array name="unidades_medicamentos">
         <item>mg</item>
@@ -78,6 +78,7 @@
     <string name="fazer_login">Logar-se</string>
     <string name="lembre_me">Lembre-me</string>
     <string name="salvar">Salvar</string>
+    <string name="foto">Adicionar foto</string>
     <string name="continuar">Continuar</string>
     <string name="cadastrar_medicamento">Cadastrar Medicamento</string>
     <string name="cadastrar_receita">Cadastrar Receita</string>

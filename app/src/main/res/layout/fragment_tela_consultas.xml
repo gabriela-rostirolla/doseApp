@@ -18,7 +18,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_listaConsulta"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_nenhumConsulCad"
@@ -35,12 +39,12 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_addConsulta"
             style="@style/floatingactionbutton"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="25dp"
             android:clickable="true"
             android:src="@drawable/ic_add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/rv_listaConsulta"
+            app:layout_constraintEnd_toEndOf="@id/rv_listaConsulta" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

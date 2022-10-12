@@ -79,24 +79,8 @@ public class telaCadastroTerapia extends AppCompatActivity {
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
-                    String[] hr = et_horario.getText().toString().split(":");
                     if (swt_lembre.isChecked()) {
-                        ArrayList<Integer> list = new ArrayList<>();
-                        if (chipDom.isChecked()) list.add(Calendar.SUNDAY);
-                        if (chipSeg.isChecked()) list.add(Calendar.MONDAY);
-                        if (chipTer.isChecked()) list.add(Calendar.TUESDAY);
-                        if (chipQua.isChecked()) list.add(Calendar.WEDNESDAY);
-                        if (chipQui.isChecked()) list.add(Calendar.THURSDAY);
-                        if (chipSex.isChecked()) list.add(Calendar.SUNDAY);
-                        if (chipSab.isChecked()) list.add(Calendar.SATURDAY);
-
-                        intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
-                        intent.putExtra(AlarmClock.EXTRA_DAYS, list);
-                        intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
-                        intent.putExtra(AlarmClock.EXTRA_MESSAGE,et_nome.getText().toString());
-
-                        startActivity(intent);
+                        definirAlarme();
                     }
                     editarBancoDeDados();
                     finish();
@@ -127,6 +111,25 @@ public class telaCadastroTerapia extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
+    }
+
+    private void definirAlarme() {
+        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+        String[] hr = et_horario.getText().toString().split(":");
+        ArrayList<Integer> list = new ArrayList<>();
+        if (chipDom.isChecked()) list.add(Calendar.SUNDAY);
+        if (chipSeg.isChecked()) list.add(Calendar.MONDAY);
+        if (chipTer.isChecked()) list.add(Calendar.TUESDAY);
+        if (chipQua.isChecked()) list.add(Calendar.WEDNESDAY);
+        if (chipQui.isChecked()) list.add(Calendar.THURSDAY);
+        if (chipSex.isChecked()) list.add(Calendar.SUNDAY);
+        if (chipSab.isChecked()) list.add(Calendar.SATURDAY);
+
+        intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
+        intent.putExtra(AlarmClock.EXTRA_DAYS, list);
+        intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
+        intent.putExtra(AlarmClock.EXTRA_MESSAGE,et_nome.getText().toString());
+        startActivity(intent);
     }
 
     protected void inicializarComponentes() {
@@ -169,7 +172,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
         terapiaMap.put("profissional", profissional);
         terapiaMap.put("horario", horario);
         terapiaMap.put("telefone", tel);
-        terapiaMap.put("lembre-me", swt_lembre.isChecked());
+//        terapiaMap.put("lembre-me", swt_lembre.isChecked());
         terapiaMap.put("id do idoso", id);
         terapiaMap.put("dias da semana", listDiasSemana);
         terapiaMap.put("dia de criacao", new Date());

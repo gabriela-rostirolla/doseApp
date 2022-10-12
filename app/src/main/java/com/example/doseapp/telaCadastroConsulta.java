@@ -7,35 +7,33 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,9 +42,13 @@ public class telaCadastroConsulta extends AppCompatActivity {
 
     private EditText et_nome, et_profissional, et_end, et_tel;
     private Button btn_salvar;
-    private String[] mensagens = {"Preencha todos os dados"};
+    private String[] mensagens = {"Preencha todos os dados",
+            "Digite um nome com mais de três letras",
+            "Digite um número de telefone válido",
+            "Digite um endereço válido",
+            "Digite o nome do profissional com mais de três letras"};
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private TextView et_data, et_horario;
+    private TextView tv_data, tv_horario;
     private Switch swt_lembreConsulta;
     private static String idConsulta;
     private DatePickerDialog.OnDateSetListener dateSetListener;
@@ -56,101 +58,128 @@ public class telaCadastroConsulta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_cadastro_consulta);
         inicializarComponentes();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         idConsulta = getIntent().getStringExtra("id consulta");
         if (idConsulta == null) {
-            ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(R.string.cadastrar_consulta);
-            actionBar.setDisplayHomeAsUpEnabled(true);
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (validarCampos(view) == true) {
+                        if (swt_lembreConsulta.isChecked()) {
+                            definirEvento();
+                        }
                         salvarNoBancoDeDados();
                         finish();
                     }
                 }
             });
         } else {
-            ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(R.string.editar);
-            actionBar.setDisplayHomeAsUpEnabled(true);
             preencherDadosConsulta();
-            et_data.setTextColor(Color.BLACK);
-            et_horario.setTextColor(Color.BLACK);
+            tv_data.setTextColor(Color.BLACK);
+            tv_horario.setTextColor(Color.BLACK);
             btn_salvar.setText("Editar");
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (validarCampos(view) == true) {
                         editarBancoDeDados();
+                        if (swt_lembreConsulta.isChecked()) {
+                            definirEvento();
+                        }
                         finish();
                     }
                 }
             });
         }
 
-        et_data.setOnClickListener(new View.OnClickListener() {
+        tv_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int ano = calendar.get(Calendar.YEAR);
-                int mes = calendar.get(Calendar.MONTH);
-                int dia = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroConsulta.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int i, int i2, int i3) {
-                                i2++;
-
-                                String mes = "";
-                                String dia = "";
-                                if (i2 < 10) mes = "0" + i2;
-                                else mes = String.valueOf(i2);
-                                if (i3 < 10) dia = "0" + i3;
-                                else dia = String.valueOf(i3);
-                                et_data.setText(dia + "/" + mes + "/" + i);
-                                et_data.setTextColor(Color.BLACK);
-                            }
-                        }, ano, mes, dia);
-                datePickerDialog.show();
+                mostrarCalendario(tv_data);
             }
         });
 
 
-        et_horario.setOnClickListener(new View.OnClickListener() {
+        tv_horario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int hora = calendar.get(Calendar.HOUR_OF_DAY);
-                int min = calendar.get(Calendar.MINUTE);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(telaCadastroConsulta.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int i, int i2) {
-                                if (i2 < 10) {
-                                    et_horario.setText(i + ":" + 0 + i2);
-                                    et_horario.setTextColor(Color.BLACK);
-                                } else {
-                                    et_horario.setText(i + ":" + i2);
-                                    et_horario.setTextColor(Color.BLACK);
-                                }
-                            }
-                        }, hora, min, true);
-                timePickerDialog.show();
+                mostrarRelogio(tv_horario);
             }
         });
+    }
+
+    protected void mostrarRelogio(TextView tv) {
+        Calendar calendar = Calendar.getInstance();
+        int hora = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(telaCadastroConsulta.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int i, int i2) {
+                        if (i2 < 10) {
+                            tv.setText(i + ":" + 0 + i2);
+                            tv.setTextColor(Color.BLACK);
+                        } else {
+                            tv.setText(i + ":" + i2);
+                            tv.setTextColor(Color.BLACK);
+                        }
+                    }
+                }, hora, min, true);
+        timePickerDialog.show();
+    }
+
+    protected void definirEvento() {
+        String[] data = tv_data.getText().toString().split("/");
+        String aux = data[2] + data[1] + data[0];
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, et_nome.getText().toString())
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, et_end.getText().toString())
+                .putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, tv_horario.getText().toString())
+                .putExtra(CalendarContract.Events.DTSTART, Integer.parseInt(aux))
+                .putExtra(CalendarContract.Events.CALENDAR_COLOR, android.R.color.holo_blue_dark);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    protected void mostrarCalendario(TextView tv) {
+        Calendar calendar = Calendar.getInstance();
+        int ano = calendar.get(Calendar.YEAR);
+        int mes = calendar.get(Calendar.MONTH);
+        int dia = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroConsulta.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int i, int i2, int i3) {
+                        i2++;
+
+                        String mes = "";
+                        String dia = "";
+                        if (i2 < 10) mes = "0" + i2;
+                        else mes = String.valueOf(i2);
+                        if (i3 < 10) dia = "0" + i3;
+                        else dia = String.valueOf(i3);
+                        tv.setText(dia + "/" + mes + "/" + i);
+                        tv.setTextColor(Color.BLACK);
+                    }
+                }, ano, mes, dia);
+        datePickerDialog.show();
     }
 
     protected void salvarNoBancoDeDados() {
         String nome = et_nome.getText().toString();
         String endereco = et_end.getText().toString();
-        String data = et_data.getText().toString();
+        String data = tv_data.getText().toString();
         String tel = et_tel.getText().toString();
         String profissional = et_profissional.getText().toString();
-        String horario = et_horario.getText().toString();
+        String horario = tv_horario.getText().toString();
         String id = getIntent().getStringExtra("id");
 
         Map<String, Object> consultaMap = new HashMap<>();
@@ -163,7 +192,6 @@ public class telaCadastroConsulta extends AppCompatActivity {
         consultaMap.put("lembre-me", swt_lembreConsulta.isChecked());
         consultaMap.put("id do idoso", id);
         consultaMap.put("dia de criacao", new Date());
-//        consultaMap.put("status", "ativ")
         firebaseFirestore.collection("Consultas")
                 .add(consultaMap)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -185,41 +213,38 @@ public class telaCadastroConsulta extends AppCompatActivity {
         et_profissional = findViewById(R.id.et_profissionalConsulta);
         et_end = findViewById(R.id.et_enderecoConsulta);
         et_tel = findViewById(R.id.et_telefoneConsulta);
-        et_data = findViewById(R.id.et_dataConsul);
+        tv_data = findViewById(R.id.et_dataConsul);
         swt_lembreConsulta = findViewById(R.id.swt_lembreConculta);
-        et_horario = findViewById(R.id.et_horaConsulta);
+        tv_horario = findViewById(R.id.et_horaConsulta);
         btn_salvar = findViewById(R.id.btn_salvarConsulta);
     }
 
-    protected void gerarSnackBar(View view, String texto) {
-        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.WHITE);
-        snackbar.setTextColor(Color.BLACK);
-        snackbar.show();
+    protected void gerarToast(String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 
-    public boolean validarCampos(View view) {
+    protected boolean validarCampos(View view) {
         String nome = et_nome.getText().toString();
         String endereco = et_end.getText().toString();
-        String data = et_data.getText().toString();
+        String data = tv_data.getText().toString();
         String tel = et_tel.getText().toString();
         String profissional = et_profissional.getText().toString();
-        String horario = et_horario.getText().toString();
+        String horario = tv_horario.getText().toString();
 
         if (nome.isEmpty() || endereco.isEmpty() || data.isEmpty() || tel.isEmpty() || profissional.isEmpty() || horario.isEmpty()) {
-            gerarSnackBar(view, mensagens[0]);
+            gerarToast(mensagens[0]);
             return false;
         } else if (nome.length() < 4) {
-            gerarSnackBar(view, "Digite um nome com mais de três letras");
+            gerarToast(mensagens[1]);
             return false;
         } else if (validarTelefone(tel) == false) {
-            gerarSnackBar(view, "Digite um número de telefone válido");
+            gerarToast(mensagens[2]);
             return false;
         } else if (endereco.length() < 4) {
-            gerarSnackBar(view, "Digite um endereço válido");
+            gerarToast(mensagens[3]);
             return false;
         } else if (profissional.length() < 3) {
-            gerarSnackBar(view, "Digite o nome do profissional com mais de três letras");
+            gerarToast(mensagens[4]);
             return false;
         }
         return true;
@@ -231,7 +256,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
         return (matcher.matches());
     }
 
-    public void preencherDadosConsulta() {
+    protected void preencherDadosConsulta() {
         DocumentReference document = firebaseFirestore.collection("Consultas").document(idConsulta);
         document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -240,24 +265,24 @@ public class telaCadastroConsulta extends AppCompatActivity {
                 et_profissional.setText(value.getString("profissional"));
                 et_end.setText(value.getString("endereco"));
                 et_tel.setText(value.getString("telefone"));
-                et_data.setText(value.getString("data"));
-                et_horario.setText(value.getString("horario"));
+                tv_data.setText(value.getString("data"));
+                tv_horario.setText(value.getString("horario"));
                 swt_lembreConsulta.setChecked(value.getBoolean("lembre-me"));
             }
         });
     }
 
-    public void editarBancoDeDados() {
+    protected void editarBancoDeDados() {
         String nome = et_nome.getText().toString();
         String profissional = et_profissional.getText().toString();
         String end = et_end.getText().toString();
         String tel = et_tel.getText().toString();
-        String data = et_data.getText().toString();
-        String horario = et_horario.getText().toString();
+        String data = tv_data.getText().toString();
+        String horario = tv_horario.getText().toString();
         boolean lembre = swt_lembreConsulta.isChecked();
 
         firebaseFirestore.collection("Consultas").document(idConsulta)
-                .update("nome", nome, "profissional", profissional, "endereco", end, "data", data, "horario", horario, "lembre-me", lembre)
+                .update("nome", nome, "profissional", profissional, "endereco", end, "data", data, "horario", horario, "lembre-me", lembre, "telefone", tel)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

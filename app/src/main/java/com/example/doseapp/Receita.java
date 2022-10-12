@@ -12,6 +12,15 @@ public class Receita {
     private String dataRenovar;
     private String id;
     private boolean lembre;
+    private String urlImagem;
+
+    public String getUrlImagem() {
+        return urlImagem;
+    }
+
+    public void setUrlImagem(String urlImagem) {
+        this.urlImagem = urlImagem;
+    }
 
     public Receita() {
     }
