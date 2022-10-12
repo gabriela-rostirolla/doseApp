@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -50,6 +51,17 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -118,6 +130,7 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), telaCadastroReceita.class);
                 intent.putExtra("id", id);
+                intent.putExtra("nome idoso", getActivity().getIntent().getStringExtra("nome"));
                 startActivity(intent);
             }
         });
@@ -129,15 +142,7 @@ public class telaReceitas extends Fragment implements ReceitaAdapter.OnItemClick
         Intent intent = new Intent();
         intent.setClass(getActivity(), telaCadastroReceita.class);
         intent.putExtra("id receita", receitaList.get(position).getId());
+        intent.putExtra("nome idoso", getActivity().getIntent().getStringExtra("nome"));
         startActivity(intent);
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            imageView.setImageBitmap(imageBitmap);
-//        }
-//    }
 }

@@ -17,15 +17,19 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,8 +46,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class telaCadastroReceita extends AppCompatActivity {
 
@@ -52,8 +59,13 @@ public class telaCadastroReceita extends AppCompatActivity {
     private Button btn_salvar;
     private DatePickerDialog.OnDateSetListener dateSetListenerData;
     private DatePickerDialog.OnDateSetListener dateSetListenerDataRen;
-    private String[] mensagens = {"Preencha todos os campos"};
+    private String[] mensagens = {"Preencha todos os campos",
+            "Digite um nome com mais de três letras",
+            "Digite um número de telefone válido",
+            "Digite um hospital válido",
+            "Digite o nome do profissional com mais de três letras"};
     private ImageButton imgBtn_visRec;
+    private Switch lembre;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private static String idRec;
     private static String foto;
@@ -66,6 +78,7 @@ public class telaCadastroReceita extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         foto = "";
         idRec = getIntent().getStringExtra("id receita");
 
@@ -90,6 +103,9 @@ public class telaCadastroReceita extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if (validarCampos(view)) {
+                        if (lembre.isChecked()) {
+                            definirEvento();
+                        }
                         editarBancoDeDados();
                         finish();
                     }
@@ -129,6 +145,29 @@ public class telaCadastroReceita extends AppCompatActivity {
         });
     }
 
+    protected void definirEvento() {
+        String nomeIdoso = getIntent().getStringExtra("nome idoso");
+        String[] data = tv_dataRen.getText().toString().split("/");
+        GregorianCalendar calDate = new GregorianCalendar(Integer.parseInt(data[2]),
+                Integer.parseInt(data[1]) - 1,
+                Integer.parseInt(data[0]));
+
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.Events.TITLE, nomeIdoso + " - " + et_nome.getText().toString())
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, et_hospital.getText().toString())
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calDate.getTimeInMillis())
+                .putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true)
+                .putExtra(CalendarContract.Events.DESCRIPTION, "Profissional: " +
+                        et_profissional.getText().toString() +
+                        "\nTelefone: " +
+                        et_tel.getText().toString());
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
     protected void inicializarComponentes() {
         et_nome = findViewById(R.id.et_nomeReceita);
         tv_data = findViewById(R.id.tv_dataReceita);
@@ -139,6 +178,7 @@ public class telaCadastroReceita extends AppCompatActivity {
         tv_dataRen = findViewById(R.id.tv_dataRenReceita);
         tv_fotoReceita = findViewById(R.id.tv_fotoReceita);
         btn_salvar = findViewById(R.id.btn_salvarCadReceita);
+        lembre = findViewById(R.id.swt_lembreReceita);
     }
 
     protected void salvarNoBancoDeDados() {
@@ -176,7 +216,7 @@ public class telaCadastroReceita extends AppCompatActivity {
                 });
     }
 
-    public void visualizarCalendario(TextView tv_data) {
+    protected void visualizarCalendario(TextView tv_data) {
         Calendar calendar = Calendar.getInstance();
         int ano = calendar.get(Calendar.YEAR);
         int mes = calendar.get(Calendar.MONTH);
@@ -210,7 +250,7 @@ public class telaCadastroReceita extends AppCompatActivity {
         String dataRen = tv_dataRen.getText().toString();
 
         firebaseFirestore.collection("Receitas").document(idRec)
-                .update("nome", nome, "data", data, "hospital", hosp, "telefone", tel, "profissional", profissional, "data para renovar", dataRen, "foto",foto)
+                .update("nome", nome, "data", data, "hospital", hosp, "telefone", tel, "profissional", profissional, "data para renovar", dataRen, "foto", foto)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -225,10 +265,12 @@ public class telaCadastroReceita extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 foto = value.getString("foto");
-                byte[] imgBytes;
-                imgBytes = Base64.decode(foto, Base64.DEFAULT);
-                Bitmap imgBitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.length);
-                imgBtn_visRec.setImageBitmap(imgBitmap);
+                if (!foto.isEmpty() && foto != null) {
+                    byte[] imgBytes;
+                    imgBytes = Base64.decode(foto, Base64.DEFAULT);
+                    Bitmap imgBitmap = BitmapFactory.decodeByteArray(imgBytes, 0, imgBytes.length);
+                    imgBtn_visRec.setImageBitmap(imgBitmap);
+                }
                 et_nome.setText(value.getString("nome"));
                 et_hospital.setText(value.getString("hospital"));
                 et_tel.setText(value.getString("telefone"));
@@ -239,11 +281,8 @@ public class telaCadastroReceita extends AppCompatActivity {
         });
     }
 
-    protected void gerarSnackBar(View view, String texto) {
-        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.WHITE);
-        snackbar.setTextColor(Color.BLACK);
-        snackbar.show();
+    protected void gerarToast(String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 
     protected boolean validarCampos(View view) {
@@ -255,10 +294,39 @@ public class telaCadastroReceita extends AppCompatActivity {
         String dataRen = tv_dataRen.getText().toString();
 
         if (nome.isEmpty() || data.isEmpty() || hospital.isEmpty() || tel.isEmpty() || profissional.isEmpty() || dataRen.isEmpty()) {
-            gerarSnackBar(view, mensagens[0]);
+            gerarToast(mensagens[0]);
+            return false;
+        } else if (nome.length() < 4) {
+            gerarToast(mensagens[1]);
+            return false;
+        } else if (!validarTelefone(tel)) {
+            gerarToast(mensagens[2]);
+            return false;
+        } else if (hospital.length() < 3) {
+            gerarToast(mensagens[3]);
+            return false;
+        } else if (profissional.length() < 3) {
+            gerarToast(mensagens[4]);
             return false;
         }
         return true;
+    }
+
+    protected boolean validarTelefone(String tel) {
+        Pattern pattern = Pattern.compile("^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
+        Matcher matcher = pattern.matcher(tel);
+        return (matcher.matches());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(

@@ -23,51 +23,40 @@
             />
         <activity
             android:name=".telaDiarios"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false"/>
         <activity
             android:name=".telaCadastroDiarioAtividade"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false"/>
         <activity
             android:name=".telaCadastroConsulta"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false" />
         <activity
             android:name=".telaCadastroDiarioAlimentacao"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false" />
         <activity
             android:name=".telaCadastroTerapia"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false" />
         <activity
             android:name=".telaCadastroReceita"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false" />
         <activity
             android:name=".telaDadosDosIdosos"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false" />
         <activity
             android:name=".telaCadastroMedicamento"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false"/>
         <activity
             android:name=".telaCadastroIdosoCuidado"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false"/>
         <activity
             android:name=".telaPerfil"
-            android:exported="false"
-            android:parentActivityName=".telaInicial" />
+            android:exported="false"/>
         <activity
             android:name=".telaInicial"
             android:exported="false" />
         <activity
             android:name=".telaCadastro"
-            android:exported="false"
-            android:parentActivityName=".telaLogin" />
+            android:exported="false"/>
         <activity
             android:name=".telaLogin"
             android:exported="true">

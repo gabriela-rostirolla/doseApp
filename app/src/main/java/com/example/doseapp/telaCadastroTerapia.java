@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.AlarmClock;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -132,6 +133,17 @@ public class telaCadastroTerapia extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     protected void inicializarComponentes() {
         et_nome = findViewById(R.id.et_nomeTerapia);
         et_endereco = findViewById(R.id.et_enderecoTerapia);

@@ -100,6 +100,9 @@ public class telaPerfil extends AppCompatActivity {
                 builder.create();
                 builder.show();
                 return true;
+            case android.R.id.home:
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

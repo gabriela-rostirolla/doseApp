@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -146,7 +147,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
 
         Intent intent = new Intent(Intent.ACTION_INSERT)
                 .setData(CalendarContract.Events.CONTENT_URI)
-                .putExtra(CalendarContract.Events.TITLE, nomeIdoso+" - "+et_nome.getText().toString())
+                .putExtra(CalendarContract.Events.TITLE, nomeIdoso + " - " + et_nome.getText().toString())
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, et_end.getText().toString())
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calDate.getTimeInMillis())
                 .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calDate.getTimeInMillis())
@@ -266,6 +267,17 @@ public class telaCadastroConsulta extends AppCompatActivity {
         Pattern pattern = Pattern.compile("^((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$");
         Matcher matcher = pattern.matcher(tel);
         return (matcher.matches());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     protected void preencherDadosConsulta() {
