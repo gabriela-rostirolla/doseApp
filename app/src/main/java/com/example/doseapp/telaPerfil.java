@@ -89,7 +89,7 @@ public class telaPerfil extends AppCompatActivity {
                                 FirebaseAuth auth = FirebaseAuth.getInstance();
                                 auth.signOut();
                                 startActivity(new Intent(telaPerfil.this, telaLogin.class));
-                                finish();
+                                onDestroy();
                             }
                         })
                         .setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -106,6 +106,11 @@ public class telaPerfil extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     protected void inicializarComponentes() {

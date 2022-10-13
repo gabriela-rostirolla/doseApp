@@ -159,7 +159,6 @@ public class telaLogin extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     protected void telaPrincipal() {
