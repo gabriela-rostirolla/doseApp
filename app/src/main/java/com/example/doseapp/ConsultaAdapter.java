@@ -3,6 +3,7 @@ package com.example.doseapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.speech.RecognitionService;
@@ -103,7 +104,6 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
         ImageButton imgBtn_excluirConsulta, imgBtn_alarme;
         OnItemClick onItemClick;
         View v_indicadorConsulta;
-
 
         public ConsultaViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
