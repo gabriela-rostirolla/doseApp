@@ -147,7 +147,7 @@ public class telaLogin extends AppCompatActivity {
                         throw task.getException();
                     } catch (FirebaseAuthInvalidUserException exception) {
                         erro = "Este E-mail não existe";
-                    } catch (FirebaseAuthWeakPasswordException exception) {
+                    } catch (FirebaseAuthInvalidCredentialsException exception) {
                         erro = "Senha incorreta";
                     } catch (Exception exception) {
                         erro = "Não foi possível realizar login";

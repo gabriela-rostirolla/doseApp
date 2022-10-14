@@ -138,9 +138,11 @@ public class telaCadastroReceita extends AppCompatActivity {
         imgBtn_visRec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(telaCadastroReceita.this, visualizarFotoReceita.class);
-                intent.putExtra("foto", foto);
-                startActivity(intent);
+                if (foto != null && foto.isEmpty()) {
+                    Intent intent = new Intent(telaCadastroReceita.this, visualizarFotoReceita.class);
+                    intent.putExtra("foto", foto);
+                    startActivity(intent);
+                }
             }
         });
     }

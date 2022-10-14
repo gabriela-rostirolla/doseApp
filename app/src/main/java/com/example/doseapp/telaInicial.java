@@ -46,6 +46,11 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.idosos_cadastrados);
 
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            Intent intent = new Intent(telaInicial.this, telaLogin.class);
+            startActivity(intent);
+            finish();
+        }
         fab_addIdosoCuidado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

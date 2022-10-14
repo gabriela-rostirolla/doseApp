@@ -215,8 +215,6 @@ public class telaCadastroTerapia extends AppCompatActivity {
                 et_endereco.setText(value.getString("endereco"));
                 et_horario.setText(value.getString("horario"));
                 et_telefone.setText(value.getString("telefone"));
-                boolean aux = value.getBoolean("lembre-me");
-                swt_lembre.setChecked(aux);
                 List<String> listDiasDaSemana = (List<String>) value.get("dias da semana");
                 for (int i = 0; i < listDiasDaSemana.size(); i++) {
                     if (listDiasDaSemana.get(i).equals("dom")) chipDom.setChecked(true);

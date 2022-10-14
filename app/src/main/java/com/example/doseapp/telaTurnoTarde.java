@@ -45,17 +45,17 @@ public class telaTurnoTarde extends Fragment {
     public telaTurnoTarde() {
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                getActivity().finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                getActivity().finish();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     public static telaTurnoTarde newInstance(String param1, String param2) {
         telaTurnoTarde fragment = new telaTurnoTarde();
@@ -78,24 +78,24 @@ public class telaTurnoTarde extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tela_turno_tarde, container, false);
-        String diario_id = getActivity().getIntent().getStringExtra("diario id");
-        String data = getActivity().getIntent().getStringExtra("dia");
-        Intent intent = new Intent();
-        intent.putExtra("turno", "Tarde");
-        intent.putExtra("diario id", diario_id);
-        intent.putExtra("dia", data);
-        getActivity().setIntent(intent);
+//        String diario_id = getActivity().getIntent().getStringExtra("diario id");
+//        String data = getActivity().getIntent().getStringExtra("dia");
+//        Intent intent = new Intent();
+//        intent.putExtra("turno", "Tarde");
+//        intent.putExtra("diario id", diario_id);
+//        intent.putExtra("dia", data);
+//        getActivity().setIntent(intent);
 
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getActivity().getSupportFragmentManager(), FragmentPagerItems.with(getActivity())
-                .add("Atividades", atividades.class)
-                .add("Alimentação", alimentacoes.class)
-                .create());
-
-        ViewPager viewPager = (ViewPager) v.findViewById(R.id.viewpagerTurnoTarde);
-        viewPager.setAdapter(adapter);
-        SmartTabLayout viewPagerTab = (SmartTabLayout) v.findViewById(R.id.viewpagertabTurnoTarde);
-        viewPagerTab.setViewPager(viewPager);
+//        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+//                getActivity().getSupportFragmentManager(), FragmentPagerItems.with(getActivity())
+//                .add("Atividades", atividades.class)
+//                .add("Alimentação", alimentacoes.class)
+//                .create());
+//
+//        ViewPager viewPager = (ViewPager) v.findViewById(R.id.viewpagerTurnoTarde);
+//        viewPager.setAdapter(adapter);
+//        SmartTabLayout viewPagerTab = (SmartTabLayout) v.findViewById(R.id.viewpagertabTurnoTarde);
+//        viewPagerTab.setViewPager(viewPager);
         return v;
     }
 }

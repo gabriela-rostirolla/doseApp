@@ -1,9 +1,12 @@
 package com.example.doseapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -44,5 +47,12 @@ public class telaDiarios extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater infl = getMenuInflater();
+        infl.inflate(R.menu.menu_diario, menu);
+        return true;
     }
 }

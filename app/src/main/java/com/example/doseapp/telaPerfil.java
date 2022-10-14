@@ -45,29 +45,35 @@ public class telaPerfil extends AppCompatActivity {
         setContentView(R.layout.activity_tela_perfil);
         inicializarComponentes();
 
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.perfil);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DocumentReference value = banco_dados.collection("Usuarios").document(userID);
-        value.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String nome = value.getString("nome");
-                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                et_editNome.setText(nome);
-                et_editEmail.setText(email);
-                et_editEmail.setEnabled(false);
-                et_editEmail.setTextColor(Color.GRAY);
-                btn_editar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        editar_perfil(view);
-                    }
-                });
-            }
-        });
+        if (userID == null || userID.isEmpty()) {
+            startActivity(new Intent(telaPerfil.this, telaLogin.class));
+            finish();
+        } else {
+            DocumentReference value = banco_dados.collection("Usuarios").document(userID);
+            value.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    String nome = value.getString("nome");
+                    String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    et_editNome.setText(nome);
+                    et_editEmail.setText(email);
+                    et_editEmail.setEnabled(false);
+                    et_editEmail.setTextColor(Color.GRAY);
+                    btn_editar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            editar_perfil(view);
+                        }
+                    });
+                }
+            });
+        }
     }
 
     @Override
@@ -86,10 +92,9 @@ public class telaPerfil extends AppCompatActivity {
                         .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                FirebaseAuth auth = FirebaseAuth.getInstance();
-                                auth.signOut();
+                                FirebaseAuth.getInstance().signOut();
                                 startActivity(new Intent(telaPerfil.this, telaLogin.class));
-                                onDestroy();
+                                finish();
                             }
                         })
                         .setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -106,11 +111,6 @@ public class telaPerfil extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     protected void inicializarComponentes() {
@@ -137,7 +137,6 @@ public class telaPerfil extends AppCompatActivity {
                     });
         } else {
             gerarSnackBar(view, "Digite um nome válido");
-
         }
     }
 

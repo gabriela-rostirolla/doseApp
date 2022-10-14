@@ -1,52 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_blue"
         android:orientation="vertical">
 
-        <com.ogaclejapan.smarttablayout.SmartTabLayout
-            android:id="@+id/viewpagertabTurnoManha"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_lista"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:stl_clickable="true"
-            app:stl_defaultTabBackground="?attr/selectableItemBackground"
-            app:stl_defaultTabTextAllCaps="false"
-            app:stl_defaultTabTextColor="#FC000000"
-            app:stl_defaultTabTextHorizontalPadding="16dp"
-            app:stl_defaultTabTextMinWidth="0dp"
-            app:stl_defaultTabTextSize="14sp"
-            app:stl_distributeEvenly="true"
-            app:stl_dividerColor="@color/light_blue"
-            app:stl_dividerThickness="1dp"
-            app:stl_drawDecorationAfterTab="false"
-            app:stl_indicatorAlwaysInCenter="false"
-            app:stl_indicatorColor="@color/dark_blue"
-            app:stl_indicatorCornerRadius="2dp"
-            app:stl_indicatorGravity="bottom"
-            app:stl_indicatorInFront="false"
-            app:stl_indicatorInterpolation="smart"
-            app:stl_indicatorThickness="4dp"
-            app:stl_indicatorWidth="auto"
-            app:stl_indicatorWithoutPadding="false"
-            app:stl_overlineColor="#4D000000"
-            app:stl_overlineThickness="0dp"
-            app:stl_titleOffset="24dp"
-            app:stl_underlineColor="#4D000000"
-            app:stl_underlineThickness="1dp" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpagerTurnoManha"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/viewpagertab" />
+        <TextView
+            android:id="@+id/tv_nenhumaAcaoCad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nenhum Diário de cuidado cadastrado"
+            android:textColor="@color/light_grey"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/rv_listaAtividades"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add"
+            style="@style/floatingactionbutton"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="50dp"
+            android:clickable="true"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

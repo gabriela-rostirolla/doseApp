@@ -25,34 +25,22 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class atividades extends Fragment implements AtividadeAdapter.OnItemClick {
+public class atividades extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private TextView tv_nenhumCadastro;
-    private static String diario_id;
-    private static String turno;
-    private List<Atividade> atividadeList = new ArrayList<>();
-    private AtividadeAdapter atividadeAdapter;
-    private RecyclerView rv_listaAtividade;
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private FloatingActionButton fabAdd;
+
     private String mParam1;
     private String mParam2;
 
     public atividades() {
     }
 
-    protected void inicializarComponentes(View view) {
-        fabAdd = view.findViewById(R.id.fab_addAtividade);
-        rv_listaAtividade = view.findViewById(R.id.rv_listaAtividades);
-        tv_nenhumCadastro = view.findViewById(R.id.tv_nenhumaAtividade);
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-        listarAtividades();
+//        listarAtividades();
     }
 
     public static atividades newInstance(String param1, String param2) {
@@ -76,65 +64,15 @@ public class atividades extends Fragment implements AtividadeAdapter.OnItemClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_atividades, container, false);
-        inicializarComponentes(v);
+//        inicializarComponentes(v);
 
-        diario_id = getActivity().getIntent().getStringExtra("diario id");
+//        diario_id = getActivity().getIntent().getStringExtra("diario id");
         String data = getActivity().getIntent().getStringExtra("dia");
-        turno = getActivity().getIntent().getStringExtra("turno");
+//        turno = getActivity().getIntent().getStringExtra("turno");
 
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
-                intent.putExtra("turno", turno);
-                intent.putExtra("dia", data);
-                intent.putExtra("diario id", diario_id);
-                startActivity(intent);
-            }
-        });
+
         return v;
     }
     
-    protected void listarAtividades() {
-        atividadeList.clear();
-        rv_listaAtividade.setLayoutManager(new LinearLayoutManager(getActivity()));
-        firebaseFirestore.collection("Diario atividades")
-                .whereEqualTo("diario id", diario_id)
-                .whereEqualTo("turno", turno)
-                .orderBy("dia", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Atividade atividade = new Atividade();
-                                atividade.setCuidadorResp(document.getString("cuidador"));
-                                atividade.setDia(document.getString("dia"));
-                                atividade.setDiarioId(document.getString("diario id"));
-                                atividade.setHorario(document.getString("horario"));
-                                atividade.setSaude(document.getString("saude"));
-                                atividade.setObservacao(document.getString("observacao"));
-                                atividade.setId(document.getId());
-                                atividade.setTurno(document.getString("turno"));
-                                atividade.setOutro(document.getString("outro"));
-                                atividade.setSono(document.getString("sono"));
-                                atividade.setExercicios(document.getString("exercicios"));
-                                atividade.setPasseio(document.getString("passeio"));
-                                atividadeList.add(atividade);
-                            }
-                            atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList, atividades.this::OnItemClick);
-                            rv_listaAtividade.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-                            rv_listaAtividade.setHasFixedSize(false);
-                            rv_listaAtividade.setAdapter(atividadeAdapter);
-                        }
-                    }
-                });
-    }
 
-    @Override
-    public void OnItemClick(int position) {
-
-    }
 }
