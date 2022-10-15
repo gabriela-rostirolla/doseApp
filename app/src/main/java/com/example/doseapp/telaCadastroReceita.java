@@ -138,11 +138,9 @@ public class telaCadastroReceita extends AppCompatActivity {
         imgBtn_visRec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (foto != null && foto.isEmpty()) {
                     Intent intent = new Intent(telaCadastroReceita.this, visualizarFotoReceita.class);
                     intent.putExtra("foto", foto);
                     startActivity(intent);
-                }
             }
         });
     }
@@ -342,7 +340,7 @@ public class telaCadastroReceita extends AppCompatActivity {
                             Bitmap fotoBitmap = (Bitmap) data.getExtras().get("data");
                             imgBtn_visRec.setImageBitmap(fotoBitmap);
                             ByteArrayOutputStream fotoStream = new ByteArrayOutputStream();
-                            fotoBitmap.compress(Bitmap.CompressFormat.PNG, 90, fotoStream);
+                            fotoBitmap.compress(Bitmap.CompressFormat.PNG, 100, fotoStream);
                             byte[] fotoByte = fotoStream.toByteArray();
                             foto = Base64.encodeToString(fotoByte, Base64.DEFAULT);
                         } catch (Exception e) {

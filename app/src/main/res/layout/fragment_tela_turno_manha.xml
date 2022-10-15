@@ -12,36 +12,84 @@
         android:background="@color/light_blue"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/ll_filtro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/rv_lista"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/light_blue"
+                android:text="@string/filtro_rv"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spi_acao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:entries="@array/acao" />
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_lista"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/ll_filtro" />
 
         <TextView
             android:id="@+id/tv_nenhumaAcaoCad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nenhum Diário de cuidado cadastrado"
+            android:text="@string/nenhumDiaCad"
             android:textColor="@color/light_grey"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/rv_listaAtividades"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
             style="@style/floatingactionbutton"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="25dp"
             android:clickable="true"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="391dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:background="?android:attr/listDivider"
+            android:backgroundTint="@color/light_grey"
+            app:layout_constraintBottom_toTopOf="@id/rv_lista"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_filtro"
+            tools:layout_editor_absoluteY="59dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

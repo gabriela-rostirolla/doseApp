@@ -1,6 +1,6 @@
 package com.example.doseapp;
 
-public class Atividade {
+public class Atividade extends DiarioDeCuidado{
     private String sono;
     private String exercicios;
     private String passeio;

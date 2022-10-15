@@ -45,10 +45,12 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
     private String mParam2;
     private TextView tv_nenhumCadastro;
     private static String diario_id;
-    private static String turno;
+    private Spinner spi_acao;
     private List<Atividade> atividadeList = new ArrayList<>();
+    private List<Alimentacao> alimentacaoList = new ArrayList<>();
     private AtividadeAdapter atividadeAdapter;
-    private RecyclerView rv_listaAtividade;
+    private AlimentacaoAdapter alimentacaoAdapter;
+    private RecyclerView rv_listaDiarios;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FloatingActionButton fabAdd;
 
@@ -70,13 +72,6 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
             case android.R.id.home:
                 getActivity().finish();
                 return true;
-            case R.id.item_atividade:
-                listarAtividades();
-                System.out.println("Era pra mudar alguma coisa?");
-                return true;
-            case R.id.item_alimentacao:
-//                listarAlimentacao();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -92,37 +87,63 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                switch (position) {
+                    case 0:
+                        atividadeList.clear();
+                        alimentacaoList.clear();
+                        listarAtividades();
+                        return;
+                    case 1:
+                        atividadeList.clear();
+                        alimentacaoList.clear();
+                        listarAlimentacao();
+                        return;
+                    default:
+                        return;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tela_turno_manha, container, false);
         inicializarComponentes(v);
-        String diario_id = getActivity().getIntent().getStringExtra("diario id");
+        diario_id = getActivity().getIntent().getStringExtra("diario id");
         String data = getActivity().getIntent().getStringExtra("dia");
-        Intent intent = new Intent();
-        intent.putExtra("turno", "Manha");
-        intent.putExtra("diario id", diario_id);
-        intent.putExtra("dia", data);
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
-                intent.putExtra("turno", turno);
+                if (spi_acao.getSelectedItem().equals("Alimentação"))
+                    intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
+                else if (spi_acao.getSelectedItem().equals("Atividade"))
+                    intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
+                intent.putExtra("turno", "Manha");
                 intent.putExtra("dia", data);
                 intent.putExtra("diario id", diario_id);
                 startActivity(intent);
             }
         });
-
         return v;
     }
 
     protected void listarAtividades() {
-        atividadeList.clear();
-        rv_listaAtividade.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Diario atividades")
                 .whereEqualTo("diario id", diario_id)
-                .whereEqualTo("turno", turno)
+                .whereEqualTo("turno", "Manha")
                 .orderBy("dia", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -145,10 +166,56 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
                                 atividade.setPasseio(document.getString("passeio"));
                                 atividadeList.add(atividade);
                             }
+                            if (atividadeList.isEmpty()) {
+                                tv_nenhumCadastro.setText("Nenhuma atividade cadastrada");
+                                tv_nenhumCadastro.setVisibility(View.VISIBLE);
+                            } else {
+                                tv_nenhumCadastro.setVisibility(View.INVISIBLE);
+                            }
                             atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList, telaTurnoManha.this::OnItemClick);
-                            rv_listaAtividade.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-                            rv_listaAtividade.setHasFixedSize(false);
-                            rv_listaAtividade.setAdapter(atividadeAdapter);
+                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            rv_listaDiarios.setHasFixedSize(false);
+                            rv_listaDiarios.setAdapter(atividadeAdapter);
+                        }
+                    }
+                });
+    }
+
+    public void listarAlimentacao() {
+        rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
+        firebaseFirestore.collection("Alimentacao")
+                .whereEqualTo("diario id", diario_id)
+                .whereEqualTo("turno", "Manha")
+                .orderBy("dia", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Alimentacao alimentacao = new Alimentacao();
+                                alimentacao.setCuidadorResponsavel(document.getString("cuidador"));
+                                alimentacao.setDia(document.getString("dia"));
+                                alimentacao.setDiarioId(document.getString("diario id"));
+                                alimentacao.setHorario(document.getString("horario"));
+                                alimentacao.setLanche(document.getString("lanche"));
+                                alimentacao.setObservacao(document.getString("observacao"));
+                                alimentacao.setId(document.getId());
+                                alimentacao.setTurno(document.getString("turno"));
+                                alimentacao.setOutro(document.getString("outro"));
+                                alimentacao.setRefeicaoPrincipal(document.getString("refeicao"));
+                                alimentacaoList.add(alimentacao);
+                            }
+                            if (alimentacaoList.isEmpty()) {
+                                tv_nenhumCadastro.setText("Nenhuma alimentação cadastrada");
+                                tv_nenhumCadastro.setVisibility(View.VISIBLE);
+                            } else {
+                                tv_nenhumCadastro.setVisibility(View.INVISIBLE);
+                            }
+                            alimentacaoAdapter = new AlimentacaoAdapter(getContext(), alimentacaoList, telaTurnoManha.this::OnItemClick);
+                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            rv_listaDiarios.setHasFixedSize(false);
+                            rv_listaDiarios.setAdapter(alimentacaoAdapter);
                         }
                     }
                 });
@@ -156,13 +223,21 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
 
     @Override
     public void OnItemClick(int position) {
-
+        Intent intent = new Intent();
+        if (spi_acao.getSelectedItem().equals("Alimentação")) {
+            intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
+            intent.putExtra("id", alimentacaoList.get(position).getId());
+        } else if (spi_acao.getSelectedItem().equals("Atividade")) {
+            intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
+            intent.putExtra("id", atividadeList.get(position).getId());
+        }
+        startActivity(intent);
     }
 
     protected void inicializarComponentes(View view) {
         fabAdd = view.findViewById(R.id.fab_add);
-        rv_listaAtividade = view.findViewById(R.id.rv_lista);
+        rv_listaDiarios = view.findViewById(R.id.rv_lista);
+        spi_acao = view.findViewById(R.id.spi_acao);
         tv_nenhumCadastro = view.findViewById(R.id.tv_nenhumaAcaoCad);
     }
-
 }

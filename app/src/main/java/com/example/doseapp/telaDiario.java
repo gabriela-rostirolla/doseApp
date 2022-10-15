@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,8 +26,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnItemClick {
 
@@ -43,6 +43,8 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
     private String mParam1;
     private TextView tv_nenhumDiarioCad;
     private String id;
+    private static String dia;
+    private static boolean validarDiario;
     private RecyclerView rv_listaDiario;
     private DiarioDeCuidadoAdapter adapter;
     private String mParam2;
@@ -93,27 +95,20 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
         View v = inflater.inflate(R.layout.fragment_tela_diario, container, false);
         Date data = new Date();
         inicializarComponentes(v);
-        String dia = dataFormat.format(data);
+        dia = dataFormat.format(data);
         id = getActivity().getIntent().getStringExtra("id");
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (diarioDeCuidadoList.isEmpty()||!diarioDeCuidadoList.get(diarioDeCuidadoList.size()-1).getData().equals(dia) ){
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("dia", dia);
-                    map.put("id do idoso", id);
-                    firebaseFirestore.collection("Diarios").add(map);
-                    Intent intent = new Intent();
-                    intent.setClass(getActivity(), telaDiarios.class);
-                    intent.putExtra("dia", dia);
-                    startActivity(intent);
+                if (validarDiario == true) {
+                    adicionarDiario(dia);
+                    gerarToast(getString(R.string.diarioCad));
                 } else {
-                    gerarSnackBar(v, "Um diário de cuidado já foi feito no dia " + dia);
+                    gerarToast(getString(R.string.diarioJaCad)+" "+ dia);
                 }
             }
         });
-
         return v;
     }
 
@@ -122,6 +117,30 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
         super.onResume();
         diarioDeCuidadoList.clear();
         listarDiario();
+    }
+
+    public static boolean verificarDiario(List<DiarioDeCuidado> list) {
+        System.out.println(list.get(0).getData());
+        System.out.println(dia);
+        if (list.size() == 0) {
+            return true;
+        } else if (Objects.equals(list.get(0).getData(), dia)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    protected void adicionarDiario(String dia) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("dia", dia);
+        map.put("id do idoso", id);
+
+        firebaseFirestore.collection("Diarios").add(map);
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), telaDiarios.class);
+        intent.putExtra("dia", dia);
+        startActivity(intent);
     }
 
     protected void listarDiario() {
@@ -145,6 +164,7 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
                             } else {
                                 tv_nenhumDiarioCad.setVisibility(View.INVISIBLE);
                             }
+                            validarDiario = verificarDiario(diarioDeCuidadoList);
                             adapter = new DiarioDeCuidadoAdapter(getContext(), diarioDeCuidadoList, telaDiario.this::OnItemClick);
                             rv_listaDiario.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
                             rv_listaDiario.setHasFixedSize(false);
@@ -163,10 +183,7 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
         startActivity(intent);
     }
 
-    protected void gerarSnackBar(View view, String texto) {
-        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.WHITE);
-        snackbar.setTextColor(Color.BLACK);
-        snackbar.show();
+    protected void gerarToast(String texto) {
+        Toast.makeText(getContext(), texto, Toast.LENGTH_SHORT).show();
     }
 }

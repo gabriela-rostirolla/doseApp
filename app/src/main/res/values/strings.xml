@@ -1,16 +1,18 @@
 <resources>
-
+    <!--Opções Spinner intervalo dos medicamentos-->
     <string-array name="unidade_intervalo">
         <item>h</item>
         <item>Dia</item>
     </string-array>
 
+    <!--Opções Spinner status dos medicamentos-->
     <string-array name="status_med">
         <item>Inativo</item> <!--Cor cinza-->
         <item>Administrado</item> <!--Cor rosa-->
         <item>Pendente</item> <!--Cor vermelha-->
     </string-array>
 
+    <!--Opções Spinner status das consultas-->
     <string-array name="status_consultas">
         <item>Inativo</item>
         <item>Ativo</item>
@@ -25,6 +27,7 @@
     <!--        <item>Pendente</item>-->
     <!--    </string-array>-->
 
+    <!--Opções Spinner unidade dos medicamentos-->
     <string-array name="unidades_medicamentos">
         <item>mg</item>
         <item>ml</item>
@@ -37,6 +40,7 @@
         <item>inj</item>
     </string-array>
 
+    <!--Opções Spinner via de administração dos medicamentos-->
     <string-array name="op_via">
         <item>Oral</item>
         <item>Intramuscular</item>
@@ -61,33 +65,33 @@
         <item>Irrigação</item>
     </string-array>
 
+    <!--Opções Spinner do diario de cuidado-->
     <string-array name="acao">
         <item>Atividade</item>
         <item>Alimentação</item>
     </string-array>
 
-    <string name="atualizarFoto">Atualizar foto</string>
+    <!--Campos vazios-->
+    <string name="hr_vazio">Informe um horário</string>
+    <string name="cuidador_vazio">Informe um cuidador</string>
+    <string name="campos_atividade_vazios">Preencha ao menos um campo</string>
+
+    <!--Ações bem sucedidas-->
+    <string name="diarioCad">Diário de cuidado cadastrado com sucesso</string>
+
+    <!--Alertas-->
+    <string name="diarioJaCad">Um diário de cuidado já foi feito no dia</string>
+
+
+    <!--Nenhum registro-->
+    <string name="nenhumCadIdoso">Nenhum idoso cadastrado</string>
+    <string name="nenhumDiaCad">Nenhum Diário de cuidado cadastrado</string>
+
+    <!--Campos-->
     <string name="cuidadorResp">Cuidador Responsável</string>
     <string name="recomendacao">Recomendação/Finalidade</string>
     <string name="nome_idoso">Nome idoso</string>
-    <string name="app_name">DoseApp</string>
-    <string name="entrar">Entrar</string>
     <string name="concentracao">Concentração</string>
-    <string name="recuperar_senha">Esqueceu sua senha?</string>
-    <string name="fazer_cadastro">Cadastre-se</string>
-    <string name="cadastrar">Cadastrar</string>
-    <string name="fazer_login">Logar-se</string>
-    <string name="lembre_me">Lembre-me</string>
-    <string name="salvar">Salvar</string>
-    <string name="foto">Adicionar foto</string>
-    <string name="continuar">Continuar</string>
-    <string name="cadastrar_medicamento">Cadastrar Medicamento</string>
-    <string name="cadastrar_receita">Cadastrar Receita</string>
-    <string name="cadastrar_diario">Cadastrar Diário de Cuidado</string>
-    <string name="cadastrar_terapia">Cadastrar Terapia</string>
-    <string name="cadastrar_consulta">Cadastrar Consulta</string>
-    <string name="cadastrar_idoso">Cadastrar Idoso</string>
-    <string name="atividades_diarias">Atividades Diárias:</string>
     <string name="sono">Sono</string>
     <string name="exercicios">Exercícios</string>
     <string name="passeio">Passeio</string>
@@ -96,7 +100,6 @@
     <string name="lanche">Lanche</string>
     <string name="outro">Outro</string>
     <string name="obs">Observações</string>
-    <string name="alimentacao">Alimentação:</string>
     <string name="nome">Nome</string>
     <string name="data">Data</string>
     <string name="data_fim">Data fim</string>
@@ -106,31 +109,54 @@
     <string name="telefone">Telefone</string>
     <string name="data_renovar_receita">Data para renovar receita</string>
     <string name="endereco">Endereço</string>
-    <string name="profissional">Profissional</string>
     <string name="horario">Horário</string>
-    <string name="perfil">Perfil</string>
-    <string name="idosos_cadastrados">Tela inicial</string>
-    <string name="hora_inicial">Hora inicial</string>
-    <string name="via">Via de administração</string>
     <string name="dose">Dose</string>
     <string name="intervalo">Intervalo</string>
-    <string name="turno">Turno:</string>
-    <string name="manha">Manhã</string>
-    <string name="tarde">Tarde</string>
-    <string name="noite">Noite</string>
-    <string name="madrugada">Madrugada</string>
-    <string name="genero">Gênero:</string>
-    <string name="feminino">Feminino</string>
-    <string name="masculino">Masculino</string>
     <string name="email">E-mail</string>
     <string name="senha">Senha</string>
     <string name="confirmar_senha">Confirmar senha</string>
-    <string name="ver_perfil">Ver perfil</string>
-    <string name="uso_continuo">Uso contínuo</string>
     <string name="medicamento">Medicamento</string>
-    <string name="deslogar">Deslogar</string>
+    <string name="profissional">Profissional</string>
+    <string name="hora_inicial">Hora inicial</string>
+
+    <!--Textos textView-->
+    <string name="filtro_rv">Filtrar por:</string>
+    <string name="atualizarFoto">Atualizar foto</string>
+    <string name="recuperar_senha">Esqueceu sua senha?</string>
+    <string name="foto">Adicionar foto</string>
+    <string name="via">Via de administração</string>
+    <string name="fazer_login">Logar-se</string>
+
+    <!--Textos botões-->
+    <string name="entrar">Entrar</string>
+    <string name="fazer_cadastro">Cadastre-se</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="salvar">Salvar</string>
     <string name="editar">Editar</string>
-    <string name="ver_dados_dos_idosos">Visualizar dados dos idosos</string>
+
+    <!--Texto ActionBar-->
+    <string name="ver_perfil">Ver perfil</string>
+    <string name="cadastrar_medicamento">Cadastrar Medicamento</string>
+    <string name="cadastrar_receita">Cadastrar Receita</string>
+    <string name="cadastrar_diario">Cadastrar Diário de Cuidado</string>
+    <string name="cadastrar_terapia">Cadastrar Terapia</string>
+    <string name="cadastrar_consulta">Cadastrar Consulta</string>
+    <string name="cadastrar_idoso">Cadastrar Idoso</string>
+    <string name="atividades_diarias">Atividades Diárias:</string>
+    <string name="perfil">Perfil</string>
+    <string name="idosos_cadastrados">Tela inicial</string>
+
+    <!--Nome aplicativo-->
+    <string name="app_name">DoseApp</string>
+
+    <!--Texto switch-->
+    <string name="lembre_me">Lembre-me</string>
+
+    <!--Texto RadioButton / checkBox-->
+    <string name="genero">Gênero:</string>
+    <string name="feminino">Feminino</string>
+    <string name="masculino">Masculino</string>
+    <string name="uso_continuo">Uso contínuo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
