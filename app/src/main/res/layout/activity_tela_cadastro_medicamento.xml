@@ -45,7 +45,7 @@
         <EditText
             android:id="@+id/et_nomeMedicamento"
             style="@style/Edit_text"
-            android:drawableRight="@drawable/ic_pills"
+            android:drawableRight="@drawable/ic_baseline_medication_liquid_24"
             android:hint="@string/medicamento"
             android:inputType="textCapWords"
             android:maxLength="250" />

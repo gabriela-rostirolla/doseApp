@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_blue"
@@ -16,6 +15,7 @@
             android:id="@+id/et_cuidadorResp"
             style="@style/Edit_text"
             android:layout_marginTop="40dp"
+            android:drawableEnd="@drawable/ic_cuidador"
             android:hint="@string/cuidadorResp"
             android:inputType="textCapWords" />
 
@@ -28,30 +28,35 @@
         <EditText
             android:id="@+id/et_sonoDiario"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_cama"
             android:hint="@string/sono"
             android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_exercicioDiario"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_exercicio"
             android:hint="@string/exercicios"
             android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_passeioDiario"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_corrida"
             android:hint="@string/passeio"
             android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_saudeDiario"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_saude"
             android:hint="@string/saude"
             android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_outrosDiarioEt03"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_list"
             android:hint="@string/outro"
             android:inputType="textCapSentences" />
 
@@ -66,6 +71,7 @@
             style="@style/button"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="50dp"
+            android:drawableEnd="@drawable/ic_note"
             android:text="@string/salvar" />
 
     </LinearLayout>
