@@ -35,7 +35,6 @@
             android:layout_marginTop="10dp"
             app:boxBackgroundMode="none"
             app:hintEnabled="false"
-            app:passwordToggleDrawable="@drawable/ic_eye"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -47,21 +46,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_entrar"
-            style="@style/button"
-            android:layout_marginTop="20dp"
-            android:text="@string/entrar" />
-
         <TextView
             android:id="@+id/txt_recuperar_senha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:text="@string/recuperar_senha"
             android:textColor="@color/light_grey"
             android:textSize="18sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_entrar"
+            style="@style/button"
+            android:layout_marginTop="20dp"
+            android:text="@string/entrar" />
 
         <TextView
             android:id="@+id/txt_fazer_cadastro"

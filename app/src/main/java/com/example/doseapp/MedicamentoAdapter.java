@@ -60,7 +60,6 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
             String hr = medicamento.getProxMed();
             String proxHr[] = hr.split(":");
             Calendar calendar = Calendar.getInstance();
-            System.out.println(proxHr[0]);
             if (calendar.get(Calendar.HOUR_OF_DAY) == Integer.parseInt(proxHr[0]) && calendar.get(Calendar.MINUTE)<Integer.parseInt(proxHr[1])) {
                 viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
             } else if (calendar.get(Calendar.HOUR_OF_DAY) == Integer.parseInt(proxHr[0])&& calendar.get(Calendar.MINUTE) == Integer.parseInt(proxHr[1])) {

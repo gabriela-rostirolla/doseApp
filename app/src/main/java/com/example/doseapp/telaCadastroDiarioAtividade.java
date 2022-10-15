@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,35 +44,21 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
         tv_horario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int hora = calendar.get(Calendar.HOUR_OF_DAY);
-                int min = calendar.get(Calendar.MINUTE);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(telaCadastroDiarioAtividade.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int i, int i2) {
-                                if (i2 < 10) {
-                                    tv_horario.setText(i + ":" + 0 + i2);
-                                    tv_horario.setTextColor(Color.BLACK);
-                                } else {
-                                    tv_horario.setText(i + ":" + i2);
-                                    tv_horario.setTextColor(Color.BLACK);
-                                }
-                            }
-                        }, hora, min, true);
-                timePickerDialog.show();
+                mostrarRelogio(tv_horario);
             }
         });
 
         btn_salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                salvarBancoDeDados();
-                finish();
+                if (validarCampos() == true) {
+                    salvarBancoDeDados();
+                    finish();
+                }
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -95,8 +82,28 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
         tv_horario = findViewById(R.id.et_horario);
     }
 
-    protected void salvarBancoDeDados() {
+    protected void mostrarRelogio(TextView textView) {
+        Calendar calendar = Calendar.getInstance();
+        int hora = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
 
+        TimePickerDialog timePickerDialog = new TimePickerDialog(telaCadastroDiarioAtividade.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int i, int i2) {
+                        if (i2 < 10) {
+                            textView.setText(i + ":" + 0 + i2);
+                            textView.setTextColor(Color.BLACK);
+                        } else {
+                            textView.setText(i + ":" + i2);
+                            textView.setTextColor(Color.BLACK);
+                        }
+                    }
+                }, hora, min, true);
+        timePickerDialog.show();
+    }
+
+    protected void salvarBancoDeDados() {
         Map<String, Object> atividadesMap = new HashMap<>();
         atividadesMap.put("sono", et_sono.getText().toString());
         atividadesMap.put("exercicios", et_exercicios.getText().toString());
@@ -123,5 +130,29 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
                         Log.d("erro_banco_dados", "Erro ao salvar dados!", e);
                     }
                 });
+    }
+
+    protected boolean validarCampos() {
+        if (tv_horario.getText().toString().isEmpty()) {
+            gerarToast(getString(R.string.hr_vazio));
+            return false;
+        } else if (et_cuidador.getText().toString().isEmpty()) {
+            gerarToast(getString(R.string.cuidador_vazio));
+            return false;
+        } else if (et_exercicios.getText().toString().isEmpty() &&
+                et_obs.getText().toString().isEmpty() &&
+                et_passeio.getText().toString().isEmpty() &&
+                et_saude.getText().toString().isEmpty() &&
+                et_sono.getText().toString().isEmpty() &&
+                et_outro.getText().toString().isEmpty()
+        ) {
+            gerarToast(getString(R.string.campos_atividade_vazios));
+            return false;
+        }
+        return true;
+    }
+
+    protected void gerarToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 }

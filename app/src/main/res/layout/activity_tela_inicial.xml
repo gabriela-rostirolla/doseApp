@@ -16,21 +16,18 @@
             android:id="@+id/rv_listaIdoso"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_margin="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_nenhumIdosoCad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/nenhumCadIdoso"
             android:visibility="invisible"
-            android:id="@+id/tv_nenhumIdosoCad"
-            android:text="Nenhum idoso cadastrado"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/rv_listaIdoso"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,8 +39,8 @@
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="25dp"
             android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="@id/rv_listaIdoso"
-            app:layout_constraintEnd_toEndOf="@id/rv_listaIdoso"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_baseline_add_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

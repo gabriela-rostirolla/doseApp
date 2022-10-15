@@ -48,11 +48,4 @@ public class telaDiarios extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater infl = getMenuInflater();
-        infl.inflate(R.menu.menu_diario, menu);
-        return true;
-    }
 }

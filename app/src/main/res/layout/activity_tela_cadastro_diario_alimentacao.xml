@@ -5,9 +5,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_blue"
@@ -16,6 +14,7 @@
 
         <EditText
             android:id="@+id/et_cuidadorResp"
+            android:drawableEnd="@drawable/ic_cuidador"
             style="@style/Edit_text"
             android:layout_marginTop="40dp"
             android:hint="@string/cuidadorResp"
@@ -30,11 +29,13 @@
         <EditText
             android:id="@+id/et_refeicao"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_refeicao_principal"
             android:hint="@string/refeicao"
             android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/et_lancheDiario"
+            android:drawableEnd="@drawable/ic_lanche"
             style="@style/Edit_text"
             android:hint="@string/lanche"
             android:inputType="textCapSentences" />
@@ -42,6 +43,7 @@
         <EditText
             android:id="@+id/et_outrosDiario"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_outro"
             android:hint="@string/outro"
             android:inputType="textPersonName" />
 
@@ -49,6 +51,7 @@
             android:id="@+id/et_obsDiario"
             style="@style/Edit_text"
             android:hint="@string/obs"
+            android:drawableEnd="@drawable/ic_note"
             android:inputType="textCapSentences" />
 
         <androidx.appcompat.widget.AppCompatButton

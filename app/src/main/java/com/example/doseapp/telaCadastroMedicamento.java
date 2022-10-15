@@ -313,11 +313,12 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 et_intervalo.setText(value.getString("intervalo"));
                 spiIntervalo.setSelection(adapter.getPosition(value.getString("unidade intervalo")));
                 et_hrInicial.setText(value.getString("hora inicial"));
-                boolean uso = value.getBoolean("uso continuo");
+                boolean uso = Boolean.TRUE.equals(value.getBoolean("uso continuo"));
                 usoContinuo.setChecked(uso);
                 et_dataInicio.setText(value.getString("data inicio"));
                 et_dataFim.setText(value.getString("data fim"));
-                swt_lembre.setChecked(value.getBoolean("lembre-me"));
+                boolean lembre = Boolean.TRUE.equals(value.getBoolean("lembre-me"));
+                swt_lembre.setChecked(lembre);
                 et_observacoes.setText(value.getString("observacoes"));
             }
         });

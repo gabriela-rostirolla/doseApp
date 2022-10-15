@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_blue"
@@ -19,14 +18,14 @@
             style="@style/Edit_text"
             android:hint="@string/nome"
             android:inputType="textCapWords"
-            android:drawableRight="@drawable/ic_consulta"
+            android:drawableEnd="@drawable/ic_curativo"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_profissionalConsulta"
             style="@style/Edit_text"
             android:hint="@string/profissional"
-            android:drawableRight="@drawable/ic_profissional"
+            android:drawableEnd="@drawable/ic_medico"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
@@ -34,13 +33,13 @@
             android:id="@+id/et_enderecoConsulta"
             style="@style/Edit_text"
             android:hint="@string/endereco"
-            android:drawableRight="@drawable/ic_house"
+            android:drawableEnd="@drawable/ic_localizacao"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_telefoneConsulta"
-            android:drawableRight="@drawable/ic_phone"
+            android:drawableEnd="@drawable/ic_phone"
             style="@style/Edit_text"
             android:hint="@string/telefone"
             android:inputType="phone"
@@ -49,17 +48,16 @@
         <TextView
             android:id="@+id/et_dataConsul"
             style="@style/Edit_text"
-            android:layout_marginLeft="20dp"
-            android:drawableRight="@drawable/ic_calendar"
             android:text="@string/data"
-            android:textColor="@color/light_grey" />
+            android:textColor="@color/light_grey"
+            app:drawableRightCompat="@drawable/ic_calendar" />
 
         <TextView
             android:id="@+id/et_horaConsulta"
             style="@style/Edit_text"
-            android:drawableRight="@drawable/ic_watch"
             android:text="@string/horario"
-            android:textColor="@color/light_grey" />
+            android:textColor="@color/light_grey"
+            app:drawableEndCompat="@drawable/ic_watch" />
 
         <Switch
             android:id="@+id/swt_lembreConculta"

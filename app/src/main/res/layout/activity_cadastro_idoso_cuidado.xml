@@ -6,20 +6,18 @@
     android:fillViewport="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_blue"
         android:orientation="vertical"
-
         tools:context=".telaCadastroIdosoCuidado">
 
         <EditText
             android:id="@+id/et_nomeIdoso"
             style="@style/Edit_text"
             android:layout_marginTop="30dp"
-            android:drawableRight="@drawable/ic_baseline_person_24"
+            android:drawableEnd="@drawable/ic_baseline_person_24"
             android:hint="@string/nome"
             android:inputType="textCapWords"
             android:maxLength="50" />
@@ -27,7 +25,7 @@
         <EditText
             android:id="@+id/et_enderecoIdoso"
             style="@style/Edit_text"
-            android:drawableRight="@drawable/ic_house"
+            android:drawableEnd="@drawable/ic_house"
             android:hint="@string/endereco"
             android:inputType="textCapWords"
             android:maxLength="90" />
@@ -35,7 +33,7 @@
         <EditText
             android:id="@+id/et_telefoneIdoso"
             style="@style/Edit_text"
-            android:drawableRight="@drawable/ic_phone"
+            android:drawableEnd="@drawable/ic_phone"
             android:hint="@string/telefone"
             android:inputType="phone"
             android:maxLength="14" />
@@ -43,19 +41,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            >
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/et_dataNascIdoso"
                 style="@style/Edit_text"
+                android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:text="@string/data_nasc"
                 android:textColor="@color/light_grey"
-                android:layout_marginLeft="0dp"
-                android:drawableRight="@drawable/ic_calendar"
-                />
+                app:drawableEndCompat="@drawable/ic_calendar" />
 
 
         </LinearLayout>
@@ -64,6 +61,7 @@
             android:id="@+id/et_obsIdoso"
             style="@style/Edit_text"
             android:hint="@string/obs"
+            android:drawableEnd="@drawable/ic_note"
             android:inputType="textCapSentences" />
 
         <TextView
