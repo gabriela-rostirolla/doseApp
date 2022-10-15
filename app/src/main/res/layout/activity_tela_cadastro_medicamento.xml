@@ -54,14 +54,14 @@
             android:id="@+id/et_concentracao"
             style="@style/Edit_text"
             android:hint="@string/concentracao"
-            android:drawableRight="@drawable/ic_concentracao"
+            android:drawableRight="@drawable/ic_tubo_ensaio"
             android:inputType="textPersonName"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_recomendacao"
             style="@style/Edit_text"
-            android:drawableRight="@drawable/ic_recomendacao"
+            android:drawableRight="@drawable/ic_descricao"
             android:hint="@string/recomendacao"
             android:inputType="textCapSentences"
             android:maxLength="250" />
@@ -70,7 +70,7 @@
             android:id="@+id/et_dose"
             style="@style/Edit_text"
             android:hint="@string/dose"
-            android:drawableRight="@drawable/ic_dose"
+            android:drawableRight="@drawable/ic_comprimido"
             android:inputType="textPersonName" />
 
         <LinearLayout

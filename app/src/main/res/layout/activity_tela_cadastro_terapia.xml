@@ -24,6 +24,7 @@
             android:id="@+id/et_nomeTerapia"
             style="@style/Edit_text"
             android:hint="@string/nome"
+            android:drawableEnd="@drawable/ic_terapia"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
@@ -31,6 +32,7 @@
             android:id="@+id/et_profissionalTerapia"
             style="@style/Edit_text"
             android:hint="@string/profissional"
+            android:drawableEnd="@drawable/ic_medico"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
@@ -38,6 +40,7 @@
             android:id="@+id/et_enderecoTerapia"
             style="@style/Edit_text"
             android:hint="@string/endereco"
+            android:drawableEnd="@drawable/ic_localizacao"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
@@ -46,6 +49,7 @@
             style="@style/Edit_text"
             android:hint="@string/telefone"
             android:inputType="phone"
+            android:drawableEnd="@drawable/ic_phone"
             android:maxLength="11" />
 
 

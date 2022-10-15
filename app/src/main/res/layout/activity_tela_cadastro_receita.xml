@@ -23,8 +23,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/foto"
                 android:layout_marginEnd="20dp"
+                android:text="@string/foto"
                 android:textColor="@color/light_grey"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -36,9 +36,8 @@
                 android:id="@+id/imgBtn_visRec"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
-                android:backgroundTint="@color/light_blue"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/ic_baseline_camera_alt_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +49,15 @@
             android:id="@+id/et_nomeReceita"
             style="@style/Edit_text"
             android:hint="@string/nome"
+            android:inputType="textCapWords"
+            android:drawableEnd="@drawable/ic_descricao"
+            android:maxLength="250" />
+
+        <EditText
+            android:id="@+id/et_profissionalReceita"
+            style="@style/Edit_text"
+            android:drawableRight="@drawable/ic_medico"
+            android:hint="@string/profissional"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
@@ -83,14 +91,6 @@
             android:drawableRight="@drawable/ic_phone"
             android:hint="@string/telefone"
             android:inputType="phone" />
-
-        <EditText
-            android:id="@+id/et_profissionalReceita"
-            style="@style/Edit_text"
-            android:drawableRight="@drawable/ic_profissional"
-            android:hint="@string/profissional"
-            android:inputType="textCapWords"
-            android:maxLength="250" />
 
         <Switch
             android:id="@+id/swt_lembreReceita"
