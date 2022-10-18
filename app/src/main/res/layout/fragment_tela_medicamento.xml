@@ -38,7 +38,7 @@
             android:layout_marginBottom="25dp"
             android:clickable="true"
             android:src="@drawable/ic_add"
-            app:layout_constraintBottom_toBottomOf="@id/rv_listaRemedio"
-            app:layout_constraintEnd_toEndOf="@id/rv_listaRemedio" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

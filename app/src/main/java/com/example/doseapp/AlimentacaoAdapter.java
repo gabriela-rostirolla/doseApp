@@ -24,9 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.List;
 
 public class AlimentacaoAdapter extends RecyclerView.Adapter {
-    private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    public static Context context;
-    private static List<Alimentacao> alimentacaoList;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public Context context;
+    private List<Alimentacao> alimentacaoList;
     private OnItemClick onItemClick;
 
     public AlimentacaoAdapter(Context context, List<Alimentacao> alimentacaoList, OnItemClick onItemClick) {
@@ -40,7 +40,7 @@ public class AlimentacaoAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_alimentacao, parent, false);
-        AlimentacaoAdapter.AlimentacaoViewHolder viewHolder = new AlimentacaoAdapter.AlimentacaoViewHolder(view, onItemClick);
+        AlimentacaoAdapter.AlimentacaoViewHolder viewHolder = new AlimentacaoAdapter.AlimentacaoViewHolder(view, alimentacaoList, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
@@ -61,7 +61,7 @@ public class AlimentacaoAdapter extends RecyclerView.Adapter {
         TextView tv_alimentacaoHorario;
         ImageButton imgBtn_excluir;
 
-        public AlimentacaoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
+        public AlimentacaoViewHolder(@NonNull View itemView,List<Alimentacao> alimentacaoList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
             super(itemView);
             tv_alimentacaoHorario = itemView.findViewById(R.id.tv_alimentacaoHorario);
             imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluirAlimentacao);

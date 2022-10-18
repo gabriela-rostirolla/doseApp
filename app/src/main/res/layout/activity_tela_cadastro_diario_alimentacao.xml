@@ -35,7 +35,7 @@
 
         <EditText
             android:id="@+id/et_lancheDiario"
-            android:drawableEnd="@drawable/ic_lanche"
+            android:drawableEnd="@drawable/ic_cookie"
             style="@style/Edit_text"
             android:hint="@string/lanche"
             android:inputType="textCapSentences" />

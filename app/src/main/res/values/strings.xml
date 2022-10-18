@@ -78,10 +78,25 @@
 
     <!--Ações bem sucedidas-->
     <string name="diarioCad">Diário de cuidado cadastrado com sucesso</string>
+    <string name="dadosAtualizados">Dados atualizados com sucesso</string>
+
+    <!--Ações mal sucedidas-->
+    <string name="falhaAoAtualizarDados">Falha ao atualizar dados</string>
+
 
     <!--Alertas-->
     <string name="diarioJaCad">Um diário de cuidado já foi feito no dia</string>
-
+    <string name="nomeMedNaoInform">O nome do medicamento não foi informado</string>
+    <string name="concMedNaoInform">A concentração do medicamento não foi informada</string>
+    <string name="recMedNaoInform">A recomendação/finalidade do medicamento não foi informada</string>
+    <string name="doseMedNaoInform">A dose do medicamento não foi informada</string>
+    <string name="intervMedNaoInform">O intervalo do medicamento não foi informado</string>
+    <string name="intervMedMaiorQue24">O intervalo do medicamento informado é maior que 24, use o intervalo em dias</string>
+    <string name="intervMedInvalido">O intervalo do medicamento informado é inválido</string>
+    <string name="hrInicMedNaoInform">O horário inicial do medicamento não foi informado</string>
+    <string name="dataInicMedNaoInform">A data inicial do medicamento não foi informada</string>
+    <string name="dataFimMedNaoInform">A data final do medicamento não foi informada</string>
+    <string name="nomeMedInvalido">O nome do medicamento não pode conter menos que 3 letras</string>
 
     <!--Nenhum registro-->
     <string name="nenhumCadIdoso">Nenhum idoso cadastrado</string>
@@ -145,6 +160,7 @@
     <string name="atividades_diarias">Atividades Diárias:</string>
     <string name="perfil">Perfil</string>
     <string name="idosos_cadastrados">Tela inicial</string>
+    <string name="cadastrar_alimentacao">Cadastrar Alimentação</string>
 
     <!--Nome aplicativo-->
     <string name="app_name">DoseApp</string>

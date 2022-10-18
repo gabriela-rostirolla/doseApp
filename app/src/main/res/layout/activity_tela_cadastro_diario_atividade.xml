@@ -28,7 +28,7 @@
         <EditText
             android:id="@+id/et_sonoDiario"
             style="@style/Edit_text"
-            android:drawableEnd="@drawable/ic_cama"
+            android:drawableEnd="@drawable/ic_sono"
             android:hint="@string/sono"
             android:inputType="textCapSentences" />
 
@@ -63,6 +63,7 @@
         <EditText
             android:id="@+id/et_obsDiarioEt03"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_note"
             android:hint="@string/obs"
             android:inputType="textCapSentences" />
 
@@ -71,7 +72,6 @@
             style="@style/button"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="50dp"
-            android:drawableEnd="@drawable/ic_note"
             android:text="@string/salvar" />
 
     </LinearLayout>

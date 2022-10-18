@@ -133,7 +133,6 @@ public class telaCadastroTerapia extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

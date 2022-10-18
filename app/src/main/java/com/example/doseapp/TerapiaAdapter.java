@@ -25,9 +25,9 @@ import java.util.Calendar;
 import java.util.List;
 
 public class TerapiaAdapter extends RecyclerView.Adapter {
-    private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    public static Context context;
-    private static List<Terapia> terapiaList;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public Context context;
+    private List<Terapia> terapiaList;
     private OnItemClick onItemClick;
 
     public TerapiaAdapter(Context context, List<Terapia> terapiaList, OnItemClick onItemClick) {
@@ -41,7 +41,7 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_terapia, parent, false);
-        TerapiaAdapter.TerapiaViewHolder viewHolder = new TerapiaAdapter.TerapiaViewHolder(view, onItemClick);
+        TerapiaAdapter.TerapiaViewHolder viewHolder = new TerapiaAdapter.TerapiaViewHolder(view, terapiaList, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
@@ -65,19 +65,19 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         else if (diaSemana == 7) diaSemAt = "sab";
 
         String hr[] = terapia.getHorario().split(":");
-        if (list.contains(diaSemAt)) {
-            if (Calendar.HOUR_OF_DAY == Integer.parseInt(hr[0])) {
-                if (Calendar.MINUTE >= Integer.parseInt(hr[1])) {
-                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-                }else{
-                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-                }
-            } else if (calendar.get(Calendar.HOUR_OF_DAY) < Integer.parseInt(hr[0])) {
-                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-            } else {
-                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-            }
-        }
+//        if (list.contains(diaSemAt)) {
+//            if (Calendar.HOUR_OF_DAY == Integer.parseInt(hr[0])) {
+//                if (Calendar.MINUTE >= Integer.parseInt(hr[1])) {
+//                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+//                }else{
+//                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+//                }
+//            } else if (calendar.get(Calendar.HOUR_OF_DAY) < Integer.parseInt(hr[0])) {
+//                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+//            } else {
+//                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+//            }
+//        }
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).equals("dom"))
@@ -108,7 +108,7 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         OnItemClick onItemClick;
         View v_indicador;
 
-        public TerapiaViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
+        public TerapiaViewHolder(@NonNull View itemView, List<Terapia> terapiaList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
             super(itemView);
             tv_dom = itemView.findViewById(R.id.tv_dom);
             tv_seg = itemView.findViewById(R.id.tv_seg);

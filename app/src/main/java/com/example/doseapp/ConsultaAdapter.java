@@ -27,14 +27,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ConsultaAdapter extends RecyclerView.Adapter {
-    private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    public static Context context;
-    private static List<Consulta> consultaList;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public Context context;
+    private List<Consulta> consultaList;
     private OnItemClick onItemClick;
-    private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     public ConsultaAdapter(Context context, List<Consulta> consultaList, OnItemClick onItemClick) {
         this.context = context;
@@ -44,7 +44,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_consulta, parent, false);
-        ConsultaViewHolder viewHolder = new ConsultaAdapter.ConsultaViewHolder(view, onItemClick);
+        ConsultaViewHolder viewHolder = new ConsultaAdapter.ConsultaViewHolder(view, consultaList, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
@@ -56,39 +56,24 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
             viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
         }
 
-        String data = format.format(new Date());
-
         viewHolder.tv_nomeConsulta.setText(consulta.getNome());
         viewHolder.tv_horaConsulta.setText(consulta.getHorario());
         String[] dataCad = consulta.getData().split("/");
-        String[] dataAt = data.split("/");
+        String[] hr = consulta.getHorario().split(":");
+        String color = "";
 
-        if (Integer.parseInt(dataAt[2]) <= Integer.parseInt(dataCad[2])) {
-            if (Integer.parseInt(dataAt[1]) <= Integer.parseInt(dataCad[1])) {
-                if (data.equals(consulta.getData())) {
-                    viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor("#32CD32"));
-//                    if (Calendar.HOUR_OF_DAY == Integer.parseInt(hr[0])) {
-//                        if (Calendar.MINUTE >= Integer.parseInt(hr[1])) {
-//                            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-//                        }else{
-//                            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-//                        }
-//                    } else if (calendar.get(Calendar.HOUR_OF_DAY) < Integer.parseInt(hr[0])) {
-//                        viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-//                    } else {
-//                        viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-//                    }
-                } else if (Integer.parseInt(dataAt[0]) < Integer.parseInt(dataCad[0])) {
-                    viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor("#6495ED"));
-                } else {
-                    viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor("#CD5C5C"));
-                }
-            } else {
-                viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor("#CD5C5C"));
-            }
-        } else {
-            viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor("#CD5C5C"));
-        }
+        GregorianCalendar dataAtual = (GregorianCalendar) Calendar.getInstance();
+
+        GregorianCalendar dataConsulta = new GregorianCalendar(Integer.parseInt(dataCad[2]),
+                Integer.parseInt(dataCad[1]) - 1,
+                Integer.parseInt(dataCad[0]),
+                Integer.parseInt(hr[0]),
+                Integer.parseInt(hr[1]));
+
+        if (dataAtual.before(dataConsulta)) color = "#32CD32";
+        else color = "#CD5C5C";
+        viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor(color));
+
         //Se ele marcar como concluído, usar a cor #F4A460
         viewHolder.tv_diaConsulta.setText(dataCad[0] + "/" + dataCad[1]);
     }
@@ -105,7 +90,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
         OnItemClick onItemClick;
         View v_indicadorConsulta;
 
-        public ConsultaViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
+        public ConsultaViewHolder(@NonNull View itemView, List<Consulta> consultaList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
             super(itemView);
             tv_diaConsulta = itemView.findViewById(R.id.tv_diaConsulta);
             tv_horaConsulta = itemView.findViewById(R.id.tv_horaConsulta);
@@ -117,7 +102,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
             imgBtn_alarme.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (consultaList.get(getAbsoluteAdapterPosition()).isLembre() == true) {
+                    if (consultaList.get(getAbsoluteAdapterPosition()).isLembre()) {
                         imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
                         firebaseFirestore.collection("Consultas").document(consultaList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", false);
                         consultaList.get(getAbsoluteAdapterPosition()).setLembre(false);
@@ -176,6 +161,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
 
     public interface OnItemClick {
         void OnItemClick(int position);
+
     }
 
     public static void gerarSnackBar(View view, String texto) {

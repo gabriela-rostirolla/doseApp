@@ -24,9 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.List;
 
 public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
-    private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    public static Context context;
-    private static List<DiarioDeCuidado> diarioList;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public Context context;
+    private List<DiarioDeCuidado> diarioList;
     private OnItemClick onItemClick;
 
     public DiarioDeCuidadoAdapter(Context context, List<DiarioDeCuidado> diarioList, OnItemClick onItemClick) {
@@ -40,7 +40,7 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_diario, parent, false);
-        DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder viewHolder = new DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder(view, onItemClick);
+        DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder viewHolder = new DiarioDeCuidadoAdapter.DiarioDeCuidadoViewHolder(view, diarioList, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
@@ -61,7 +61,7 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
         TextView tv_dataDiario;
         ImageButton imgBtn_excluir;
 
-        public DiarioDeCuidadoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
+        public DiarioDeCuidadoViewHolder(@NonNull View itemView, List<DiarioDeCuidado> diarioList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
             super(itemView);
             tv_dataDiario = itemView.findViewById(R.id.tv_dataDiario);
             imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluirDiario);

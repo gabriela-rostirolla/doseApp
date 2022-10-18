@@ -2,8 +2,11 @@ package com.example.doseapp;
 
 import android.net.wifi.WifiManager;
 
+import java.util.List;
+
 public class Medicamento {
 
+    private List<String> proxMedicamentos;
     private String nome;
     private String proxMed;
     private String concentracao;
@@ -44,6 +47,14 @@ public class Medicamento {
 
     public void setRecomendacao(String recomendacao) {
         this.recomendacao = recomendacao;
+    }
+
+    public List<String> getProxMedicamentos() {
+        return proxMedicamentos;
+    }
+
+    public void setProxMedicamentos(List<String> proxMedicamentos) {
+        this.proxMedicamentos = proxMedicamentos;
     }
 
     public String getDose() {

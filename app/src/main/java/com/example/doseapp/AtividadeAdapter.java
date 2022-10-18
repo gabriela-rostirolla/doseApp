@@ -25,9 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.List;
 
 public class AtividadeAdapter extends RecyclerView.Adapter {
-    private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    public static Context context;
-    private static List<Atividade> atividadeList;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public  Context context;
+    private  List<Atividade> atividadeList;
     private OnItemClick onItemClick;
 
     public AtividadeAdapter(Context context, List<Atividade> atividadeList, OnItemClick onItemClick) {
@@ -41,7 +41,7 @@ public class AtividadeAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_atividade, parent, false);
-        AtividadeAdapter.AtividadeViewHolder viewHolder = new AtividadeAdapter.AtividadeViewHolder(view, onItemClick);
+        AtividadeAdapter.AtividadeViewHolder viewHolder = new AtividadeAdapter.AtividadeViewHolder(view,atividadeList, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
@@ -62,7 +62,7 @@ public class AtividadeAdapter extends RecyclerView.Adapter {
         TextView tv_atividadeHorario;
         ImageButton imgBtn_excluir;
 
-        public AtividadeViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
+        public AtividadeViewHolder(@NonNull View itemView, List<Atividade> atividadeList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
             super(itemView);
             tv_atividadeHorario = itemView.findViewById(R.id.tv_atividadeHorario);
             imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluirAtividade);

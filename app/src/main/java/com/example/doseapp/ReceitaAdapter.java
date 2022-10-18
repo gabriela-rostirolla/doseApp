@@ -22,13 +22,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ReceitaAdapter extends RecyclerView.Adapter {
-    private static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    public static Context context;
-    private static List<Receita> receitaList;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    public Context context;
+    private List<Receita> receitaList;
     private OnItemClick onItemClick;
     private SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -43,7 +45,7 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_receita, parent, false);
-        ReceitaAdapter.ReceitaViewHolder viewHolder = new ReceitaAdapter.ReceitaViewHolder(view, onItemClick);
+        ReceitaAdapter.ReceitaViewHolder viewHolder = new ReceitaAdapter.ReceitaViewHolder(view, receitaList, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
@@ -56,22 +58,32 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
         String data = format.format(new Date());
         String[] dataCad = receita.getDataRenovar().split("/");
         String[] dataAt = data.split("/");
+        String color = "";
+        GregorianCalendar dataAtual = (GregorianCalendar) Calendar.getInstance();
 
-        if (Integer.parseInt(dataAt[2]) <= Integer.parseInt(dataCad[2])) {
-            if (Integer.parseInt(dataAt[1]) <= Integer.parseInt(dataCad[1])) {
-                if (data.equals(receita.getDataRenovar())) {
-                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-                } else if (Integer.parseInt(dataAt[0]) < Integer.parseInt(dataCad[0])) {
-                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#6495ED"));
-                } else {
-                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-                }
-            } else {
-                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-            }
-        } else {
-            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-        }
+        GregorianCalendar dataConsulta = new GregorianCalendar(Integer.parseInt(dataCad[2]),
+                Integer.parseInt(dataCad[1]) - 1,
+                Integer.parseInt(dataCad[0]));
+
+        if (dataAtual.before(dataConsulta)) color = "#32CD32";
+        else color = "#CD5C5C";
+        viewHolder.v_indicador.setBackgroundColor(Color.parseColor(color));
+
+//        if (Integer.parseInt(dataAt[2]) <= Integer.parseInt(dataCad[2])) {
+//            if (Integer.parseInt(dataAt[1]) <= Integer.parseInt(dataCad[1])) {
+//                if (data.equals(receita.getDataRenovar())) {
+//                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+//                } else if (Integer.parseInt(dataAt[0]) < Integer.parseInt(dataCad[0])) {
+//                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#6495ED"));
+//                } else {
+//                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+//                }
+//            } else {
+//                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+//            }
+//        } else {
+//            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+//        }
         viewHolder.tv_receitaData.setText(dataCad[0]+"/"+dataCad[1]);
     }
 
@@ -86,7 +98,7 @@ public class ReceitaAdapter extends RecyclerView.Adapter {
         OnItemClick onItemClick;
         View v_indicador;
 
-        public ReceitaViewHolder(@NonNull View itemView,  OnItemClick onItemClick) {
+        public ReceitaViewHolder(@NonNull View itemView, List<Receita> receitaList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
             super(itemView);
             tv_nomeReceita = itemView.findViewById(R.id.tv_nomeReceita);
             tv_receitaData = itemView.findViewById(R.id.tv_dataRenovacao);
