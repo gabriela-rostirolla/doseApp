@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,10 +46,8 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
     private Button btn_cadastrarIdoso;
     private RadioButton rb_feminino, rb_masculino, rb_outro;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private String[] mensagens = {"Preencha todos os campos", "Cadastro realizado com sucesso", "Falha no cadastro", "O número de telefone deve seguir o exemplo: (00) 0000-0000", "Digite um endereço válido", "Digite um nome com mais de três letras"};
     private String userId;
     private String id;
-    private DatePickerDialog.OnDateSetListener dateSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,30 +65,8 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
             btn_cadastrarIdoso.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String genero = "";
-                    if (rb_feminino.isChecked()) {
-                        genero = "feminino";
-                    } else if (rb_masculino.isChecked()) {
-                        genero = "masculino";
-                    } else if (rb_outro.isChecked()) {
-                        genero = "outro";
-                    }
-
-                    String nome = et_nomeIdoso.getText().toString();
-                    String end = et_enderecoIdoso.getText().toString();
-                    String tel = et_telefoneIdoso.getText().toString();
-                    String dataNasc = et_dataNascIdoso.getText().toString();
-
-                    if (nome.isEmpty() || end.isEmpty() || dataNasc.isEmpty() || tel.isEmpty() || genero.isEmpty()) {
-                        gerarSnackBar(view, mensagens[0]);
-                    } else if (validarTelefone(tel) == false || tel.length() < 11) {
-                        gerarSnackBar(view, mensagens[3]);
-                    } else if (nome.length() < 3) {
-                        gerarSnackBar(view, mensagens[4]);
-                    } else if (end.length() < 4) {
-                        gerarSnackBar(view, mensagens[5]);
-                    } else {
-                        gerarSnackBar(view, mensagens[1]);
+                    if (validarDados()) {
+                        Toast.makeText(telaCadastroIdosoCuidado.this, getString(R.string.idosoCadComSucesso), Toast.LENGTH_SHORT).show();
                         salvarNoBancoDeDados();
                         finish();
                     }
@@ -105,39 +82,21 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
             btn_cadastrarIdoso.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    editarIdoso(view);
-                    finish();
+                    if (validarDados()) {
+                        editarIdoso(view);
+                        finish();
+                    }
                 }
             });
         }
         et_dataNascIdoso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int ano = calendar.get(Calendar.YEAR);
-                int mes = calendar.get(Calendar.MONTH);
-                int dia = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroIdosoCuidado.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int i, int i2, int i3) {
-                                i2++;
-
-                                String mes = "";
-                                String dia = "";
-                                if (i2 < 10) mes = "0" + i2;
-                                else mes = String.valueOf(i2);
-                                if (i3 < 10) dia = "0" + i3;
-                                else dia = String.valueOf(i3);
-                                et_dataNascIdoso.setText(dia + "/" + mes + "/" + i);
-                                et_dataNascIdoso.setTextColor(Color.BLACK);
-                            }
-                        }, ano, mes, dia);
-                datePickerDialog.show();
+                mostrarCalendario(et_dataNascIdoso);
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -149,11 +108,63 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         }
     }
 
-    protected void gerarSnackBar(View v, String s) {
-        Snackbar snackbar = Snackbar.make(v, s, Snackbar.LENGTH_LONG);
-        snackbar.setBackgroundTint(Color.WHITE);
-        snackbar.setTextColor(Color.BLACK);
-        snackbar.show();
+    protected void mostrarCalendario(TextView tv){
+        Calendar calendar = Calendar.getInstance();
+        int ano = calendar.get(Calendar.YEAR);
+        int mes = calendar.get(Calendar.MONTH);
+        int dia = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(telaCadastroIdosoCuidado.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int i, int i2, int i3) {
+                        i2++;
+
+                        String mes = "";
+                        String dia = "";
+                        if (i2 < 10) mes = "0" + i2;
+                        else mes = String.valueOf(i2);
+                        if (i3 < 10) dia = "0" + i3;
+                        else dia = String.valueOf(i3);
+                        tv.setText(dia + "/" + mes + "/" + i);
+                        tv.setTextColor(Color.BLACK);
+                    }
+                }, ano, mes, dia);
+        datePickerDialog.show();
+    }
+
+    protected boolean validarDados() {
+        String genero = "";
+        if (rb_feminino.isChecked()) {
+            genero = "feminino";
+        } else if (rb_masculino.isChecked()) {
+            genero = "masculino";
+        } else if (rb_outro.isChecked()) {
+            genero = "outro";
+        }
+
+        String nome = et_nomeIdoso.getText().toString();
+        String end = et_enderecoIdoso.getText().toString();
+        String tel = et_telefoneIdoso.getText().toString();
+        String dataNasc = et_dataNascIdoso.getText().toString();
+
+        if (nome.isEmpty() || end.isEmpty() || dataNasc.isEmpty() || tel.isEmpty() || genero.isEmpty()) {
+            Toast.makeText(telaCadastroIdosoCuidado.this, getString(R.string.camposVazios), Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (nome.length() < 3) {
+            Toast.makeText(telaCadastroIdosoCuidado.this, getString(R.string.nomeInv), Toast.LENGTH_SHORT).show();
+            et_nomeIdoso.findFocus();
+            return false;
+        } else if ((!validarTelefone(tel) || tel.length() < 11)) {
+            Toast.makeText(telaCadastroIdosoCuidado.this, getString(R.string.telInv), Toast.LENGTH_SHORT).show();
+            et_telefoneIdoso.findFocus();
+            return false;
+        } else if (end.length() < 4) {
+            Toast.makeText(telaCadastroIdosoCuidado.this, getString(R.string.endInv), Toast.LENGTH_SHORT).show();
+            et_enderecoIdoso.findFocus();
+            return false;
+        }
+        return true;
     }
 
     protected boolean validarTelefone(String tel) {
@@ -253,28 +264,20 @@ public class telaCadastroIdosoCuidado extends AppCompatActivity {
         String dataNasc = et_dataNascIdoso.getText().toString();
         String obs = et_obsIdoso.getText().toString();
 
-        if (nome.isEmpty() || end.isEmpty() || tel.isEmpty() || dataNasc.isEmpty()) {
-            gerarSnackBar(view, "Preencha todos os campos");
-        } else if (validarTelefone(tel) == false || tel.length() < 11) {
-            gerarSnackBar(view, "Digite um telefone válido");
-        } else if (nome.length() < 4) {
-            gerarSnackBar(view, "Digite um nome com mais de 3 letras");
-        } else {
-            firebaseFirestore.collection("Idosos cuidados").document(id)
-                    .update("nome", nome, "endereco", end, "telefone", tel, "data de nascimento", dataNasc, "observacoes", obs, "genero", genero)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("firebase_update", "Sucesso ao atualizar dados");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            gerarSnackBar(view, "Falha ao editar");
-                            Log.w("firebase_failed_update", "Falha ao atualizar dados", e);
-                        }
-                    });
-        }
+        firebaseFirestore.collection("Idosos cuidados").document(id)
+                .update("nome", nome, "endereco", end, "telefone", tel, "data de nascimento", dataNasc, "observacoes", obs, "genero", genero)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("firebase_update", "Sucesso ao atualizar dados");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(telaCadastroIdosoCuidado.this, getString(R.string.falhaAoEditar), Toast.LENGTH_SHORT).show();
+                        Log.w("firebase_failed_update", "Falha ao atualizar dados", e);
+                    }
+                });
     }
 }

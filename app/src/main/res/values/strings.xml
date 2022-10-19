@@ -75,14 +75,21 @@
     <string name="hr_vazio">Informe um horário</string>
     <string name="cuidador_vazio">Informe um cuidador</string>
     <string name="campos_atividade_vazios">Preencha ao menos um campo</string>
+    <string name="emailVazio">Digite um e-mail</string>
 
     <!--Ações bem sucedidas-->
     <string name="diarioCad">Diário de cuidado cadastrado com sucesso</string>
+    <string name="loginFeitoComSucesso">Login efetuado com sucesso</string>
+    <string name="idosoCadComSucesso">Cadastro realizado com sucesso</string>
     <string name="dadosAtualizados">Dados atualizados com sucesso</string>
+    <string name="emailEnviado">O email foi enviado! Verifique sua caixa de spam</string>
 
     <!--Ações mal sucedidas-->
     <string name="falhaAoAtualizarDados">Falha ao atualizar dados</string>
-
+    <string name="falhaAoCadastrar">Não foi possível realizar cadastro</string>
+    <string name="emailInex">Este E-mail não existe</string>
+    <string name="falhaAoLogar">Não foi possível realizar login</string>
+    <string name="falhaAoEditar">Não foi possível editas os dados</string>
 
     <!--Alertas-->
     <string name="diarioJaCad">Um diário de cuidado já foi feito no dia</string>
@@ -96,7 +103,17 @@
     <string name="hrInicMedNaoInform">O horário inicial do medicamento não foi informado</string>
     <string name="dataInicMedNaoInform">A data inicial do medicamento não foi informada</string>
     <string name="dataFimMedNaoInform">A data final do medicamento não foi informada</string>
+    <string name="senhaInv">Senha inválida! Digite uma senha com mais de 6 caracteres</string>
+    <string name="emailInv">E-mail inválido</string>
+    <string name="contaExistente">Esta conta já existe</string>
+    <string name="senhaIncorreta">Senha incorreta</string>
+    <string name="camposVazios">Preencha todos os campos</string>
     <string name="nomeMedInvalido">O nome do medicamento não pode conter menos que 3 letras</string>
+    <string name="senhasDiferentes">Senhas não conferem</string>
+    <string name="nomeInv">Digite um nome com mais de três letras</string>
+    <string name="telInv">Digite um telefone válido</string>
+    <string name="endInv">Digite um endereço válido</string>
+    <string name="profInv">Digite um nome de um profissional válido</string>
 
     <!--Nenhum registro-->
     <string name="nenhumCadIdoso">Nenhum idoso cadastrado</string>

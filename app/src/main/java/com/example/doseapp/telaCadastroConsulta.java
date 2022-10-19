@@ -245,19 +245,19 @@ public class telaCadastroConsulta extends AppCompatActivity {
         String horario = tv_horario.getText().toString();
 
         if (nome.isEmpty() || endereco.isEmpty() || data.isEmpty() || tel.isEmpty() || profissional.isEmpty() || horario.isEmpty()) {
-            gerarToast(mensagens[0]);
+            gerarToast(getString(R.string.camposVazios));
             return false;
-        } else if (nome.length() < 4) {
-            gerarToast(mensagens[1]);
+        } else if (nome.length() < 3) {
+            gerarToast(getString(R.string.nomeInv));
             return false;
-        } else if (validarTelefone(tel) == false) {
-            gerarToast(mensagens[2]);
+        } else if (!validarTelefone(tel)) {
+            gerarToast(getString(R.string.telInv));
             return false;
-        } else if (endereco.length() < 4) {
-            gerarToast(mensagens[3]);
+        } else if (endereco.length() < 3) {
+            gerarToast(getString(R.string.endInv));
             return false;
         } else if (profissional.length() < 3) {
-            gerarToast(mensagens[4]);
+            gerarToast(getString(R.string.profInv));
             return false;
         }
         return true;
@@ -311,6 +311,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d("banco_dados_salvos", "Sucesso ao atualizar dados!");
+                        gerarToast(getString(R.string.dadosAtualizados));
                     }
                 });
     }

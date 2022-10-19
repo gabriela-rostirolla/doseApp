@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -120,9 +119,7 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
     }
 
     public static boolean verificarDiario(List<DiarioDeCuidado> list) {
-        System.out.println(list.get(0).getData());
-        System.out.println(dia);
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             return true;
         } else if (Objects.equals(list.get(0).getData(), dia)) {
             return false;

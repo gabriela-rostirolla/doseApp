@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,25 +33,13 @@ public class telaLogin extends AppCompatActivity {
     private EditText et_email, et_senha;
     private Button btn_entrar;
     private TextView tv_redefinirSenha;
-    String[] mensagens = {"Preencha todos os campos"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_login);
         getSupportActionBar().hide();
-//        boolean desconectado = getIntent().getBooleanExtra("Sair", false);
-//        if (desconectado == true) {
-//            FirebaseAuth.getInstance().signOut();
-//            Intent intent = new Intent(telaLogin.this, telaLogin.class);
-//            startActivity(intent);
-//            finish();
-//        }
-        FirebaseUser userAtual = FirebaseAuth.getInstance().getCurrentUser();
-        if (userAtual != null) {
-//            System.out.println(userAtual.getUid());
-            telaPrincipal();
-        }
+
         iniciarComponentes();
 
         tv_redefinirSenha.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +54,6 @@ public class telaLogin extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(telaLogin.this, telaCadastro.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -75,10 +63,7 @@ public class telaLogin extends AppCompatActivity {
                 String email = et_email.getText().toString();
                 String senha = et_senha.getText().toString();
                 if (email.isEmpty() || senha.isEmpty()) {
-                    Snackbar snackbar = Snackbar.make(view, mensagens[0], Snackbar.LENGTH_SHORT);
-                    snackbar.setBackgroundTint(Color.WHITE);
-                    snackbar.setTextColor(Color.BLACK);
-                    snackbar.show();
+                    Toast.makeText(telaLogin.this, getString(R.string.camposVazios), Toast.LENGTH_SHORT).show();
                 } else {
                     autenticarUsuario(view);
                 }
@@ -86,12 +71,17 @@ public class telaLogin extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            telaPrincipal();
+        }
+    }
+
     protected void redefinirSenha(View view) {
         if (et_email.getText().toString().isEmpty()) {
-            Snackbar snackbar = Snackbar.make(view, "Digite um email", Snackbar.LENGTH_SHORT);
-            snackbar.setBackgroundTint(Color.WHITE);
-            snackbar.setTextColor(Color.BLACK);
-            snackbar.show();
+            Toast.makeText(this, getString(R.string.emailVazio), Toast.LENGTH_SHORT).show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(telaLogin.this);
             builder.setTitle("Recuperar Senha")
@@ -106,10 +96,7 @@ public class telaLogin extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 Log.d("email_enviado", "Email sent.");
-                                                Snackbar snackbar = Snackbar.make(view, "O email foi enviado! Verifique sua caixa de spam", Snackbar.LENGTH_SHORT);
-                                                snackbar.setBackgroundTint(Color.WHITE);
-                                                snackbar.setTextColor(Color.BLACK);
-                                                snackbar.show();
+                                                Toast.makeText(telaLogin.this, getString(R.string.emailEnviado), Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -141,21 +128,19 @@ public class telaLogin extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     telaPrincipal();
+                    Toast.makeText(telaLogin.this, getString(R.string.loginFeitoComSucesso), Toast.LENGTH_SHORT).show();
                 } else {
                     String erro;
                     try {
                         throw task.getException();
                     } catch (FirebaseAuthInvalidUserException exception) {
-                        erro = "Este E-mail não existe";
+                        erro = getString(R.string.emailInex);
                     } catch (FirebaseAuthInvalidCredentialsException exception) {
-                        erro = "Senha incorreta";
+                        erro = getString(R.string.senhaIncorreta);
                     } catch (Exception exception) {
-                        erro = "Não foi possível realizar login";
+                        erro = getString(R.string.falhaAoLogar);
                     }
-                    Snackbar snackbar = Snackbar.make(view, erro, Snackbar.LENGTH_SHORT);
-                    snackbar.setBackgroundTint(Color.WHITE);
-                    snackbar.setTextColor(Color.BLACK);
-                    snackbar.show();
+                    Toast.makeText(telaLogin.this, erro, Toast.LENGTH_SHORT).show();
                 }
             }
         });

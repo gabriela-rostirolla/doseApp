@@ -15,15 +15,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthEmailException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
@@ -36,7 +35,6 @@ import java.util.Map;
 public class telaCadastro extends AppCompatActivity {
     private EditText et_cadNome, et_cadEmail, et_cadSenha, et_cadConfirmarSenha;
     private Button btn_cadastrar;
-    String [] mensagens ={"Preencha todos os campos", "Cadastro realizado com sucesso", "Senhas não conferem", "Falha no cadastro"};
     String userID;
 
     @Override
@@ -44,7 +42,6 @@ public class telaCadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_cadastro);
         inicializarComponentes();
-        //et_cadSenha.setBackgroundResource(android.R.color.transparent);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.cadastrar);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -57,15 +54,9 @@ public class telaCadastro extends AppCompatActivity {
                 String senha = et_cadSenha.getText().toString();
                 String confSenha = et_cadConfirmarSenha.getText().toString();
                 if(nome.isEmpty() || email.isEmpty() || senha.isEmpty() || confSenha.isEmpty()){
-                    Snackbar snackbar = Snackbar.make(view, mensagens[0], Snackbar.LENGTH_SHORT);
-                    snackbar.setBackgroundTint(Color.WHITE);
-                    snackbar.setTextColor(Color.BLACK);
-                    snackbar.show();
+                    Toast.makeText(telaCadastro.this, getString(R.string.camposVazios), Toast.LENGTH_SHORT).show();
                 }else if (senha.equals(confSenha)==false){
-                    Snackbar snackbar = Snackbar.make(view, mensagens[2], Snackbar.LENGTH_SHORT);
-                    snackbar.setBackgroundTint(Color.WHITE);
-                    snackbar.setTextColor(Color.BLACK);
-                    snackbar.show();
+                    Toast.makeText(telaCadastro.this, getString(R.string.senhasDiferentes), Toast.LENGTH_SHORT).show();
                 }else{
                     cadastrarUsuario(view);
                 }
@@ -101,28 +92,22 @@ public class telaCadastro extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     salvarDadosNoBancoDeDados();
-                    Snackbar snackbar = Snackbar.make(view, mensagens[1], Snackbar.LENGTH_SHORT);
-                    snackbar.setBackgroundTint(Color.WHITE);
-                    snackbar.setTextColor(Color.BLACK);
-                    snackbar.show();
+                    Toast.makeText(telaCadastro.this, getString(R.string.camposVazios), Toast.LENGTH_SHORT).show();
                     iniciarTelaInicial();
                 }else{
                     String erro ="";
                     try{
                         throw task.getException();
                     }catch (FirebaseAuthWeakPasswordException exception) {
-                        erro = "Senha inválida! Digite uma senha com mais de 6 caracteres";
+                        erro = getString(R.string.senhaInv);
                     }catch(FirebaseAuthInvalidCredentialsException exception){
-                        erro = "E-mail inválido";
+                        erro = getString(R.string.emailInv);
                     }catch (FirebaseAuthUserCollisionException exception){
-                        erro ="Esta conta já existe";
+                        erro = getString(R.string.contaExistente);
                     }catch (Exception exception){
-                        erro = "Não foi possível realizar cadastro";
+                        erro = getString(R.string.falhaAoCadastrar);
                     }
-                    Snackbar snackbar = Snackbar.make(view, erro, Snackbar.LENGTH_SHORT);
-                    snackbar.setBackgroundTint(Color.WHITE);
-                    snackbar.setTextColor(Color.BLACK);
-                    snackbar.show();
+                    Toast.makeText(telaCadastro.this, erro, Toast.LENGTH_SHORT).show();
                 }
             }
         });
