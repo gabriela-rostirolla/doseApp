@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -263,26 +264,23 @@ public class telaCadastroTerapia extends AppCompatActivity {
         String tel = et_telefone.getText().toString();
 
         if (nome.isEmpty() || end.isEmpty() || profissional.isEmpty() || horario.isEmpty() || tel.isEmpty()) {
-            gerarSnackBar(view, mensagens[0]);
+            gerarToast( mensagens[0]);
         } else if (nome.length() < 2) {
-            gerarSnackBar(view, mensagens[1]);
+            gerarToast( mensagens[1]);
             return false;
         } else if (end.length() < 3) {
-            gerarSnackBar(view, mensagens[2]);
+            gerarToast( mensagens[2]);
             return false;
         } else if (profissional.length() < 2) {
-            gerarSnackBar(view, mensagens[3]);
+            gerarToast( mensagens[3]);
             return false;
         } else if (tel.length() < 11) {
-            gerarSnackBar(view, mensagens[4]);
+            gerarToast( mensagens[4]);
         }
         return true;
     }
 
-    public void gerarSnackBar(View view, String texto) {
-        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.WHITE);
-        snackbar.setTextColor(Color.BLACK);
-        snackbar.show();
+    public void gerarToast(String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 }

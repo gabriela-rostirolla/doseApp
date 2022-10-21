@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -90,12 +91,12 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                         imgBtn_cuidado.setImageResource(R.drawable.ic_baseline_work_off_24);
                         firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidado", false);
                         idosoCuidadoList.get(getAbsoluteAdapterPosition()).setCuidado(false);
-                        gerarSnackBar(view, "Período de cuidado finalizado!");
+                        gerarToast(view, "Período de cuidado finalizado!");
                     } else if (idosoCuidadoList.get(getAbsoluteAdapterPosition()).isCuidado() == false) {
                         idosoCuidadoList.get(getAbsoluteAdapterPosition()).setCuidado(true);
                         firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidado", true);
                         imgBtn_cuidado.setImageResource(R.drawable.ic_baseline_work_24);
-                        gerarSnackBar(view, "Período de cuidado inicializado!");
+                        gerarToast(view, "Período de cuidado inicializado!");
                     }
                 }
             });
@@ -118,7 +119,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                                     System.out.println(userId);
                                                     if (!list.get(0).equals(userId)) {
                                                         list.remove(userId);
-                                                        gerarSnackBar(view, "Excluido com sucesso!");
+                                                        gerarToast(view, "Excluido com sucesso!");
                                                         firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidador id", list);
                                                     } else {
                                                         DocumentReference document = firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId());
@@ -126,10 +127,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                                             @Override
                                                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                                                 document.delete();
-                                                                Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
-                                                                snackbar.setBackgroundTint(Color.WHITE);
-                                                                snackbar.setTextColor(Color.BLACK);
-                                                                snackbar.show();
+                                                                gerarToast(view, "Excluido com sucesso");
                                                                 firebaseFirestore.collection("Medicamento")
                                                                         .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
                                                                         .get()
@@ -184,11 +182,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                 }
                             }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    //return;
-                                    Snackbar snackbar = Snackbar.make(view, "Operação cancelada", Snackbar.LENGTH_SHORT);
-                                    snackbar.setBackgroundTint(Color.WHITE);
-                                    snackbar.setTextColor(Color.BLACK);
-                                    snackbar.show();
+                                    gerarToast(view, "Operação cancelada");
                                 }
                             });
                     builder.create();
@@ -226,7 +220,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                                         idNovoCuidador = document.getId();
                                                         if (idNovoCuidador.isEmpty()) {
-                                                            gerarSnackBar(view, "O email inserido não está vinculado a nenhuma conta");
+                                                            gerarToast(view, "O email inserido não está vinculado a nenhuma conta");
                                                         } else {
                                                             firebaseFirestore.collection("Idosos cuidados")
                                                                     .document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
@@ -236,7 +230,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                                                             List<String> list = (List<String>) t.getResult().get("cuidador id");
                                                                             list.add(idNovoCuidador);
                                                                             firebaseFirestore.collection("Idosos cuidados").document(idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId()).update("cuidador id", list);
-                                                                            gerarSnackBar(view, idosoCuidadoList.get(getAbsoluteAdapterPosition()).getNome() + " compartilhado com sucesso!");
+                                                                            gerarToast(view, idosoCuidadoList.get(getAbsoluteAdapterPosition()).getNome() + " compartilhado com sucesso!");
                                                                         }
                                                                     });
                                                         }
@@ -246,7 +240,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-                                                    gerarSnackBar(view, "Não foi possível compartilhar!");
+                                                    gerarToast(view, "Não foi possível compartilhar!");
                                                 }
                                             });
                                 }
@@ -274,10 +268,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
         void OnItemClick(int position);
     }
 
-    public static void gerarSnackBar(View view, String texto) {
-        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.WHITE);
-        snackbar.setTextColor(Color.BLACK);
-        snackbar.show();
+    public static void gerarToast(View view, String texto) {
+        Toast.makeText(view.getContext(), texto, Toast.LENGTH_SHORT).show();
     }
 }

@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -126,7 +127,7 @@ public class telaPerfil extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            gerarSnackBar(view, "Nome atualizado com sucesso");
+                            gerarToast("Nome atualizado com sucesso");
                             Log.d("documento_atualizado", "DocumentSnapshot successfully updated!");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -136,14 +137,11 @@ public class telaPerfil extends AppCompatActivity {
                         }
                     });
         } else {
-            gerarSnackBar(view, "Digite um nome válido");
+            gerarToast("Digite um nome válido");
         }
     }
 
-    public void gerarSnackBar(View view, String texto) {
-        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.WHITE);
-        snackbar.setTextColor(Color.BLACK);
-        snackbar.show();
+    public void gerarToast(String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 }

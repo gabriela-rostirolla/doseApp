@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.android.AndroidAuthTokenProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -151,10 +152,11 @@ public class telaCadastroConsulta extends AppCompatActivity {
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, et_end.getText().toString())
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calDate.getTimeInMillis())
                 .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calDate.getTimeInMillis())
+                .putExtra(CalendarContract.Events.CALENDAR_ID, 4)
                 .putExtra(CalendarContract.Events.DESCRIPTION, "Profissional: " +
-                        et_profissional.getText().toString() +
-                        "\nTelefone: " +
-                        et_tel.getText().toString());
+                et_profissional.getText().toString() +
+                "\nTelefone: " +
+                et_tel.getText().toString());
 
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);

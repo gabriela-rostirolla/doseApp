@@ -87,35 +87,6 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                switch (position) {
-                    case 0:
-                        atividadeList.clear();
-                        alimentacaoList.clear();
-                        listarAtividades();
-                        return;
-                    case 1:
-                        atividadeList.clear();
-                        alimentacaoList.clear();
-                        listarAlimentacao();
-                        return;
-                    default:
-                        return;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tela_turno_noite, container, false);
         inicializarComponentes(v);
@@ -139,7 +110,36 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        spi_acao.setSelection(0);
+        spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                switch (position) {
+                    case 0:
+                        atividadeList.clear();
+                        listarAtividades();
+                        return;
+                    case 1:
+                        listarAlimentacao();
+                        return;
+                    default:
+                        return;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
     protected void listarAtividades() {
+        atividadeList.clear();
+
         rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Diario atividades")
                 .whereEqualTo("diario id", diario_id)
@@ -227,12 +227,11 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
         if (spi_acao.getSelectedItem().equals("Alimentação")) {
             intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
             intent.putExtra("id", alimentacaoList.get(position).getId());
-            System.out.println(alimentacaoList.get(position).getId());
+            intent.putExtra("turno", "Noite");
         } else if (spi_acao.getSelectedItem().equals("Atividade")) {
             intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
             intent.putExtra("id", atividadeList.get(position).getId());
-            System.out.println(atividadeList.get(position).getId());
-
+            intent.putExtra("turno", "Noite");
         }
         startActivity(intent);
     }

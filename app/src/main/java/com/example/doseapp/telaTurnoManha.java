@@ -113,13 +113,13 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
     @Override
     public void onResume() {
         super.onResume();
-
         spi_acao.setSelection(0);
         spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 switch (position) {
                     case 0:
+                        atividadeList.clear();
                         listarAtividades();
                         return;
                     case 1:
@@ -139,6 +139,7 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
 
     protected void listarAtividades() {
         atividadeList.clear();
+
         rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Diario atividades")
                 .whereEqualTo("diario id", diario_id)

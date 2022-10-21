@@ -83,6 +83,8 @@
     <string name="idosoCadComSucesso">Cadastro realizado com sucesso</string>
     <string name="dadosAtualizados">Dados atualizados com sucesso</string>
     <string name="emailEnviado">O email foi enviado! Verifique sua caixa de spam</string>
+    <string name="excluidoComSucesso">Excluido com sucesso!</string>
+    <string name="operacaoCancelada">Operação Cancelada!</string>
 
     <!--Ações mal sucedidas-->
     <string name="falhaAoAtualizarDados">Falha ao atualizar dados</string>

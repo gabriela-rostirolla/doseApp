@@ -1,17 +1,23 @@
 package com.example.doseapp;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.CalendarContract;
 import android.speech.RecognitionService;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +54,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
         return viewHolder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ConsultaAdapter.ConsultaViewHolder viewHolder = (ConsultaAdapter.ConsultaViewHolder) holder;
@@ -66,16 +73,26 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
 
         GregorianCalendar dataConsulta = new GregorianCalendar(Integer.parseInt(dataCad[2]),
                 Integer.parseInt(dataCad[1]) - 1,
-                Integer.parseInt(dataCad[0]),
-                Integer.parseInt(hr[0]),
-                Integer.parseInt(hr[1]));
+                Integer.parseInt(dataCad[0]));
 
-        if (dataAtual.before(dataConsulta)) color = "#32CD32";
-        else color = "#CD5C5C";
+        if (dataAtual.equals(dataConsulta)) {
+            if (Integer.parseInt(hr[0]) < Calendar.HOUR_OF_DAY) {
+                color = "#CD5C5C";
+            } else {
+                color = "#32CD32";
+            }
+        } else if(dataAtual.before(dataConsulta)){
+            color = "#ffffff";
+        }else color = "#CD5C5C";
         viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor(color));
 
         //Se ele marcar como concluído, usar a cor #F4A460
         viewHolder.tv_diaConsulta.setText(dataCad[0] + "/" + dataCad[1]);
+
+        Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 3);
+        if(eventUri != null){
+            System.out.println("nenhum evento adicionado");
+        }else System.out.println("kdasmnzkcjvbksnj");
     }
 
     @Override
@@ -106,12 +123,12 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
                         imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
                         firebaseFirestore.collection("Consultas").document(consultaList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", false);
                         consultaList.get(getAbsoluteAdapterPosition()).setLembre(false);
-                        gerarSnackBar(view, "Alarme atualizado com sucesso!");
+                        gerarToast(view, "Alarme atualizado com sucesso!");
                     } else if (consultaList.get(getAbsoluteAdapterPosition()).isLembre() == false) {
                         consultaList.get(getAbsoluteAdapterPosition()).setLembre(true);
                         firebaseFirestore.collection("Consultas").document(consultaList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", true);
                         imgBtn_alarme.setImageResource(R.drawable.ic_alarm);
-                        gerarSnackBar(view, "Alarme atualizado com sucesso!");
+                        gerarToast(view, "Alarme atualizado com sucesso!");
                     }
                 }
             });
@@ -128,20 +145,14 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             document.delete();
-                                            Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
-                                            snackbar.setBackgroundTint(Color.WHITE);
-                                            snackbar.setTextColor(Color.BLACK);
-                                            snackbar.show();
+                                            Toast.makeText(view.getContext(), R.string.excluidoComSucesso, Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
                             })
                             .setNegativeButton("Não", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Snackbar snackbar = Snackbar.make(view, "Operação cancelada", Snackbar.LENGTH_SHORT);
-                                    snackbar.setBackgroundTint(Color.WHITE);
-                                    snackbar.setTextColor(Color.BLACK);
-                                    snackbar.show();
+                                    Toast.makeText(view.getContext(), R.string.operacaoCancelada, Toast.LENGTH_SHORT).show();
                                 }
                             });
                     builder.create();
@@ -161,13 +172,9 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
 
     public interface OnItemClick {
         void OnItemClick(int position);
-
     }
 
-    public static void gerarSnackBar(View view, String texto) {
-        Snackbar snackbar = Snackbar.make(view, texto, Snackbar.LENGTH_SHORT);
-        snackbar.setBackgroundTint(Color.WHITE);
-        snackbar.setTextColor(Color.BLACK);
-        snackbar.show();
+    public static void gerarToast(View view, String texto) {
+        Toast.makeText(view.getContext(), texto, Toast.LENGTH_SHORT).show();
     }
 }

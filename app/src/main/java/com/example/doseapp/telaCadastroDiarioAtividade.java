@@ -1,6 +1,7 @@
 package com.example.doseapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,10 +17,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -38,8 +44,35 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
         inicializarComponentes();
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Cadastrar Atividade");
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        String id = getIntent().getStringExtra("id");
+
+        if (id == null) {
+            actionBar.setTitle(R.string.cadastrar_alimentacao);
+            btn_salvar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (validarCampos()) {
+                        salvarBancoDeDados();
+                        finish();
+                    }
+                }
+            });
+        } else {
+            actionBar.setTitle(R.string.editar);
+            btn_salvar.setText(R.string.editar);
+            preencherCampos(id);
+            btn_salvar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (validarCampos()) {
+                        editarDados(id);
+                        finish();
+                    }
+                }
+            });
+        }
 
         tv_horario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,15 +81,7 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
             }
         });
 
-        btn_salvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validarCampos() == true) {
-                    salvarBancoDeDados();
-                    finish();
-                }
-            }
-        });
+
     }
 
     @Override
@@ -68,6 +93,56 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    protected void editarDados(String id){
+        String sono = et_sono.getText().toString();
+        String exerc =  et_exercicios.getText().toString();
+        String passeio = et_passeio.getText().toString();
+        String saude = et_saude.getText().toString();
+        String outro = et_outro.getText().toString();
+        String obs = et_obs.getText().toString();
+        String cuidador = et_cuidador.getText().toString();
+        String hr = tv_horario.getText().toString();
+
+        DocumentReference doc = firebaseFirestore.collection("Diario atividades").document(id);
+        doc.update("cuidador", cuidador,
+                        "exercicios", exerc,
+                        "sono", sono,
+                        "outro", outro,
+                        "horario", hr,
+                        "observacao", obs,
+                        "passeio", passeio,
+                        "saude", saude)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        gerarToast(getString(R.string.dadosAtualizados));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        gerarToast(getString(R.string.falhaAoAtualizarDados));
+                    }
+                });
+    }
+
+    protected void preencherCampos(String id){
+        DocumentReference doc = firebaseFirestore.collection("Diario atividades").document(id);
+
+        doc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                et_cuidador.setText(value.getString("cuidador"));
+                tv_horario.setText(value.getString("horario"));
+                et_sono.setText(value.getString("sono"));
+                et_obs.setText(value.getString("observacao"));
+                et_outro.setText(value.getString("outro"));
+                et_exercicios.setText(value.getString("exercicios"));
+                et_passeio.setText(value.getString("passeio"));
+                et_saude.setText(value.getString("saude"));
+            }
+        });
     }
 
     protected void inicializarComponentes() {

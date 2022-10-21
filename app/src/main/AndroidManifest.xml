@@ -4,8 +4,8 @@
     package="com.example.doseapp">
 
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    <uses-permission android:name="com.android.alarm.permission.READ_CALENDAR" />
-    <uses-permission android:name="com.android.alarm.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
         android:allowBackup="true"
