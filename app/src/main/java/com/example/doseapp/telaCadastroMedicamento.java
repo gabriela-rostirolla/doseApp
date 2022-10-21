@@ -71,11 +71,11 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         spiVia.setAdapter(adapter2);
 
         idMed = getIntent().getStringExtra("id medicamento");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         if (idMed == null) {
-            ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(R.string.cadastrar_medicamento);
-            actionBar.setDisplayHomeAsUpEnabled(true);
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -87,9 +87,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 }
             });
         } else {
-            ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(R.string.editar);
-            actionBar.setDisplayHomeAsUpEnabled(true);
             preencherDadosMedicamento();
             btn_salvar.setText(R.string.editar);
             tv_dataFim.setTextColor(Color.BLACK);
@@ -100,7 +98,9 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 public void onClick(View view) {
                     if (validarCampos()) {
                         editarBancoDeDados();
-                        definirAlarme();
+                        if (swt_lembre.isChecked()) {
+                            definirAlarme();
+                        }
                         finish();
                     }
                 }

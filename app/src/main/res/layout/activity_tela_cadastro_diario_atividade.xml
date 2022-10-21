@@ -42,7 +42,7 @@
         <EditText
             android:id="@+id/et_passeioDiario"
             style="@style/Edit_text"
-            android:drawableEnd="@drawable/ic_corrida"
+            android:drawableEnd="@drawable/ic_passeio"
             android:hint="@string/passeio"
             android:inputType="textCapSentences" />
 

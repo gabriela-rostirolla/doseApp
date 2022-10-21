@@ -92,6 +92,8 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
         inicializarComponentes(v);
         diario_id = getActivity().getIntent().getStringExtra("diario id");
         String data = getActivity().getIntent().getStringExtra("dia");
+        atividadeList = new ArrayList<>();
+        alimentacaoList = new ArrayList<>();
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override

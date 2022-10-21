@@ -82,7 +82,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
                 color = "#32CD32";
             }
         } else if(dataAtual.before(dataConsulta)){
-            color = "#ffffff";
+            color = "#32CD32";
         }else color = "#CD5C5C";
         viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor(color));
 
