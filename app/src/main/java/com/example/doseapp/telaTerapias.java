@@ -66,7 +66,6 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Terapia ter = new Terapia();
                                 ter.setNome(document.getString("nome"));
-                                //ter.setDiasSemana(document.getString("dias"));
                                 ter.setDiasSemana((List<String>) document.get("dias da semana"));
                                 ter.setHorario(document.getString("horario"));
                                 ter.setId(document.getId());
@@ -130,6 +129,7 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), telaCadastroTerapia.class);
                 intent.putExtra("id", id);
+                intent.putExtra("nome idoso", getActivity().getIntent().getStringExtra("nome"));
                 startActivity(intent);
             }
         });
@@ -141,6 +141,7 @@ public class telaTerapias extends Fragment implements TerapiaAdapter.OnItemClick
         Intent intent = new Intent();
         intent.setClass(getActivity(), telaCadastroTerapia.class);
         intent.putExtra("id terapia", terapiaList.get(position).getId());
+        intent.putExtra("nome idoso", getActivity().getIntent().getStringExtra("nome"));
         startActivity(intent);
     }
 }

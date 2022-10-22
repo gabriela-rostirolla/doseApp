@@ -65,19 +65,19 @@ public class TerapiaAdapter extends RecyclerView.Adapter {
         else if (diaSemana == 7) diaSemAt = "sab";
 
         String hr[] = terapia.getHorario().split(":");
-//        if (list.contains(diaSemAt)) {
-//            if (Calendar.HOUR_OF_DAY == Integer.parseInt(hr[0])) {
-//                if (Calendar.MINUTE >= Integer.parseInt(hr[1])) {
-//                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-//                }else{
-//                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-//                }
-//            } else if (calendar.get(Calendar.HOUR_OF_DAY) < Integer.parseInt(hr[0])) {
-//                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-//            } else {
-//                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
-//            }
-//        }
+        if (list.contains(diaSemAt)) {
+            if (Calendar.HOUR_OF_DAY == Integer.parseInt(hr[0])) {
+                if (Calendar.MINUTE >= Integer.parseInt(hr[1])) {
+                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+                }else{
+                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+                }
+            } else if (calendar.get(Calendar.HOUR_OF_DAY) < Integer.parseInt(hr[0])) {
+                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+            } else {
+                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#CD5C5C"));
+            }
+        }
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).equals("dom"))

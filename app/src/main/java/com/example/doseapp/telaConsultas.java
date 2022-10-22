@@ -77,8 +77,6 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                                 consulta.setNome(document.getString("nome"));
                                 consulta.setHorario(document.getString("horario"));
                                 consulta.setData(document.getString("data"));
-                                boolean aux = document.getBoolean("lembre-me");
-                                consulta.setLembre(aux);
                                 consulta.setId(document.getId());
                                 consultaList.add(consulta);
                             }
@@ -87,7 +85,8 @@ public class telaConsultas extends Fragment implements ConsultaAdapter.OnItemCli
                             } else {
                                 tv_nenhumConsulCad.setVisibility(View.INVISIBLE);
                             }
-                            consultaAdapter = new ConsultaAdapter(getContext(), consultaList, telaConsultas.this::OnItemClick);
+                            String nomeIdoso = getActivity().getIntent().getStringExtra("nome");
+                            consultaAdapter = new ConsultaAdapter(getContext(), consultaList, telaConsultas.this::OnItemClick, nomeIdoso);
                             rv_listaConsulta.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
                             rv_listaConsulta.setHasFixedSize(false);
                             rv_listaConsulta.setAdapter(consultaAdapter);

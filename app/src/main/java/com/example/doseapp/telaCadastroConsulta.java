@@ -1,14 +1,24 @@
 package com.example.doseapp;
 
+import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.util.Log;
@@ -26,7 +36,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.android.AndroidAuthTokenProvider;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -45,16 +54,12 @@ public class telaCadastroConsulta extends AppCompatActivity {
 
     private EditText et_nome, et_profissional, et_end, et_tel;
     private Button btn_salvar;
-    private String[] mensagens = {"Preencha todos os campos",
-            "Digite um nome com mais de três letras",
-            "Digite um número de telefone válido",
-            "Digite um endereço válido",
-            "Digite o nome do profissional com mais de três letras"};
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private TextView tv_data, tv_horario;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch swt_lembreConsulta;
     private static String idConsulta;
-    private DatePickerDialog.OnDateSetListener dateSetListener;
+//    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,8 @@ public class telaCadastroConsulta extends AppCompatActivity {
         inicializarComponentes();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+//        sharedPreferences = getSharedPreferences(getString(R.string.sharedPrefesAlarme), Context.MODE_PRIVATE);
 
         idConsulta = getIntent().getStringExtra("id consulta");
         if (idConsulta == null) {
@@ -91,6 +98,8 @@ public class telaCadastroConsulta extends AppCompatActivity {
                     if (validarCampos(view) == true) {
                         editarBancoDeDados();
                         if (swt_lembreConsulta.isChecked()) {
+                            int callbackId = 42;
+                            checkPermission(callbackId, Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
                             definirEvento();
                         }
                         finish();
@@ -105,7 +114,6 @@ public class telaCadastroConsulta extends AppCompatActivity {
                 mostrarCalendario(tv_data);
             }
         });
-
 
         tv_horario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,15 +160,24 @@ public class telaCadastroConsulta extends AppCompatActivity {
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, et_end.getText().toString())
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calDate.getTimeInMillis())
                 .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calDate.getTimeInMillis())
-                .putExtra(CalendarContract.Events.CALENDAR_ID, 4)
-                .putExtra(CalendarContract.Events.DESCRIPTION, "Profissional: " +
-                et_profissional.getText().toString() +
-                "\nTelefone: " +
-                et_tel.getText().toString());
+                .putExtra(CalendarContract.Events.CALENDAR_ID, 1)
+//                .putExtra(CalendarContract.Events.STATUS, status)
+                .putExtra(CalendarContract.Events.DESCRIPTION,
+                        "Profissional: " +
+                                et_profissional.getText().toString() +
+                                "\nTelefone: " +
+                                et_tel.getText().toString());
 
         if (intent.resolveActivity(getPackageManager()) != null) {
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putInt("id alarme - " + idConsulta, 1);
+//            editor.apply();
             startActivity(intent);
         }
+    }
+
+    protected void atualizarEvento() {
+
     }
 
     protected void mostrarCalendario(TextView tv) {
@@ -204,7 +221,6 @@ public class telaCadastroConsulta extends AppCompatActivity {
         consultaMap.put("telefone", tel);
         consultaMap.put("profissional", profissional);
         consultaMap.put("horario", horario);
-        consultaMap.put("lembre-me", swt_lembreConsulta.isChecked());
         consultaMap.put("id do idoso", id);
         consultaMap.put("dia de criacao", new Date());
         firebaseFirestore.collection("Consultas")
@@ -293,9 +309,11 @@ public class telaCadastroConsulta extends AppCompatActivity {
                 et_tel.setText(value.getString("telefone"));
                 tv_data.setText(value.getString("data"));
                 tv_horario.setText(value.getString("horario"));
-                swt_lembreConsulta.setChecked(value.getBoolean("lembre-me"));
             }
         });
+
+//        int alarme = sharedPreferences.getInt("id alarme - " + idConsulta, 0);
+//        swt_lembreConsulta.setChecked(alarme != 0);
     }
 
     protected void editarBancoDeDados() {
@@ -305,10 +323,14 @@ public class telaCadastroConsulta extends AppCompatActivity {
         String tel = et_tel.getText().toString();
         String data = tv_data.getText().toString();
         String horario = tv_horario.getText().toString();
-        boolean lembre = swt_lembreConsulta.isChecked();
 
         firebaseFirestore.collection("Consultas").document(idConsulta)
-                .update("nome", nome, "profissional", profissional, "endereco", end, "data", data, "horario", horario, "lembre-me", lembre, "telefone", tel)
+                .update("nome", nome,
+                        "profissional", profissional,
+                        "endereco", end,
+                        "data", data,
+                        "horario", horario,
+                        "telefone", tel)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -316,5 +338,28 @@ public class telaCadastroConsulta extends AppCompatActivity {
                         gerarToast(getString(R.string.dadosAtualizados));
                     }
                 });
+
+//        if (!swt_lembreConsulta.isChecked()) {
+//            int alarme =  sharedPreferences.getInt("id alarme - " + idConsulta, 0);
+//            if(alarme == 1) {
+//                Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 1);
+//                getContentResolver().delete(eventUri, null, null);
+//                System.out.println("kfaghkrlr");
+//            }
+//        }
+//
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.remove("id alarme - " + idConsulta);
+//        editor.apply();
+    }
+
+    private void checkPermission(int callbackId, String... permissionsId) {
+        boolean permissions = true;
+        for (String p : permissionsId) {
+            permissions = permissions && ContextCompat.checkSelfPermission(this, p) == PERMISSION_GRANTED;
+        }
+
+        if (!permissions)
+            ActivityCompat.requestPermissions(this, permissionsId, callbackId);
     }
 }

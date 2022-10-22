@@ -5,8 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -42,27 +45,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressLint("UseSwitchCompatOrMaterialCode")
 public class telaCadastroTerapia extends AppCompatActivity {
     private EditText et_nome, et_profissional, et_endereco, et_telefone;
     private Button btn_salvar;
     private TextView et_horario;
     private Switch swt_lembre;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private String[] mensagens = {"Preencha todos os campos", "Digite um nome mais longo", "Digite um endereço válido", "Digite um nome válido de profissional", "Digite um número de telefone válido"};
     private Chip chipDom, chipSeg, chipTer, chipQua, chipQui, chipSex, chipSab;
-    private static String idTerapia, nomeIdoso;
+    private static String idTerapia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_cadastro_terapia);
         inicializarComponentes();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         idTerapia = getIntent().getStringExtra("id terapia");
         if (idTerapia == null) {
-            ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(R.string.cadastrar_terapia);
-            actionBar.setDisplayHomeAsUpEnabled(true);
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -70,14 +73,12 @@ public class telaCadastroTerapia extends AppCompatActivity {
                         salvarNoBancoDeDados();
                         finish();
                     }
-
                 }
             });
         } else {
-            ActionBar actionBar = getSupportActionBar();
             actionBar.setTitle(R.string.editar);
-            actionBar.setDisplayHomeAsUpEnabled(true);
             preencherDadosTerapia();
+            et_horario.setTextColor(Color.BLACK);
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -93,29 +94,33 @@ public class telaCadastroTerapia extends AppCompatActivity {
         et_horario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar = Calendar.getInstance();
-                int hora = calendar.get(Calendar.HOUR_OF_DAY);
-                int min = calendar.get(Calendar.MINUTE);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(telaCadastroTerapia.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int i, int i2) {
-                                if (i2 < 10) {
-                                    et_horario.setText(i + ":" + 0 + i2);
-                                    et_horario.setTextColor(Color.BLACK);
-                                } else {
-                                    et_horario.setText(i + ":" + i2);
-                                    et_horario.setTextColor(Color.BLACK);
-                                }
-                            }
-                        }, hora, min, true);
-                timePickerDialog.show();
+                mostrarRelogio(et_horario);
             }
         });
     }
 
-    private void definirAlarme() {
+    protected void mostrarRelogio(TextView tv) {
+        Calendar calendar = Calendar.getInstance();
+        int hora = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(telaCadastroTerapia.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int i, int i2) {
+                        if (i2 < 10) {
+                            tv.setText(i + ":" + 0 + i2);
+                            tv.setTextColor(Color.BLACK);
+                        } else {
+                            tv.setText(i + ":" + i2);
+                            tv.setTextColor(Color.BLACK);
+                        }
+                    }
+                }, hora, min, true);
+        timePickerDialog.show();
+    }
+
+    protected void definirAlarme() {
         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
         String[] hr = et_horario.getText().toString().split(":");
         ArrayList<Integer> list = new ArrayList<>();
@@ -130,7 +135,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
         intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
         intent.putExtra(AlarmClock.EXTRA_DAYS, list);
         intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
-        intent.putExtra(AlarmClock.EXTRA_MESSAGE,et_nome.getText().toString());
+        intent.putExtra(AlarmClock.EXTRA_MESSAGE, getIntent().getStringExtra("nome idoso") + "-" + et_nome.getText().toString());
         startActivity(intent);
     }
 
@@ -144,6 +149,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     protected void inicializarComponentes() {
         et_nome = findViewById(R.id.et_nomeTerapia);
         et_endereco = findViewById(R.id.et_enderecoTerapia);
@@ -205,7 +211,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
                 });
     }
 
-    public void preencherDadosTerapia() {
+    protected void preencherDadosTerapia() {
         DocumentReference document = firebaseFirestore.collection("Terapias").document(idTerapia);
         document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -229,7 +235,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
         });
     }
 
-    public void editarBancoDeDados() {
+    protected void editarBancoDeDados() {
         String nome = et_nome.getText().toString();
         String profissional = et_profissional.getText().toString();
         String end = et_endereco.getText().toString();
@@ -256,7 +262,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
                 });
     }
 
-    public boolean validarCampos(View view) {
+    protected boolean validarCampos(View view) {
         String nome = et_nome.getText().toString();
         String end = et_endereco.getText().toString();
         String profissional = et_profissional.getText().toString();
@@ -264,23 +270,23 @@ public class telaCadastroTerapia extends AppCompatActivity {
         String tel = et_telefone.getText().toString();
 
         if (nome.isEmpty() || end.isEmpty() || profissional.isEmpty() || horario.isEmpty() || tel.isEmpty()) {
-            gerarToast( mensagens[0]);
-        } else if (nome.length() < 2) {
-            gerarToast( mensagens[1]);
+            gerarToast(getString(R.string.camposVazios));
+        } else if (nome.length() < 3) {
+            gerarToast(getString(R.string.nomeInv));
             return false;
         } else if (end.length() < 3) {
-            gerarToast( mensagens[2]);
+            gerarToast(getString(R.string.endInv));
             return false;
         } else if (profissional.length() < 2) {
-            gerarToast( mensagens[3]);
+            gerarToast(getString(R.string.profInv));
             return false;
         } else if (tel.length() < 11) {
-            gerarToast( mensagens[4]);
+            gerarToast(getString(R.string.telInv));
         }
         return true;
     }
 
-    public void gerarToast(String texto) {
+    protected void gerarToast(String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 }

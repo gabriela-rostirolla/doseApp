@@ -2,10 +2,12 @@ package com.example.doseapp;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+//import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -41,27 +43,28 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
     public Context context;
     private List<Consulta> consultaList;
     private OnItemClick onItemClick;
+    //    private static SharedPreferences sharedPreferences;
+    private String nomeIdoso;
 
-    public ConsultaAdapter(Context context, List<Consulta> consultaList, OnItemClick onItemClick) {
+    public ConsultaAdapter(Context context, List<Consulta> consultaList, OnItemClick onItemClick, String nomeIdoso) {
         this.context = context;
         this.consultaList = consultaList;
         this.onItemClick = onItemClick;
+        this.nomeIdoso = nomeIdoso;
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_consulta, parent, false);
-        ConsultaViewHolder viewHolder = new ConsultaAdapter.ConsultaViewHolder(view, consultaList, firebaseFirestore, onItemClick);
+        ConsultaViewHolder viewHolder = new ConsultaAdapter.ConsultaViewHolder(view, consultaList, nomeIdoso, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+//        sharedPreferences = context.getSharedPreferences(context.getString(R.string.sharedPrefesAlarme), Context.MODE_PRIVATE);
         ConsultaAdapter.ConsultaViewHolder viewHolder = (ConsultaAdapter.ConsultaViewHolder) holder;
         Consulta consulta = consultaList.get(position);
-        if (consulta.isLembre() == false) {
-            viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
-        }
 
         viewHolder.tv_nomeConsulta.setText(consulta.getNome());
         viewHolder.tv_horaConsulta.setText(consulta.getHorario());
@@ -81,18 +84,20 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
             } else {
                 color = "#32CD32";
             }
-        } else if(dataAtual.before(dataConsulta)){
+        } else if (dataAtual.before(dataConsulta)) {
             color = "#32CD32";
-        }else color = "#CD5C5C";
+        } else color = "#CD5C5C";
         viewHolder.v_indicadorConsulta.setBackgroundColor(Color.parseColor(color));
 
         //Se ele marcar como concluído, usar a cor #F4A460
         viewHolder.tv_diaConsulta.setText(dataCad[0] + "/" + dataCad[1]);
 
-        Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 3);
-        if(eventUri != null){
-            System.out.println("nenhum evento adicionado");
-        }else System.out.println("kdasmnzkcjvbksnj");
+//        int alarme = sharedPreferences.getInt("id alarme - " + consulta.getId(), 0);
+//        if (alarme == 1) {
+        viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm);
+//        } else {
+//            viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
+//        }
     }
 
     @Override
@@ -107,7 +112,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
         OnItemClick onItemClick;
         View v_indicadorConsulta;
 
-        public ConsultaViewHolder(@NonNull View itemView, List<Consulta> consultaList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
+        public ConsultaViewHolder(@NonNull View itemView, List<Consulta> consultaList, String nomeIdoso, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
             super(itemView);
             tv_diaConsulta = itemView.findViewById(R.id.tv_diaConsulta);
             tv_horaConsulta = itemView.findViewById(R.id.tv_horaConsulta);
@@ -115,23 +120,6 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
             imgBtn_excluirConsulta = itemView.findViewById(R.id.imgBtn_excluirConsul);
             imgBtn_alarme = itemView.findViewById(R.id.imgBtn_alertConsul);
             v_indicadorConsulta = itemView.findViewById(R.id.v_indicadorConsulta);
-
-            imgBtn_alarme.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (consultaList.get(getAbsoluteAdapterPosition()).isLembre()) {
-                        imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
-                        firebaseFirestore.collection("Consultas").document(consultaList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", false);
-                        consultaList.get(getAbsoluteAdapterPosition()).setLembre(false);
-                        gerarToast(view, "Alarme atualizado com sucesso!");
-                    } else if (consultaList.get(getAbsoluteAdapterPosition()).isLembre() == false) {
-                        consultaList.get(getAbsoluteAdapterPosition()).setLembre(true);
-                        firebaseFirestore.collection("Consultas").document(consultaList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", true);
-                        imgBtn_alarme.setImageResource(R.drawable.ic_alarm);
-                        gerarToast(view, "Alarme atualizado com sucesso!");
-                    }
-                }
-            });
 
             imgBtn_excluirConsulta.setOnClickListener(new View.OnClickListener() {
                 @Override
