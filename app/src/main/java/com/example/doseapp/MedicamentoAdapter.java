@@ -150,22 +150,22 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
             v_indicador = itemView.findViewById(R.id.v_indicador);
             tv_proximoMed = itemView.findViewById(R.id.tv_hrProxMed);
 
-            imgBtn_alarme.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (medicamentoList.get(getAbsoluteAdapterPosition()).isLembre() == true) {
-                        imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
-                        firebaseFirestore.collection("Medicamento").document(medicamentoList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", false);
-                        medicamentoList.get(getAbsoluteAdapterPosition()).setLembre(false);
-                        gerarToast("Alarme atualizado com sucesso!", itemView.getContext());
-                    } else if (medicamentoList.get(getAbsoluteAdapterPosition()).isLembre() == false) {
-                        medicamentoList.get(getAbsoluteAdapterPosition()).setLembre(true);
-                        firebaseFirestore.collection("Medicamento").document(medicamentoList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", true);
-                        imgBtn_alarme.setImageResource(R.drawable.ic_alarm);
-                        gerarToast("Alarme atualizado com sucesso!", itemView.getContext());
-                    }
-                }
-            });
+//            imgBtn_alarme.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (medicamentoList.get(getAbsoluteAdapterPosition()).isLembre() == true) {
+//                        imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
+//                        firebaseFirestore.collection("Medicamento").document(medicamentoList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", false);
+//                        medicamentoList.get(getAbsoluteAdapterPosition()).setLembre(false);
+//                        gerarToast("Alarme atualizado com sucesso!", itemView.getContext());
+//                    } else if (medicamentoList.get(getAbsoluteAdapterPosition()).isLembre() == false) {
+//                        medicamentoList.get(getAbsoluteAdapterPosition()).setLembre(true);
+//                        firebaseFirestore.collection("Medicamento").document(medicamentoList.get(getAbsoluteAdapterPosition()).getId()).update("lembre-me", true);
+//                        imgBtn_alarme.setImageResource(R.drawable.ic_alarm);
+//                        gerarToast("Alarme atualizado com sucesso!", itemView.getContext());
+//                    }
+//                }
+//            });
 
             imgBtn_excluirMed.setOnClickListener(new View.OnClickListener() {
                 @Override

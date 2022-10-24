@@ -114,6 +114,7 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
     public void onResume() {
         super.onResume();
         spi_acao.setSelection(0);
+        atividadeList.clear();
         spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

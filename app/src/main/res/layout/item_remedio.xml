@@ -88,14 +88,14 @@
         android:id="@+id/imgBtn_alert"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:clickable="true"
         android:layout_gravity="center"
         android:backgroundTint="@color/light_blue"
-        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluirMed"
         app:layout_constraintStart_toEndOf="@+id/tv_nomeMedicamento"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_alarm" />
+        />
 
     <TextView
         android:id="@+id/tv_dose"

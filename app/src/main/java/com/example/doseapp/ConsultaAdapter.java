@@ -94,7 +94,7 @@ public class ConsultaAdapter extends RecyclerView.Adapter {
 
 //        int alarme = sharedPreferences.getInt("id alarme - " + consulta.getId(), 0);
 //        if (alarme == 1) {
-        viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm);
+//        viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm);
 //        } else {
 //            viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
 //        }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,7 +47,7 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
     private TextView tv_nenhumCadastro;
     private static String diario_id;
     private Spinner spi_acao;
-    private List<Atividade> atividadeList = new ArrayList<>();
+    private List<Atividade> atividadeList;
     private List<Alimentacao> alimentacaoList = new ArrayList<>();
     private AtividadeAdapter atividadeAdapter;
     private AlimentacaoAdapter alimentacaoAdapter;
@@ -88,12 +89,36 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        atividadeList = new ArrayList<>();
         View v = inflater.inflate(R.layout.fragment_tela_turno_manha, container, false);
         inicializarComponentes(v);
         diario_id = getActivity().getIntent().getStringExtra("diario id");
         String data = getActivity().getIntent().getStringExtra("dia");
         atividadeList = new ArrayList<>();
         alimentacaoList = new ArrayList<>();
+
+
+        spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                switch (position) {
+                    case 0:
+                        atividadeAdapter = null;
+                        listarAtividades();
+
+                        return;
+                    case 1:
+                        listarAlimentacao();
+                        return;
+                    default:
+                        return;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,35 +138,12 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         spi_acao.setSelection(0);
-        spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                switch (position) {
-                    case 0:
-                        atividadeList.clear();
-                        listarAtividades();
-                        return;
-                    case 1:
-                        listarAlimentacao();
-                        return;
-                    default:
-                        return;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     protected void listarAtividades() {
-        atividadeList.clear();
-
         rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Diario atividades")
                 .whereEqualTo("diario id", diario_id)
@@ -174,8 +176,10 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
                             } else {
                                 tv_nenhumCadastro.setVisibility(View.INVISIBLE);
                             }
-                            atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList, telaTurnoManha.this::OnItemClick);
-                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList,
+                                    telaTurnoManha.this::OnItemClick);
+                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(
+                                    getActivity(), DividerItemDecoration.VERTICAL));
                             rv_listaDiarios.setHasFixedSize(false);
                             rv_listaDiarios.setAdapter(atividadeAdapter);
                         }
@@ -184,6 +188,7 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
     }
 
     public void listarAlimentacao() {
+        alimentacaoList.clear();
         rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Alimentacao")
                 .whereEqualTo("diario id", diario_id)
@@ -214,8 +219,10 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
                             } else {
                                 tv_nenhumCadastro.setVisibility(View.INVISIBLE);
                             }
-                            alimentacaoAdapter = new AlimentacaoAdapter(getContext(), alimentacaoList, telaTurnoManha.this::OnItemClick);
-                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            alimentacaoAdapter = new AlimentacaoAdapter(getContext(), alimentacaoList,
+                                    telaTurnoManha.this::OnItemClick);
+                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(),
+                                    DividerItemDecoration.VERTICAL));
                             rv_listaDiarios.setHasFixedSize(false);
                             rv_listaDiarios.setAdapter(alimentacaoAdapter);
                         }

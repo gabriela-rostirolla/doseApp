@@ -4,18 +4,17 @@ package com.example.doseapp;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -26,8 +25,8 @@ import java.util.List;
 
 public class AtividadeAdapter extends RecyclerView.Adapter {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    public  Context context;
-    private  List<Atividade> atividadeList;
+    public Context context;
+    private List<Atividade> atividadeList;
     private OnItemClick onItemClick;
 
     public AtividadeAdapter(Context context, List<Atividade> atividadeList, OnItemClick onItemClick) {
@@ -41,7 +40,7 @@ public class AtividadeAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_atividade, parent, false);
-        AtividadeAdapter.AtividadeViewHolder viewHolder = new AtividadeAdapter.AtividadeViewHolder(view,atividadeList, firebaseFirestore, onItemClick);
+        AtividadeAdapter.AtividadeViewHolder viewHolder = new AtividadeAdapter.AtividadeViewHolder(view, atividadeList, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
@@ -79,20 +78,14 @@ public class AtividadeAdapter extends RecyclerView.Adapter {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             document.delete();
-                                            Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
-                                            snackbar.setBackgroundTint(Color.WHITE);
-                                            snackbar.setTextColor(Color.BLACK);
-                                            snackbar.show();
+                                            Toast.makeText(itemView.getContext(), "Excluido com sucesso", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
                             })
                             .setNegativeButton("Não", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Snackbar snackbar = Snackbar.make(view, "Operação cancelada", Snackbar.LENGTH_SHORT);
-                                    snackbar.setBackgroundTint(Color.WHITE);
-                                    snackbar.setTextColor(Color.BLACK);
-                                    snackbar.show();
+                                    Toast.makeText(itemView.getContext(), "Operação cancelada", Toast.LENGTH_SHORT).show();
                                 }
                             });
                     builder.create();

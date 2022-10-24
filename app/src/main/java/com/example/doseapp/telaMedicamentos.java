@@ -88,7 +88,6 @@ public class telaMedicamentos extends Fragment implements MedicamentoAdapter.OnI
                                 med.setDose(document.getString("dose"));
                                 med.setUnidade_intervalo(document.getString("unidade intervalo"));
                                 med.setIntervalo(document.getString("intervalo"));
-                                med.setLembre(document.getBoolean("lembre-me"));
                                 med.setHoraInicial(document.getString("hora inicial"));
                                 med.setProxMed(document.getString("horario proximo medicamento"));
                                 med.setProxMedicamentos((List<String>) document.get("lista dos horarios do medicamento"));

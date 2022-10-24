@@ -248,7 +248,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         medicamentoMap.put("data inicio", tv_dataInicio.getText().toString());
         medicamentoMap.put("data fim", tv_dataFim.getText().toString());
         medicamentoMap.put("observacoes", et_observacoes.getText().toString());
-        medicamentoMap.put("lembre-me", swt_lembre.isChecked());
         medicamentoMap.put("id do idoso", getIntent().getStringExtra("id"));
         medicamentoMap.put("dia de criacao", new Date());
         medicamentoMap.put("lista dos horarios do medicamento", calcularHorarioDosMedicamento());
@@ -341,8 +340,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 usoContinuo.setChecked(uso);
                 tv_dataInicio.setText(value.getString("data inicio"));
                 tv_dataFim.setText(value.getString("data fim"));
-                boolean lembre = Boolean.TRUE.equals(value.getBoolean("lembre-me"));
-                swt_lembre.setChecked(lembre);
                 et_observacoes.setText(value.getString("observacoes"));
             }
         });
@@ -361,7 +358,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String data_inicio = tv_dataInicio.getText().toString();
         String data_fim = tv_dataFim.getText().toString();
         String observacoes = et_observacoes.getText().toString();
-        boolean lembre = swt_lembre.isChecked();
 
         firebaseFirestore.collection("Medicamento").document(idMed)
                 .update("via", via, "nome", nome,
@@ -375,8 +371,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                         "data inicio", data_inicio,
                         "data fim", data_fim,
                         "observacoes", observacoes,
-                        "lista dos horarios do medicamento", calcularHorarioDosMedicamento(),
-                        "lembre-me", lembre)
+                        "lista dos horarios do medicamento", calcularHorarioDosMedicamento())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

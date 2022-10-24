@@ -114,6 +114,7 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
     public void onResume() {
         super.onResume();
         spi_acao.setSelection(0);
+        atividadeList.clear();
         spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

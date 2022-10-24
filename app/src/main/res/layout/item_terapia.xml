@@ -64,12 +64,11 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:backgroundTint="@color/light_blue"
-        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgBtn_excluirTerapia"
         app:layout_constraintStart_toEndOf="@+id/tv_nomeTerapia"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_alarm" />
+        />
 
     <TextView
         android:id="@+id/tv_qua"

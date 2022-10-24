@@ -190,7 +190,6 @@ public class telaCadastroTerapia extends AppCompatActivity {
         terapiaMap.put("profissional", profissional);
         terapiaMap.put("horario", horario);
         terapiaMap.put("telefone", tel);
-//        terapiaMap.put("lembre-me", swt_lembre.isChecked());
         terapiaMap.put("id do idoso", id);
         terapiaMap.put("dias da semana", listDiasSemana);
         terapiaMap.put("dia de criacao", new Date());
@@ -241,7 +240,6 @@ public class telaCadastroTerapia extends AppCompatActivity {
         String end = et_endereco.getText().toString();
         String horario = et_horario.getText().toString();
         String tel = et_telefone.getText().toString();
-        boolean lembre = swt_lembre.isChecked();
 
         List<String> listDiasSemana = new ArrayList<>();
         if (chipDom.isChecked()) listDiasSemana.add("dom");
@@ -253,7 +251,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
         if (chipSab.isChecked()) listDiasSemana.add("sab");
 
         firebaseFirestore.collection("Terapias").document(idTerapia)
-                .update("nome", nome, "profissional", profissional, "endereco", end, "horario", horario, "telefone", tel, "lembre-me", lembre, "dias da semana", listDiasSemana)
+                .update("nome", nome, "profissional", profissional, "endereco", end, "horario", horario, "telefone", tel, "dias da semana", listDiasSemana)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
