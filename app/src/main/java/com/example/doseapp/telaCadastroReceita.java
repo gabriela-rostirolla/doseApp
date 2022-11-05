@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,13 +58,10 @@ public class telaCadastroReceita extends AppCompatActivity {
     private EditText et_nome, et_hospital, et_tel, et_profissional;
     private TextView tv_data, tv_dataRen, tv_fotoReceita;
     private Button btn_salvar;
+    private ImageView imgViewUpload;
     private DatePickerDialog.OnDateSetListener dateSetListenerData;
     private DatePickerDialog.OnDateSetListener dateSetListenerDataRen;
-    private String[] mensagens = {"Preencha todos os campos",
-            "Digite um nome com mais de três letras",
-            "Digite um número de telefone válido",
-            "Digite um hospital válido",
-            "Digite o nome do profissional com mais de três letras"};
+
     private ImageButton imgBtn_visRec;
     private Switch lembre;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -135,12 +133,20 @@ public class telaCadastroReceita extends AppCompatActivity {
             }
         });
 
+        imgViewUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                someActivityResultLauncher.launch(intent);
+            }
+        });
+
         imgBtn_visRec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(telaCadastroReceita.this, visualizarFotoReceita.class);
-                    intent.putExtra("foto", foto);
-                    startActivity(intent);
+                Intent intent = new Intent(telaCadastroReceita.this, visualizarFotoReceita.class);
+                intent.putExtra("foto", foto);
+                startActivity(intent);
             }
         });
     }
@@ -179,6 +185,7 @@ public class telaCadastroReceita extends AppCompatActivity {
         tv_fotoReceita = findViewById(R.id.tv_fotoReceita);
         btn_salvar = findViewById(R.id.btn_salvarCadReceita);
         lembre = findViewById(R.id.swt_lembreReceita);
+        imgViewUpload = findViewById(R.id.imgViewUpload);
     }
 
     protected void salvarNoBancoDeDados() {
@@ -294,19 +301,19 @@ public class telaCadastroReceita extends AppCompatActivity {
         String dataRen = tv_dataRen.getText().toString();
 
         if (nome.isEmpty() || data.isEmpty() || hospital.isEmpty() || tel.isEmpty() || profissional.isEmpty() || dataRen.isEmpty()) {
-            gerarToast(mensagens[0]);
+            gerarToast(getString(R.string.camposVazios));
             return false;
         } else if (nome.length() < 4) {
-            gerarToast(mensagens[1]);
+            gerarToast(getString(R.string.nomeInv));
             return false;
         } else if (!validarTelefone(tel)) {
-            gerarToast(mensagens[2]);
+            gerarToast(getString(R.string.telInv));
             return false;
         } else if (hospital.length() < 3) {
-            gerarToast(mensagens[3]);
+            gerarToast(getString(R.string.nomeHospInv));
             return false;
         } else if (profissional.length() < 3) {
-            gerarToast(mensagens[4]);
+            gerarToast(getString(R.string.profInv));
             return false;
         }
         return true;

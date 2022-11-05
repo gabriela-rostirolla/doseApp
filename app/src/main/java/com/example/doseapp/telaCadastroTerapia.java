@@ -18,7 +18,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -52,7 +54,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
     private TextView et_horario;
     private Switch swt_lembre;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private Chip chipDom, chipSeg, chipTer, chipQua, chipQui, chipSex, chipSab;
+    private CheckBox chipDom, chipSeg, chipTer, chipQua, chipQui, chipSex, chipSab;
     private static String idTerapia;
 
     @Override

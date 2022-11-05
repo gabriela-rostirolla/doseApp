@@ -9,17 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
@@ -78,10 +83,41 @@ public class DiarioDeCuidadoAdapter extends RecyclerView.Adapter {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             document.delete();
-                                            Snackbar snackbar = Snackbar.make(view, "Excluido com sucesso!", Snackbar.LENGTH_SHORT);
-                                            snackbar.setBackgroundTint(Color.WHITE);
-                                            snackbar.setTextColor(Color.BLACK);
-                                            snackbar.show();
+                                            Toast.makeText(itemView.getContext(), itemView.getContext().
+                                                            getString(R.string.excluidoComSucesso),
+                                                    Toast.LENGTH_SHORT).show();
+
+                                            firebaseFirestore.collection("Diario atividades")
+                                                    .whereEqualTo("diario id", diarioList.get(getAbsoluteAdapterPosition()).getId())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                    Atividade atividade = new Atividade();
+                                                                    atividade.setId(doc.getId());
+                                                                    firebaseFirestore.collection("Diario atividades").document(atividade.getId()).delete();
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+
+                                            firebaseFirestore.collection("Alimentacao")
+                                                    .whereEqualTo("diario id", diarioList.get(getAbsoluteAdapterPosition()).getId())
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                    Alimentacao alimentacao = new Alimentacao();
+                                                                    alimentacao.setId(doc.getId());
+                                                                    firebaseFirestore.collection("Diario atividades").document(alimentacao.getId()).delete();
+                                                                }
+                                                            }
+                                                        }
+                                                    });
                                         }
                                     });
                                 }

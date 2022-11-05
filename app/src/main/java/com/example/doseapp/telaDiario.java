@@ -100,7 +100,7 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validarDiario == true) {
+                if (validarDiario) {
                     adicionarDiario(dia);
                     gerarToast(getString(R.string.diarioCad));
                 } else {
@@ -131,6 +131,7 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
     protected void adicionarDiario(String dia) {
         Map<String, Object> map = new HashMap<>();
         map.put("dia", dia);
+        map.put("dia de criacao", new Date());
         map.put("id do idoso", id);
 
         firebaseFirestore.collection("Diarios").add(map);
@@ -144,7 +145,7 @@ public class telaDiario extends Fragment implements DiarioDeCuidadoAdapter.OnIte
         rv_listaDiario.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Diarios")
                 .whereEqualTo("id do idoso", id)
-                .orderBy("dia", Query.Direction.DESCENDING)
+                .orderBy("dia de criacao", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

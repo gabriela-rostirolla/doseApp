@@ -127,7 +127,8 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                                             @Override
                                                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                                                 document.delete();
-                                                                gerarToast(view, "Excluido com sucesso");
+                                                                gerarToast(view, itemView.getContext().getString(R.string.excluidoComSucesso));
+
                                                                 firebaseFirestore.collection("Medicamento")
                                                                         .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
                                                                         .get()
@@ -143,6 +144,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                                                                 }
                                                                             }
                                                                         });
+
                                                                 firebaseFirestore.collection("Consultas")
                                                                         .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
                                                                         .get()
@@ -158,6 +160,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                                                                 }
                                                                             }
                                                                         });
+
                                                                 firebaseFirestore.collection("Receitas")
                                                                         .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
                                                                         .get()
@@ -176,6 +179,69 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
                                                             }
                                                         });
 
+                                                        firebaseFirestore.collection("Terapias")
+                                                                .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                                .get()
+                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                                Terapia terapia = new Terapia();
+                                                                                terapia.setId(doc.getId());
+                                                                                firebaseFirestore.collection("Terapias").document(terapia.getId()).delete();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                        firebaseFirestore.collection("Diarios")
+                                                                .whereEqualTo("id do idoso", idosoCuidadoList.get(getAbsoluteAdapterPosition()).getId())
+                                                                .get()
+                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                                DiarioDeCuidado diario = new DiarioDeCuidado();
+                                                                                diario.setId(doc.getId());
+                                                                                firebaseFirestore.collection("Diarios").document(diario.getId()).delete();
+                                                                                firebaseFirestore.collection("Diario atividades")
+                                                                                        .whereEqualTo("diario id", diario.getId())
+                                                                                        .get()
+                                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                                if (task.isSuccessful()) {
+                                                                                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                                                        Atividade atividade = new Atividade();
+                                                                                                        atividade.setId(doc.getId());
+                                                                                                        firebaseFirestore.collection("Diario atividades").document(atividade.getId()).delete();
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        });
+
+                                                                                firebaseFirestore.collection("Alimentacao")
+                                                                                        .whereEqualTo("diario id", diario.getId())
+                                                                                        .get()
+                                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                                if (task.isSuccessful()) {
+                                                                                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                                                                                        Alimentacao alimentacao = new Alimentacao();
+                                                                                                        alimentacao.setId(doc.getId());
+                                                                                                        firebaseFirestore.collection("Diario atividades").document(alimentacao.getId()).delete();
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        });
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
                                                     }
                                                 }
                                             });

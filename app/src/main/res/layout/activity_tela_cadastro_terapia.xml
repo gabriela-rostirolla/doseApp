@@ -13,44 +13,44 @@
         android:orientation="vertical"
         tools:context=".telaCadastroTerapia">
 
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:entries="@array/status_consultas"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="10dp"
-            />
+<!--        <Spinner-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:entries="@array/status_consultas" />-->
+
         <EditText
             android:id="@+id/et_nomeTerapia"
             style="@style/Edit_text"
-            android:hint="@string/nome"
             android:drawableEnd="@drawable/ic_terapia"
+            android:hint="@string/nome"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_profissionalTerapia"
             style="@style/Edit_text"
-            android:hint="@string/profissional"
             android:drawableEnd="@drawable/ic_medico"
+            android:hint="@string/profissional"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_enderecoTerapia"
             style="@style/Edit_text"
-            android:hint="@string/endereco"
             android:drawableEnd="@drawable/ic_localizacao"
+            android:hint="@string/endereco"
             android:inputType="textCapWords"
             android:maxLength="250" />
 
         <EditText
             android:id="@+id/et_telefoneTerapia"
             style="@style/Edit_text"
+            android:drawableEnd="@drawable/ic_phone"
             android:hint="@string/telefone"
             android:inputType="phone"
-            android:drawableEnd="@drawable/ic_phone"
             android:maxLength="11" />
 
 
@@ -62,83 +62,79 @@
             android:textColor="@color/light_grey" />
 
         <LinearLayout
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:orientation="horizontal">
 
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
+
+            <CheckBox
+                android:id="@+id/chip_dom"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
+                android:text="D"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="MissingClass" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_dom"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="D"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/chip_seg"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_seg"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/chip_ter"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="T"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_ter"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="T"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/chip_qua"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Q"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_qua"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Q"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/chip_qui"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Q"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_qui"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Q"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/chip_sex"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_sex"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/chip_sab"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="S"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_sab"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="S"
-                    android:textColor="@color/black"
-                    android:textSize="15sp" />
-
-            </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
 
         <Switch

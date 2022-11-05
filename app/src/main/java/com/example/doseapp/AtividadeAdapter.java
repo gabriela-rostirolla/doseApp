@@ -73,7 +73,7 @@ public class AtividadeAdapter extends RecyclerView.Adapter {
                     builder.setMessage("Deseja realmente excluir?")
                             .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    DocumentReference document = firebaseFirestore.collection("Atividade").document(atividadeList.get(getAbsoluteAdapterPosition()).getId());
+                                    DocumentReference document = firebaseFirestore.collection("Diario atividades").document(atividadeList.get(getAbsoluteAdapterPosition()).getId());
                                     document.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {

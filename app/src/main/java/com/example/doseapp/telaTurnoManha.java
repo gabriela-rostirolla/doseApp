@@ -97,15 +97,13 @@ public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemC
         atividadeList = new ArrayList<>();
         alimentacaoList = new ArrayList<>();
 
-
         spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 switch (position) {
                     case 0:
-                        atividadeAdapter = null;
+                        atividadeList.clear();
                         listarAtividades();
-
                         return;
                     case 1:
                         listarAlimentacao();
