@@ -108,12 +108,14 @@
             android:id="@+id/cb_usoContinuo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="onCheckboxClicked"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
             android:text="@string/uso_continuo"
             android:textColor="@color/light_grey"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="UsingOnClickInXml" />
 
         <TextView
             android:id="@+id/tv_dataInicio"

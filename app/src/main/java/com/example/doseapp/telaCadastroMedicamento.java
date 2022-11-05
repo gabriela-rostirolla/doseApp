@@ -411,4 +411,16 @@ public class telaCadastroMedicamento extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    public void onCheckboxClicked(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+
+        switch (view.getId()) {
+            case R.id.cb_usoContinuo:
+                if (checked) tv_dataFim.setEnabled(false);
+                else
+                    tv_dataFim.setEnabled(true);
+                break;
+        }
+    }
 }

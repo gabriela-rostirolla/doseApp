@@ -71,7 +71,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
             btn_salvar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (validarCampos(view) == true) {
+                    if (validarCampos(view)) {
                         salvarNoBancoDeDados();
                         finish();
                     }
@@ -87,8 +87,10 @@ public class telaCadastroTerapia extends AppCompatActivity {
                     if (swt_lembre.isChecked()) {
                         definirAlarme();
                     }
-                    editarBancoDeDados();
-                    finish();
+                    if (validarCampos(view)) {
+                        editarBancoDeDados();
+                        finish();
+                    }
                 }
             });
         }
@@ -271,6 +273,7 @@ public class telaCadastroTerapia extends AppCompatActivity {
 
         if (nome.isEmpty() || end.isEmpty() || profissional.isEmpty() || horario.isEmpty() || tel.isEmpty()) {
             gerarToast(getString(R.string.camposVazios));
+            return false;
         } else if (nome.length() < 3) {
             gerarToast(getString(R.string.nomeInv));
             return false;
@@ -282,8 +285,18 @@ public class telaCadastroTerapia extends AppCompatActivity {
             return false;
         } else if (tel.length() < 11) {
             gerarToast(getString(R.string.telInv));
+            return false;
+        } else if (!chipDom.isChecked() &&
+                !chipSeg.isChecked() &&
+                !chipTer.isChecked() &&
+                !chipQua.isChecked() &&
+                !chipQui.isChecked() &&
+                !chipSex.isChecked() &&
+                !chipSab.isChecked()){
+            gerarToast(getString(R.string.nenhumDiaSemanaSel));
+            return false;
         }
-        return true;
+            return true;
     }
 
     protected void gerarToast(String texto) {

@@ -114,6 +114,7 @@
     <string name="nomeMedInvalido">O nome do medicamento não pode conter menos que 3 letras</string>
     <string name="senhasDiferentes">Senhas não conferem</string>
     <string name="nomeInv">Digite um nome com mais de três letras</string>
+    <string name="nenhumDiaSemanaSel">Nenhum dia da semana foi selecionado</string>
     <string name="telInv">Digite um telefone válido</string>
     <string name="endInv">Digite um endereço válido</string>
     <string name="profInv">Digite um nome de um profissional válido</string>
@@ -193,9 +194,6 @@
     <string name="feminino">Feminino</string>
     <string name="masculino">Masculino</string>
     <string name="uso_continuo">Uso contínuo</string>
-
-<!--    "Digite o nome do profissional com mais de três letras"};-->
-
 
     <string name="sharedPrefesAlarme">SharedPreferencesAlarme</string>
 
