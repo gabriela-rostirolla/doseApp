@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -42,6 +43,8 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_inicial);
         inicializarComponentes();
+
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.idosos_cadastrados);
@@ -88,7 +91,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                                 IdosoCuidado ic = new IdosoCuidado();
                                 ic.setNome(document.getString("nome"));
                                 ic.setId(document.getId());
-                                boolean aux = document.getBoolean("cuidado");
+                                boolean aux = Boolean.TRUE.equals(document.getBoolean("cuidado"));
                                 ic.setCuidado(aux);
                                 idosoCuidadoList.add(ic);
                             }
