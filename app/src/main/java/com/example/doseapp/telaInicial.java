@@ -44,8 +44,6 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
         setContentView(R.layout.activity_tela_inicial);
         inicializarComponentes();
 
-
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.idosos_cadastrados);
 
@@ -61,6 +59,9 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                 startActivity(intent);
             }
         });
+
+
+
     }
 
     @Override

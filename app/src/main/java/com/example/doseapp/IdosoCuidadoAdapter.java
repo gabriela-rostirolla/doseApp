@@ -51,7 +51,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
 
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_idosos, parent, false);
-        IdosoCuidadoViewHolder viewHolder = new IdosoCuidadoViewHolder(view, idosoCuidadoList, onItemClick);
+        IdosoCuidadoViewHolder viewHolder = new IdosoCuidadoViewHolder(view, onItemClick);
         return viewHolder;
     }
 
@@ -77,7 +77,7 @@ public class IdosoCuidadoAdapter extends RecyclerView.Adapter {
         ImageButton imgBtn_editar, imgBtn_excluir, imgBtn_compartilhar, imgBtn_cuidado;
         OnItemClick onItemClick;
 
-        public IdosoCuidadoViewHolder(@NonNull View itemView, List<IdosoCuidado> idosoCuidadoList, OnItemClick onItemClick) {
+        public IdosoCuidadoViewHolder(@NonNull View itemView, OnItemClick onItemClick) {
             super(itemView);
             tv_nomeIdoso = itemView.findViewById(R.id.tv_nomeIdoso);
             imgBtn_excluir = itemView.findViewById(R.id.imgBtn_excluir);

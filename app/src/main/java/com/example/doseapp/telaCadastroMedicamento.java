@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Data;
+import androidx.work.WorkManager;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -42,6 +44,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class telaCadastroMedicamento extends AppCompatActivity {
 
@@ -80,8 +83,11 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if (validarCampos()) {
+                        if(swt_lembre.isChecked()){
+                            definirAlarme();
+                            salvarNotificacao();
+                        }
                         salvarNoBancoDeDados();
-                        definirAlarme();
                         finish();
                     }
                 }
@@ -100,6 +106,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                         editarBancoDeDados();
                         if (swt_lembre.isChecked()) {
                             definirAlarme();
+                            salvarNotificacao();
                         }
                         finish();
                     }
@@ -178,7 +185,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int i, int i2, int i3) {
                         i2++;
-
                         String mes = "";
                         String dia = "";
                         if (i2 < 10) mes = "0" + i2;
@@ -399,17 +405,44 @@ public class telaCadastroMedicamento extends AppCompatActivity {
     }
 
     private void definirAlarme() {
-        List<String> list = calcularHorarioDosMedicamento();
+//        List<String> list = calcularHorarioDosMedicamento();
+//         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+//            String[] hr = tv_dataInicio.getText().toString().split(":");
+//            intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
+//            intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
+//            intent.putExtra(AlarmClock.EXTRA_MESSAGE, et_nomeMed.getText().toString());
+//            startActivity(intent);
+    }
 
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i));
-            Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
-            String[] hr = list.get(i).split(":");
-            intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
-            intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
-            intent.putExtra(AlarmClock.EXTRA_MESSAGE, et_nomeMed.getText().toString());
-            startActivity(intent);
-        }
+    private void excluirNotificacao(String tag){
+        WorkManager.getInstance(this).cancelAllWorkByTag(tag);
+        Toast.makeText(this, "Alarme excluido", Toast.LENGTH_SHORT).show();
+    }
+
+    private String generateKey(){
+        return UUID.randomUUID().toString();
+    }
+
+    protected void salvarNotificacao(){
+        Calendar calendar = Calendar.getInstance();
+        String data[] = tv_dataInicio.getText().toString().split("/");
+        String hr[] = tv_hrInicial.getText().toString().split(":");
+        calendar.set(Integer.parseInt(data[2]), Integer.parseInt(data[1])-1, Integer.parseInt(data[0]), Integer.parseInt(hr[0]), Integer.parseInt(hr[1]));
+
+        String tag = generateKey();
+        Long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
+        int random = (int) (Math.random()*50+1);
+
+        Data date = guardarData("Teste notificação medicamento", "Primeira notificação emitida pelo DoseApp", random);
+        NotificacaoWorkManager.salvarNotificacao(alertTime, date, tag);
+    }
+
+    private Data guardarData(String titulo, String descricao, int id_not){
+        return new Data.Builder()
+                .putString("titulo", titulo)
+                .putString("descricao", descricao)
+                .putInt("id not", id_not).build();
+
     }
 
     public void onCheckboxClicked(View view) {
