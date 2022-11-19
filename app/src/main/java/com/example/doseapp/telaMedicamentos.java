@@ -1,5 +1,6 @@
 package com.example.doseapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -67,6 +68,48 @@ public class telaMedicamentos extends Fragment implements MedicamentoAdapter.OnI
         tv_nenhumMedCad = v.findViewById(R.id.tv_nenhumMedCad);
     }
 
+//    public static void listarMed(List<Medicamento> medicamentoList, RecyclerView rv_listaRemedio,
+//                                 FirebaseFirestore firebaseFirestore,
+//                                 MedicamentoAdapter.OnItemClick onItemClick,
+//                                 Context context, String id){
+//
+//        final MedicamentoAdapter[] medicamentoAdapter = new MedicamentoAdapter[1];
+//
+//        medicamentoList.clear();
+//        rv_listaRemedio.setLayoutManager(new LinearLayoutManager(context));
+//        firebaseFirestore.collection("Medicamento")
+//                .whereEqualTo("id do idoso", id)
+//                .orderBy("dia de criacao", Query.Direction.DESCENDING)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Medicamento med = new Medicamento();
+//                                med.setNome(document.getString("nome"));
+//                                med.setDataFim(document.getString("data fim"));
+//                                med.setDataInicio(document.getString("data inicio"));
+//                                boolean aux = Boolean.TRUE.equals(document.getBoolean("uso continuo"));
+//                                med.setUsoContinuo(aux);
+//                                med.setDose(document.getString("dose"));
+//                                med.setUnidade_intervalo(document.getString("unidade intervalo"));
+//                                med.setIntervalo(document.getString("intervalo"));
+//                                med.setHoraInicial(document.getString("hora inicial"));
+//                                med.setProxMed(document.getString("horario proximo medicamento"));
+//                                med.setProxMedicamentos((List<String>) document.get("lista dos horarios do medicamento"));
+//                                med.setId(document.getId());
+//                                medicamentoList.add(med);
+//                            }
+//                            medicamentoAdapter[0] = new MedicamentoAdapter(context,rv_listaRemedio, medicamentoList, onItemClick);
+//                            rv_listaRemedio.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
+//                            rv_listaRemedio.setHasFixedSize(false);
+//                            rv_listaRemedio.setAdapter(medicamentoAdapter[0]);
+//                        }
+//                    }
+//                });
+//    }
+
     protected void listarMedicamentos() {
         medicamentoList.clear();
         rv_listaRemedio.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -99,7 +142,7 @@ public class telaMedicamentos extends Fragment implements MedicamentoAdapter.OnI
                             } else {
                                 tv_nenhumMedCad.setVisibility(View.INVISIBLE);
                             }
-                            medicamentoAdapter = new MedicamentoAdapter(getContext(), medicamentoList, telaMedicamentos.this::OnItemClick);
+                            medicamentoAdapter = new MedicamentoAdapter(getContext(), rv_listaRemedio, medicamentoList, telaMedicamentos.this::OnItemClick);
                             rv_listaRemedio.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
                             rv_listaRemedio.setHasFixedSize(false);
                             rv_listaRemedio.setAdapter(medicamentoAdapter);

@@ -35,14 +35,16 @@ import java.util.List;
 public class MedicamentoAdapter extends RecyclerView.Adapter {
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public Context context;
+    private RecyclerView rv;
     private List<Medicamento> medicamentoList;
     private OnItemClick onItemClick;
     private SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
 
-    public MedicamentoAdapter(Context context, List<Medicamento> medicamentoList, OnItemClick onItemClick) {
+    public MedicamentoAdapter(Context context, RecyclerView rv, List<Medicamento> medicamentoList, OnItemClick onItemClick) {
         this.context = context;
+        this.rv = rv;
         this.medicamentoList = medicamentoList;
         this.onItemClick = onItemClick;
     }
@@ -51,7 +53,7 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_remedio, parent, false);
-        MedicamentoViewHolder viewHolder = new MedicamentoAdapter.MedicamentoViewHolder(view, context, medicamentoList, firebaseFirestore, onItemClick);
+        MedicamentoViewHolder viewHolder = new MedicamentoAdapter.MedicamentoViewHolder(view, rv, context, medicamentoList, firebaseFirestore, onItemClick);
         return viewHolder;
     }
 
@@ -140,7 +142,7 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
         OnItemClick onItemClick;
         View v_indicador;
 
-        public MedicamentoViewHolder(@NonNull View itemView, Context context, List<Medicamento> medicamentoList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
+        public MedicamentoViewHolder(@NonNull View itemView, RecyclerView rv, Context context, List<Medicamento> medicamentoList, FirebaseFirestore firebaseFirestore, OnItemClick onItemClick) {
             super(itemView);
             tv_dose = itemView.findViewById(R.id.tv_dose);
             tv_posologia = itemView.findViewById(R.id.tv_posologia);
@@ -180,7 +182,9 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             document.delete();
-                                            MedicamentoAdapter adapter = new MedicamentoAdapter(itemView.getContext(), medicamentoList, onItemClick);
+                                            medicamentoList.remove(getAbsoluteAdapterPosition());
+                                            //telaMedicamentos.listarMed(medicamentoList,rv,firebaseFirestore, onItemClick, context, medicamentoList.get(getAbsoluteAdapterPosition()).getId());
+                                            MedicamentoAdapter adapter = new MedicamentoAdapter(itemView.getContext(),rv, medicamentoList, onItemClick);
                                             adapter.notifyItemRemoved(getAbsoluteAdapterPosition());
                                             gerarToast("Excluido com sucesso!", itemView.getContext());
                                         }
