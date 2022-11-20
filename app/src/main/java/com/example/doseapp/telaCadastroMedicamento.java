@@ -248,6 +248,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         medicamentoMap.put("recomendacao ou finalidade", et_recomendacao.getText().toString());
         medicamentoMap.put("dose", et_dose.getText().toString());
         medicamentoMap.put("intervalo", et_intervalo.getText().toString());
+        medicamentoMap.put("horario proximo medicamento", tv_hrInicial);
         medicamentoMap.put("unidade intervalo", spiIntervalo.getSelectedItem().toString());
         medicamentoMap.put("hora inicial", tv_hrInicial.getText().toString());
         medicamentoMap.put("uso continuo", usoContinuo.isChecked());
@@ -377,6 +378,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                         "data inicio", data_inicio,
                         "data fim", data_fim,
                         "observacoes", observacoes,
+                        "horario proximo medicamento", tv_hrInicial.getText().toString(),
                         "lista dos horarios do medicamento", calcularHorarioDosMedicamento())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -406,7 +408,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
 
     private void definirAlarme() {
 //        List<String> list = calcularHorarioDosMedicamento();
-//         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+//         Intent intent = new IFntent(AlarmClock.ACTION_SET_ALARM);
 //            String[] hr = tv_dataInicio.getText().toString().split(":");
 //            intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
 //            intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
@@ -433,16 +435,16 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         Long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
         int random = (int) (Math.random()*50+1);
 
-        Data date = guardarData("Teste notificação medicamento", "Primeira notificação emitida pelo DoseApp", random);
-        NotificacaoWorkManager.salvarNotificacao(alertTime, date, tag);
+        Data date = guardarData(et_nomeMed.getText().toString(), "Está no horário do medicamento de " + getIntent().getStringExtra("nome"), random);
+        NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
     }
 
     private Data guardarData(String titulo, String descricao, int id_not){
         return new Data.Builder()
                 .putString("titulo", titulo)
                 .putString("descricao", descricao)
-                .putInt("id not", id_not).build();
-
+                .putString("id med", getIntent().getStringExtra("id medicamento"))
+                .putInt("id_notificacao", id_not).build();
     }
 
     public void onCheckboxClicked(View view) {

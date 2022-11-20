@@ -69,63 +69,16 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
         List<String> listHorarios = medicamento.getProxMedicamentos();
 
         if (medicamento.getUnidade_intervalo().equals("h")) {
-
-            listHorarios = medicamento.getProxMedicamentos();
-            medicamento.setProxMed(medicamento.getProxMedicamentos().get(0));
-//            String[] hr = medicamento.getProxMed().split(":");
-
-//              String[] data = formatterData.format(new Date()).split("/");
-//
-//            if (medicamento.isUsoContinuo() == false) {
-//                String[] dataFinal = medicamento.getDataFim().split("/");
-//                String[] dataInicio = medicamento.getDataInicio().split("/");
-//                String color = "";
-//
-//                GregorianCalendar dataFim = new GregorianCalendar(Integer.parseInt(dataFinal[2]),
-//                        Integer.parseInt(dataFinal[1]) - 1,
-//                        Integer.parseInt(dataFinal[0]),
-//                        Integer.parseInt(hr[0]),
-//                        Integer.parseInt(hr[1]));
-//
-//                GregorianCalendar dataAtual = (GregorianCalendar) Calendar.getInstance();
-//                GregorianCalendar dataIni = new GregorianCalendar(Integer.parseInt(dataInicio[2]),
-//                        Integer.parseInt(dataInicio[1]) - 1,
-//                        Integer.parseInt(dataInicio[0]),
-//                        Integer.parseInt(hr[0]),
-//                        Integer.parseInt(hr[1]));
-//
-//                if (dataAtual.after(dataIni) && dataAtual.before(dataFim)) {
-//                    System.out.println(dataAtual.getTime());
-//                    System.out.println(dataIni.getTime());
-//
-//                    if(dataIni.getTime().after(dataAtual.getTime())){
-//                        color = "#000000";
-//                    }
-//                    else{
-//                        color = "#32CD32";
-//                    }
-//                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor(color));
-//                }
-//            }
-
+            
             String hr = medicamento.getProxMed();
             String proxHr[] = hr.split(":");
             Calendar calendar = Calendar.getInstance();
-//            System.out.println(calendar.HOUR_OF_DAY);
             if (calendar.get(Calendar.HOUR_OF_DAY) == Integer.parseInt(proxHr[0]) &&
                     calendar.get(Calendar.MINUTE) < Integer.parseInt(proxHr[1])) {
                 viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
-            } else if (calendar.get(Calendar.HOUR_OF_DAY) == Integer.parseInt(proxHr[0]) &&
-                    calendar.get(Calendar.MINUTE) == Integer.parseInt(proxHr[1])) {
-                int novaHr = Integer.parseInt(proxHr[0]) + Integer.parseInt(medicamento.getIntervalo());
-                if (novaHr > 24) {
-                    novaHr = novaHr - 24;
-                }
-                firebaseFirestore.collection("Medicamento").document(medicamento.getId()).update("horario proximo medicamento", (novaHr + ":" + proxHr[1]).toString());
-                medicamento.setProxMed(novaHr + ":" + proxHr[1]);
             }
         }
-        viewHolder.tv_proximoMed.setText("Próximo às " + listHorarios.get(0));
+        viewHolder.tv_proximoMed.setText("Próximo às " + medicamento.getProxMed());
         viewHolder.tv_nomeMedicamento.setText(medicamento.getNome());
         viewHolder.tv_dose.setText(medicamento.getDose());
         viewHolder.tv_posologia.setText(medicamento.getIntervalo() + " " + medicamento.getUnidade_intervalo());
@@ -184,7 +137,7 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
                                             document.delete();
                                             medicamentoList.remove(getAbsoluteAdapterPosition());
                                             //telaMedicamentos.listarMed(medicamentoList,rv,firebaseFirestore, onItemClick, context, medicamentoList.get(getAbsoluteAdapterPosition()).getId());
-                                            MedicamentoAdapter adapter = new MedicamentoAdapter(itemView.getContext(),rv, medicamentoList, onItemClick);
+                                            MedicamentoAdapter adapter = new MedicamentoAdapter(itemView.getContext(), rv, medicamentoList, onItemClick);
                                             adapter.notifyItemRemoved(getAbsoluteAdapterPosition());
                                             gerarToast("Excluido com sucesso!", itemView.getContext());
                                         }

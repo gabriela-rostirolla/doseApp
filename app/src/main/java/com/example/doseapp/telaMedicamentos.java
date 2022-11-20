@@ -133,6 +133,7 @@ public class telaMedicamentos extends Fragment implements MedicamentoAdapter.OnI
                                 med.setIntervalo(document.getString("intervalo"));
                                 med.setHoraInicial(document.getString("hora inicial"));
                                 med.setProxMed(document.getString("horario proximo medicamento"));
+                                System.out.println(med.getProxMed());
                                 med.setProxMedicamentos((List<String>) document.get("lista dos horarios do medicamento"));
                                 med.setId(document.getId());
                                 medicamentoList.add(med);
@@ -195,6 +196,7 @@ public class telaMedicamentos extends Fragment implements MedicamentoAdapter.OnI
         Intent intent = new Intent();
         intent.setClass(getActivity(), telaCadastroMedicamento.class);
         intent.putExtra("id medicamento", medicamentoList.get(position).getId());
+        intent.putExtra("nome", getActivity().getIntent().getStringExtra("nome"));
         startActivity(intent);
     }
 }
