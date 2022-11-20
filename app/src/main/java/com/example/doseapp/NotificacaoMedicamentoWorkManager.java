@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -89,7 +90,8 @@ public class NotificacaoMedicamentoWorkManager extends Worker {
     public void atualizarMedicamento(String id) {
         String hr = FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("horario proximo medicamento");
         String proxHr[] = hr.split(":");
-        int intervalo = Integer.parseInt(FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("intervalo"));
+        int intervalo = Integer.parseInt(Objects.requireNonNull(FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("intervalo")));
+        System.out.println(intervalo);
         int novaHr = Integer.parseInt(proxHr[0]) + intervalo;
         if (novaHr > 24) {
             novaHr = novaHr - 24;
