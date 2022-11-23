@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -18,6 +19,8 @@ import androidx.work.WorkerParameters;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
@@ -70,7 +73,15 @@ public class NotificacaoMedicamentoWorkManager extends Worker {
         Intent intent = new Intent(getApplicationContext(), telaInicial.class);
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        PendingIntent pendingIntent = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity
+                    (getApplicationContext(), 0, intent, PendingIntent.FLAG_MUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getActivity
+                    (getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
         builder.setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(t)
@@ -88,48 +99,57 @@ public class NotificacaoMedicamentoWorkManager extends Worker {
     }
 
     public void atualizarMedicamento(String id) {
-        String hr = FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("horario proximo medicamento");
-        String proxHr[] = hr.split(":");
-        int intervalo = Integer.parseInt(Objects.requireNonNull(FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("intervalo")));
-        System.out.println(intervalo);
-        int novaHr = Integer.parseInt(proxHr[0]) + intervalo;
-        if (novaHr > 24) {
-            novaHr = novaHr - 24;
-        }
+        FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                String hr = task.getResult().getString("horario proximo medicamento");
+                String proxHr[] = hr.split(":");
+                int intervalo = Integer.parseInt(Objects.requireNonNull(task.getResult().getString("intervalo")));
+                System.out.println("intervalo: " + intervalo);
+                int novaHr = Integer.parseInt(proxHr[1]) + 10;
+                if (novaHr > 24) {
+                    novaHr = novaHr - 24;
+                }
 
-        FirebaseFirestore.getInstance().collection("Medicamento").document(id).update("horario proximo medicamento", novaHr + ":" + proxHr[1])
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("banco_dados_salvos", "Sucesso ao atualizar dados!");
-                    }
-                });
+                proxHr[0] = String.valueOf(novaHr);
 
-        String dataIni[] = FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("data inicio").split("/");
-        String dataFim[] = FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("data fim").split("/");
+                FirebaseFirestore.getInstance().collection("Medicamento").document(id).update("horario proximo medicamento", proxHr[0] + ":" + proxHr[1])
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d("banco_dados_salvos", "Sucesso ao atualizar dados!");
+                            }
+                        });
 
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-        c1.set(Integer.parseInt(dataIni[2]), Integer.parseInt(dataIni[1]), Integer.parseInt(dataIni[0]));
-        c2.set(Integer.parseInt(dataFim[2]), Integer.parseInt(dataFim[1]), Integer.parseInt(dataFim[0]));
-        Calendar c3 = Calendar.getInstance();
+                Calendar c1 = Calendar.getInstance();
+                c1.set(2022, 10, 22, Integer.parseInt(proxHr[0]), Integer.parseInt(proxHr[1]));
+                Long alertTime = null;
+//        if (c1.before(c3) && c2.after(c3)) {
+                alertTime = c1.getTimeInMillis() - System.currentTimeMillis();
+                int random = (int) (Math.random() * 50 + 1);
+                String tag = generateKey();
+                String nome = task.getResult().getString("nome");
+                Data date = guardarData(nome, id, "Está no horário do medicamento", random);
+                NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
+            }
+        });
+//        String dataIni[] = FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("data inicio").split("/");
+//        String dataFim[] = FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("data fim").split("/");
 
-        Long alertTime = null;
-        if(c1.before(c3) && c2.after(c3)){
-            alertTime = c3.getTimeInMillis() - System.currentTimeMillis();
-            int random = (int) (Math.random()*50+1);
-            String tag = generateKey();
-            String nome = FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("nome");
-            Data date = guardarData(nome, id, "Está no horário do medicamento", random);
-            NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
-        }
+//        Calendar c2 = Calendar.getInstance();
+//        c1.set(Integer.parseInt(dataIni[2]), Integer.parseInt(dataIni[1]) - 1, Integer.parseInt(dataIni[0]));
+//        c2.set(Integer.parseInt(dataFim[2]), Integer.parseInt(dataFim[1]) - 1, Integer.parseInt(dataFim[0]));
+//        Calendar c3 = Calendar.getInstance();
+
+
+//        }
     }
 
-    private String generateKey(){
+    private String generateKey() {
         return UUID.randomUUID().toString();
     }
 
-    private Data guardarData(String titulo,String id_med, String descricao, int id_not){
+    private Data guardarData(String titulo, String id_med, String descricao, int id_not) {
         return new Data.Builder()
                 .putString("titulo", titulo)
                 .putString("descricao", descricao)

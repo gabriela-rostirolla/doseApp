@@ -83,11 +83,11 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if (validarCampos()) {
-                        if(swt_lembre.isChecked()){
+                        salvarNoBancoDeDados();
+                        if (swt_lembre.isChecked()) {
                             definirAlarme();
                             salvarNotificacao();
                         }
-                        salvarNoBancoDeDados();
                         finish();
                     }
                 }
@@ -241,23 +241,37 @@ public class telaCadastroMedicamento extends AppCompatActivity {
     }
 
     protected void salvarNoBancoDeDados() {
+        String via = spiVia.getSelectedItem().toString();
+        String nome = et_nomeMed.getText().toString();
+        String concentracao = et_concentracao.getText().toString();
+        String recomendacao = et_recomendacao.getText().toString();
+        String dose = et_dose.getText().toString();
+        String intervalo = et_intervalo.getText().toString();
+        String unidade_intervalo = spiIntervalo.getSelectedItem().toString();
+        String hora_inicial = tv_hrInicial.getText().toString();
+        boolean uso_continuo = usoContinuo.isChecked();
+        String data_inicio = tv_dataInicio.getText().toString();
+        String data_fim = tv_dataFim.getText().toString();
+        String observacoes = et_observacoes.getText().toString();
+        String id_idoso = getIntent().getStringExtra("id");
         Map<String, Object> medicamentoMap = new HashMap<>();
-        medicamentoMap.put("via", spiVia.getSelectedItem().toString());
-        medicamentoMap.put("nome", et_nomeMed.getText().toString());
-        medicamentoMap.put("concentracao", et_concentracao.getText().toString());
-        medicamentoMap.put("recomendacao ou finalidade", et_recomendacao.getText().toString());
-        medicamentoMap.put("dose", et_dose.getText().toString());
-        medicamentoMap.put("intervalo", et_intervalo.getText().toString());
-        medicamentoMap.put("horario proximo medicamento", tv_hrInicial);
-        medicamentoMap.put("unidade intervalo", spiIntervalo.getSelectedItem().toString());
-        medicamentoMap.put("hora inicial", tv_hrInicial.getText().toString());
-        medicamentoMap.put("uso continuo", usoContinuo.isChecked());
-        medicamentoMap.put("data inicio", tv_dataInicio.getText().toString());
-        medicamentoMap.put("data fim", tv_dataFim.getText().toString());
-        medicamentoMap.put("observacoes", et_observacoes.getText().toString());
-        medicamentoMap.put("id do idoso", getIntent().getStringExtra("id"));
-        medicamentoMap.put("dia de criacao", new Date());
-        medicamentoMap.put("lista dos horarios do medicamento", calcularHorarioDosMedicamento());
+
+        medicamentoMap.put("via", via);
+        medicamentoMap.put("nome", nome);
+        medicamentoMap.put("concentracao", concentracao);
+        medicamentoMap.put("recomendacao ou finalidade", recomendacao);
+        medicamentoMap.put("dose", dose);
+        medicamentoMap.put("intervalo", intervalo);
+        medicamentoMap.put("horario proximo medicamento", hora_inicial);
+        medicamentoMap.put("unidade intervalo", unidade_intervalo);
+        medicamentoMap.put("hora inicial", hora_inicial);
+        medicamentoMap.put("uso continuo", uso_continuo);
+        medicamentoMap.put("data inicio", data_inicio);
+        medicamentoMap.put("data fim", data_fim);
+        medicamentoMap.put("observacoes", observacoes);
+        medicamentoMap.put("id do idoso", id_idoso);
+        String data = String.valueOf(new Date());
+        medicamentoMap.put("dia de criacao", data);
 
         firebaseFirestore.collection("Medicamento")
                 .add(medicamentoMap)
@@ -416,30 +430,30 @@ public class telaCadastroMedicamento extends AppCompatActivity {
 //            startActivity(intent);
     }
 
-    private void excluirNotificacao(String tag){
+    private void excluirNotificacao(String tag) {
         WorkManager.getInstance(this).cancelAllWorkByTag(tag);
         Toast.makeText(this, "Alarme excluido", Toast.LENGTH_SHORT).show();
     }
 
-    private String generateKey(){
+    private String generateKey() {
         return UUID.randomUUID().toString();
     }
 
-    protected void salvarNotificacao(){
+    protected void salvarNotificacao() {
         Calendar calendar = Calendar.getInstance();
         String data[] = tv_dataInicio.getText().toString().split("/");
         String hr[] = tv_hrInicial.getText().toString().split(":");
-        calendar.set(Integer.parseInt(data[2]), Integer.parseInt(data[1])-1, Integer.parseInt(data[0]), Integer.parseInt(hr[0]), Integer.parseInt(hr[1]));
+        calendar.set(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]), Integer.parseInt(hr[0]), Integer.parseInt(hr[1]));
 
         String tag = generateKey();
         Long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
-        int random = (int) (Math.random()*50+1);
+        int random = (int) (Math.random() * 50 + 1);
 
         Data date = guardarData(et_nomeMed.getText().toString(), "Está no horário do medicamento de " + getIntent().getStringExtra("nome"), random);
         NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
     }
 
-    private Data guardarData(String titulo, String descricao, int id_not){
+    private Data guardarData(String titulo, String descricao, int id_not) {
         return new Data.Builder()
                 .putString("titulo", titulo)
                 .putString("descricao", descricao)
@@ -449,7 +463,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
 
     public void onCheckboxClicked(View view) {
         boolean checked = ((CheckBox) view).isChecked();
-
         switch (view.getId()) {
             case R.id.cb_usoContinuo:
                 if (checked) tv_dataFim.setEnabled(false);
