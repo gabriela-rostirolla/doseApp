@@ -446,7 +446,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         calendar.set(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]), Integer.parseInt(hr[0]), Integer.parseInt(hr[1]));
 
         String tag = generateKey();
-        Long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
+        Long alertTime = Math.abs(calendar.getTimeInMillis() - System.currentTimeMillis());
         int random = (int) (Math.random() * 50 + 1);
 
         Data date = guardarData(et_nomeMed.getText().toString(), "Está no horário do medicamento de " + getIntent().getStringExtra("nome"), random);

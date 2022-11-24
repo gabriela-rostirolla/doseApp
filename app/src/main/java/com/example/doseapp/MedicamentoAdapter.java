@@ -61,15 +61,12 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MedicamentoAdapter.MedicamentoViewHolder viewHolder = (MedicamentoAdapter.MedicamentoViewHolder) holder;
         Medicamento medicamento = medicamentoList.get(position);
-
-
 //        if (medicamento.isLembre() == false) {
 //            viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
 //        }
         List<String> listHorarios = medicamento.getProxMedicamentos();
 
         if (medicamento.getUnidade_intervalo().equals("h")) {
-            
             String hr = medicamento.getProxMed();
             String proxHr[] = hr.split(":");
             Calendar calendar = Calendar.getInstance();

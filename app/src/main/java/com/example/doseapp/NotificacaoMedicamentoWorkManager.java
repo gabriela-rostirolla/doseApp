@@ -45,6 +45,7 @@ public class NotificacaoMedicamentoWorkManager extends Worker {
 
         oreo(titulo, descricao);
         atualizarMedicamento(id_med);
+
         return Result.success();
     }
 
@@ -106,7 +107,7 @@ public class NotificacaoMedicamentoWorkManager extends Worker {
                 String proxHr[] = hr.split(":");
                 int intervalo = Integer.parseInt(Objects.requireNonNull(task.getResult().getString("intervalo")));
                 System.out.println("intervalo: " + intervalo);
-                int novaHr = Integer.parseInt(proxHr[1]) + 10;
+                int novaHr = Integer.parseInt(proxHr[0]) + intervalo;
                 if (novaHr > 24) {
                     novaHr = novaHr - 24;
                 }
@@ -121,16 +122,19 @@ public class NotificacaoMedicamentoWorkManager extends Worker {
                             }
                         });
 
-                Calendar c1 = Calendar.getInstance();
-                c1.set(2022, 10, 22, Integer.parseInt(proxHr[0]), Integer.parseInt(proxHr[1]));
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.set(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Integer.parseInt(proxHr[0]), Integer.parseInt(proxHr[1]));
+
+//                Calendar c1 = Calendar.getInstance();
+//                c1.set(2022, 10, 22, 12, 30);
                 Long alertTime = null;
 //        if (c1.before(c3) && c2.after(c3)) {
-                alertTime = c1.getTimeInMillis() - System.currentTimeMillis();
-                int random = (int) (Math.random() * 50 + 1);
-                String tag = generateKey();
-                String nome = task.getResult().getString("nome");
-                Data date = guardarData(nome, id, "Está no horário do medicamento", random);
-                NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
+//                alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
+//                int random = (int) (Math.random() * 50 + 1);
+//                String tag = generateKey();
+//                String nome = task.getResult().getString("nome");
+//                Data date = guardarData(nome, id, "Está no horário do medicamento", random);
+//                NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
             }
         });
 //        String dataIni[] = FirebaseFirestore.getInstance().collection("Medicamento").document(id).get().getResult().getString("data inicio").split("/");
