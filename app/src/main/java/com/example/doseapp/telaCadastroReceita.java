@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Data;
+import androidx.work.WorkManager;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -50,6 +52,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,6 +90,10 @@ public class telaCadastroReceita extends AppCompatActivity {
                 public void onClick(View view) {
                     if (validarCampos(view) == true) {
                         salvarNoBancoDeDados();
+                        if (lembre.isChecked()){
+                            definirEvento();
+                        }
+                        salvarNotificacao();
                         finish();
                     }
                 }
@@ -104,6 +111,7 @@ public class telaCadastroReceita extends AppCompatActivity {
                         if (lembre.isChecked()) {
                             definirEvento();
                         }
+                        salvarNotificacao();
                         editarBancoDeDados();
                         finish();
                     }
@@ -356,4 +364,35 @@ public class telaCadastroReceita extends AppCompatActivity {
                     }
                 }
             });
+
+
+    private void excluirNotificacao(String tag) {
+        WorkManager.getInstance(this).cancelAllWorkByTag(tag);
+    }
+
+    private String generateKey() {
+        return UUID.randomUUID().toString();
+    }
+
+    protected int salvarNotificacao() {
+        Calendar calendar = Calendar.getInstance();
+        String data[] = tv_dataRen.getText().toString().split("/");
+        calendar.set(Integer.parseInt(data[2]), Integer.parseInt(data[1]) - 1, Integer.parseInt(data[0]));
+
+        String tag = generateKey();
+        Long alertTime = Math.abs(calendar.getTimeInMillis() - System.currentTimeMillis());
+        int random = (int) (Math.random() * 50 + 1);
+        Data date = guardarData(et_nome.getText().toString(), "Chegou o dia de renovar a receita de " + getIntent().getStringExtra("nome"), random);
+
+        NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
+        return random;
+    }
+
+    private Data guardarData(String titulo, String descricao, int id_not) {
+        return new Data.Builder()
+                .putString("titulo", titulo)
+                .putString("descricao", descricao)
+                .putString("id med", getIntent().getStringExtra("id medicamento"))
+                .putInt("id_notificacao", id_not).build();
+    }
 }

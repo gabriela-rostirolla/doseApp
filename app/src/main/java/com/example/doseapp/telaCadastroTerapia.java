@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Data;
+import androidx.work.WorkManager;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -46,6 +49,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @SuppressLint("UseSwitchCompatOrMaterialCode")
 public class telaCadastroTerapia extends AppCompatActivity {
@@ -302,4 +306,44 @@ public class telaCadastroTerapia extends AppCompatActivity {
     protected void gerarToast(String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
+
+    private void excluirNotificacao(String tag) {
+        WorkManager.getInstance(this).cancelAllWorkByTag(tag);
+    }
+
+    private String generateKey() {
+        return UUID.randomUUID().toString();
+    }
+
+    protected int salvarNotificacao() {
+//        Calendar calendar = Calendar.getInstance();
+//        int dia = 0;
+//        if(chipDom.isChecked() && Calendar.DAY_OF_WEEK ==7){
+//            dia = 7;
+//        }
+////                !chipSeg.isChecked() &&
+////                !chipTer.isChecked() &&
+////                !chipQua.isChecked() &&
+////                !chipQui.isChecked() &&
+////                !chipSex.isChecked() &&
+////                !chipSab.isChecked())
+//        calendar.set(Calendar.YEAR, Calendar.MONTH, dia);
+
+        String tag = generateKey();
+//        Long alertTime = Math.abs(calendar.getTimeInMillis() - System.currentTimeMillis());
+        int random = (int) (Math.random() * 50 + 1);
+        Data date = guardarData(et_nome.getText().toString(), "Chegou o dia de renovar a receita de " + getIntent().getStringExtra("nome"), random);
+
+//        NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
+        return random;
+    }
+
+    private Data guardarData(String titulo, String descricao, int id_not) {
+        return new Data.Builder()
+                .putString("titulo", titulo)
+                .putString("descricao", descricao)
+                .putString("id med", getIntent().getStringExtra("id medicamento"))
+                .putInt("id_notificacao", id_not).build();
+    }
+
 }

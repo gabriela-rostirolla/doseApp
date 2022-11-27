@@ -187,7 +187,7 @@
     <string name="app_name">DoseApp</string>
 
     <!--Texto switch-->
-    <string name="lembre_me">Lembre-me</string>
+    <string name="lembre_me">Definir Alarme</string>
 
     <!--Texto RadioButton / checkBox-->
     <string name="genero">Gênero:</string>

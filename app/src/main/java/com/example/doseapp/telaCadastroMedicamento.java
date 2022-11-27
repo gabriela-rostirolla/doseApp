@@ -37,6 +37,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,7 +88,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                         salvarNoBancoDeDados();
                         if (swt_lembre.isChecked()) {
                             definirAlarme();
-                            salvarNotificacao();
                         }
                         finish();
                     }
@@ -104,9 +105,15 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 public void onClick(View view) {
                     if (validarCampos()) {
                         editarBancoDeDados();
+                        firebaseFirestore.getInstance().collection("Medicamento").document(idMed).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                String tag = task.getResult().getString("id notificacao");
+                                excluirNotificacao(tag);
+                            }
+                        });
                         if (swt_lembre.isChecked()) {
                             definirAlarme();
-                            salvarNotificacao();
                         }
                         finish();
                     }
@@ -270,6 +277,8 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         medicamentoMap.put("data fim", data_fim);
         medicamentoMap.put("observacoes", observacoes);
         medicamentoMap.put("id do idoso", id_idoso);
+        String id_not = String.valueOf(salvarNotificacao());
+        medicamentoMap.put("id notificacao", id_not);
         String data = String.valueOf(new Date());
         medicamentoMap.put("dia de criacao", data);
 
@@ -380,6 +389,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String data_fim = tv_dataFim.getText().toString();
         String observacoes = et_observacoes.getText().toString();
 
+        String tag = String.valueOf(salvarNotificacao());
         firebaseFirestore.collection("Medicamento").document(idMed)
                 .update("via", via, "nome", nome,
                         "concentracao", concentracao,
@@ -392,8 +402,8 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                         "data inicio", data_inicio,
                         "data fim", data_fim,
                         "observacoes", observacoes,
-                        "horario proximo medicamento", tv_hrInicial.getText().toString(),
-                        "lista dos horarios do medicamento", calcularHorarioDosMedicamento())
+                        "id notificacao", tag,
+                        "horario proximo medicamento", tv_hrInicial.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -402,44 +412,24 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 });
     }
 
-    protected List<String> calcularHorarioDosMedicamento() {
-        String hr = tv_hrInicial.getText().toString();
-        String proxHr[] = hr.split(":");
-        List<String> hrMedicamentos = new ArrayList<>();
-
-        int intervalo = Integer.parseInt(et_intervalo.getText().toString());
-        int horario = Integer.parseInt(proxHr[0]);
-
-        for (int i = 0; i < 24 / intervalo; i++) {
-            hrMedicamentos.add(horario + ":" + proxHr[1]);
-            horario = horario + intervalo;
-            if (horario > 24) {
-                horario = horario - 24;
-            }
-        }
-        return hrMedicamentos;
-    }
-
     private void definirAlarme() {
-//        List<String> list = calcularHorarioDosMedicamento();
-//         Intent intent = new IFntent(AlarmClock.ACTION_SET_ALARM);
-//            String[] hr = tv_dataInicio.getText().toString().split(":");
-//            intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
-//            intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
-//            intent.putExtra(AlarmClock.EXTRA_MESSAGE, et_nomeMed.getText().toString());
-//            startActivity(intent);
+        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+        String[] hr = tv_hrInicial.getText().toString().split(":");
+        intent.putExtra(AlarmClock.EXTRA_HOUR, Integer.parseInt(hr[0]));
+        intent.putExtra(AlarmClock.EXTRA_MINUTES, Integer.parseInt(hr[1]));
+        intent.putExtra(AlarmClock.EXTRA_MESSAGE, et_nomeMed.getText().toString());
+        startActivity(intent);
     }
 
     private void excluirNotificacao(String tag) {
         WorkManager.getInstance(this).cancelAllWorkByTag(tag);
-        Toast.makeText(this, "Alarme excluido", Toast.LENGTH_SHORT).show();
     }
 
     private String generateKey() {
         return UUID.randomUUID().toString();
     }
 
-    protected void salvarNotificacao() {
+    protected int salvarNotificacao() {
         Calendar calendar = Calendar.getInstance();
         String data[] = tv_dataInicio.getText().toString().split("/");
         String hr[] = tv_hrInicial.getText().toString().split(":");
@@ -448,9 +438,9 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String tag = generateKey();
         Long alertTime = Math.abs(calendar.getTimeInMillis() - System.currentTimeMillis());
         int random = (int) (Math.random() * 50 + 1);
-
         Data date = guardarData(et_nomeMed.getText().toString(), "Está no horário do medicamento de " + getIntent().getStringExtra("nome"), random);
         NotificacaoMedicamentoWorkManager.salvarNotificacao(alertTime, date, tag);
+        return random;
     }
 
     private Data guardarData(String titulo, String descricao, int id_not) {

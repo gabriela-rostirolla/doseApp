@@ -64,7 +64,6 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
 //        if (medicamento.isLembre() == false) {
 //            viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
 //        }
-        List<String> listHorarios = medicamento.getProxMedicamentos();
 
         if (medicamento.getUnidade_intervalo().equals("h")) {
             String hr = medicamento.getProxMed();
