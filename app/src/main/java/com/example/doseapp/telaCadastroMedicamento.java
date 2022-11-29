@@ -104,7 +104,6 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if (validarCampos()) {
-                        editarBancoDeDados();
                         firebaseFirestore.getInstance().collection("Medicamento").document(idMed).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -112,6 +111,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                                 excluirNotificacao(tag);
                             }
                         });
+                        editarBancoDeDados();
                         if (swt_lembre.isChecked()) {
                             definirAlarme();
                         }
@@ -388,6 +388,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         String data_inicio = tv_dataInicio.getText().toString();
         String data_fim = tv_dataFim.getText().toString();
         String observacoes = et_observacoes.getText().toString();
+        String id_not = String.valueOf(salvarNotificacao());
 
         String tag = String.valueOf(salvarNotificacao());
         firebaseFirestore.collection("Medicamento").document(idMed)
@@ -403,6 +404,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
                         "data fim", data_fim,
                         "observacoes", observacoes,
                         "id notificacao", tag,
+                        "id notificacao", id_not,
                         "horario proximo medicamento", tv_hrInicial.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
