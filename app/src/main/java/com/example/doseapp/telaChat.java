@@ -2,11 +2,14 @@ package com.example.doseapp;
 
 import static java.security.AccessController.getContext;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,42 +24,45 @@ public class telaChat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_chat);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         inicializarComponentes();
-        rv.setAdapter(adapter);
+        actionBar.setTitle("Chat");
 
-        List<String> list = new ArrayList<>();
-        list.add("ois");
-        list.add("hello");
+        List<IdosoCuidado> list = new ArrayList<>();
+        IdosoCuidado cuidado = new IdosoCuidado();
+        cuidado.setNome("Mensagem 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+        cuidado.setCuidado(false);
+        list.add(cuidado);
 
-        adapter = new MensagemAdapter(getApplicationContext(), list);
-        rv.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        IdosoCuidado cuidado1 = new IdosoCuidado();
+        cuidado1.setNome("Mensagem 2");
+        cuidado1.setCuidado(false);
+        list.add(cuidado1);
+
+        IdosoCuidado cuidado2 = new IdosoCuidado();
+        cuidado2.setNome("Mensagem 3");
+        cuidado2.setCuidado(true);
+        list.add(cuidado2);
+
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new MensagemAdapter(list, getApplicationContext());
         rv.setHasFixedSize(false);
         rv.setAdapter(adapter);
-
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void inicializarComponentes() {
         rv = findViewById(R.id.rv_listaMensagem);
     }
 
-
-//    private class MensagemItem extends Item<ViewHolder> {
-//        private final boolean rec;
-//
-//        public MensagemItem(boolean rec) {
-//            this.rec = rec;
-//        }
-//
-//        @Override
-//        public void bind(@NonNull YearGridAdapter.ViewHolder viewHolder, int position){
-//
-//        }
-//
-//        @Override
-//        public int getLayout(){
-//            return rec ? R.layout.item_mensagem_rec : R.layout.item_mensagem_env;
-//
-//        }
-//
-//    }
 }

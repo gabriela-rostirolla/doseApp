@@ -113,6 +113,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
         inflater.inflate(R.menu.chat, menu);
         inflater.inflate(R.menu.menu_perfil, menu);
         return true;
+
     }
 
     @Override
