@@ -47,7 +47,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.idosos_cadastrados);
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             Intent intent = new Intent(telaInicial.this, telaLogin.class);
             startActivity(intent);
             finish();
@@ -59,9 +59,6 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     @Override
@@ -113,6 +110,7 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.chat, menu);
         inflater.inflate(R.menu.menu_perfil, menu);
         return true;
     }
@@ -124,6 +122,9 @@ public class telaInicial extends AppCompatActivity implements IdosoCuidadoAdapte
                 Intent intent = new Intent(telaInicial.this, telaPerfil.class);
                 startActivity(intent);
                 return true;
+            case R.id.item_chat:
+                Intent intent1 = new Intent(telaInicial.this, telaChat.class);
+                startActivity(intent1);
             default:
                 return super.onOptionsItemSelected(item);
         }

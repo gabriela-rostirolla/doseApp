@@ -14,10 +14,13 @@
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1815" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/ic_baseline_work_24.xml" value="0.163" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/ic_baseline_work_off_24.xml" value="0.163" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/ic_chat.xml" value="0.2075" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/ic_eye.xml" value="0.12" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/ic_logout.xml" value="0.179" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/image_receita.xml" value="0.187" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/list_color_chip.xml" value="0.163" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/mensagem.xml" value="0.2065" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/mensagem_shape.xml" value="0.2065" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/separador.xml" value="0.1855" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/style_image_receita.xml" value="0.187" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/drawable/togle_pass.xml" value="0.1775" />
@@ -35,6 +38,7 @@
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_receita.xml" value="0.18" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_receita2.xml" value="0.17481884057971014" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_cadastro_terapia.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_chat.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_dados_dos_idosos.xml" value="0.21" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_diarios.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/activity_tela_editar_consulta.xml" value="0.1641025641025641" />
@@ -67,10 +71,13 @@
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_consulta.xml" value="0.17685185185185184" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_diario.xml" value="0.16324786324786325" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_idosos.xml" value="0.22" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_mensagem.xml" value="0.16324786324786325" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_mensagem_env.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_receita.xml" value="0.1743659420289855" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_remedio.xml" value="0.25" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/item_terapia.xml" value="0.22" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/layout/spinner_item.xml" value="0.1" />
+        <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/chat.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_diario.xml" value="0.1641025641025641" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_logout.xml" value="0.17685185185185184" />
         <entry key="..\:/Users/gabir/AndroidStudioProjects/doseApp/app/src/main/res/menu/menu_opcoes.xml" value="0.18" />
