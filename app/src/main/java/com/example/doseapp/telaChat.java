@@ -1,22 +1,44 @@
 package com.example.doseapp;
 
-import androidx.annotation.NonNull;
+import static java.security.AccessController.getContext;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.ClipData;
 import android.os.Bundle;
-import android.view.View;
 
-import com.google.android.material.datepicker.YearGridAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class telaChat extends AppCompatActivity {
+
+    private RecyclerView rv;
+    private static MensagemAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_chat);
+        inicializarComponentes();
+        rv.setAdapter(adapter);
+
+        List<String> list = new ArrayList<>();
+        list.add("ois");
+        list.add("hello");
+
+        adapter = new MensagemAdapter(getApplicationContext(), list);
+        rv.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        rv.setHasFixedSize(false);
+        rv.setAdapter(adapter);
+
     }
+
+    private void inicializarComponentes() {
+        rv = findViewById(R.id.rv_listaMensagem);
+    }
+
 
 //    private class MensagemItem extends Item<ViewHolder> {
 //        private final boolean rec;

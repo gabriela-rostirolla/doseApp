@@ -51,16 +51,12 @@ public class MensagemAdapter extends RecyclerView.Adapter {
     }
 
     public static class MensagemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tv_receitaData, tv_nomeReceita;
-        ImageButton imgBtn_excluirReceita;
-        View v_indicador;
+        TextView tv_msg;
 
         public MensagemViewHolder(@NonNull View itemView, FirebaseFirestore firebaseFirestore) {
             super(itemView);
-            tv_nomeReceita = itemView.findViewById(R.id.tv_nomeReceita);
-            tv_receitaData = itemView.findViewById(R.id.tv_dataRenovacao);
-            imgBtn_excluirReceita = itemView.findViewById(R.id.imgBtn_excluirReceita);
-            v_indicador = itemView.findViewById(R.id.v_indicadorReceita);
+            tv_msg = itemView.findViewById(R.id.tv_msg);
+
             itemView.setOnClickListener(this);
         }
 
