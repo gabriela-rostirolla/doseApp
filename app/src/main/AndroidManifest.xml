@@ -18,49 +18,52 @@
         android:theme="@style/Theme.DoseApp"
         tools:targetApi="31">
         <activity
-            android:name=".telaChat"
+            android:name=".activitys.telaContatos"
             android:exported="false" />
         <activity
-            android:name=".visualizarFotoReceita"
+            android:name=".activitys.telaChat"
             android:exported="false" />
         <activity
-            android:name=".telaDiarios"
+            android:name=".activitys.visualizarFotoReceita"
             android:exported="false" />
         <activity
-            android:name=".telaCadastroDiarioAtividade"
+            android:name=".activitys.telaDiarios"
             android:exported="false" />
         <activity
-            android:name=".telaCadastroConsulta"
+            android:name=".activitys.telaCadastroDiarioAtividade"
             android:exported="false" />
         <activity
-            android:name=".telaCadastroDiarioAlimentacao"
+            android:name=".activitys.telaCadastroConsulta"
             android:exported="false" />
         <activity
-            android:name=".telaCadastroTerapia"
+            android:name=".activitys.telaCadastroDiarioAlimentacao"
             android:exported="false" />
         <activity
-            android:name=".telaCadastroReceita"
+            android:name=".activitys.telaCadastroTerapia"
             android:exported="false" />
         <activity
-            android:name=".telaDadosDosIdosos"
+            android:name=".activitys.telaCadastroReceita"
             android:exported="false" />
         <activity
-            android:name=".telaCadastroMedicamento"
+            android:name=".activitys.telaDadosDosIdosos"
             android:exported="false" />
         <activity
-            android:name=".telaCadastroIdosoCuidado"
+            android:name=".activitys.telaCadastroMedicamento"
             android:exported="false" />
         <activity
-            android:name=".telaPerfil"
+            android:name=".activitys.telaCadastroIdosoCuidado"
             android:exported="false" />
         <activity
-            android:name=".telaInicial"
+            android:name=".activitys.telaPerfil"
             android:exported="false" />
         <activity
-            android:name=".telaCadastro"
+            android:name=".activitys.telaInicial"
             android:exported="false" />
         <activity
-            android:name=".telaLogin"
+            android:name=".activitys.telaCadastro"
+            android:exported="false" />
+        <activity
+            android:name=".activitys.telaLogin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

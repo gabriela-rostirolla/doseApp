@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:background="@color/light_blue"
         android:orientation="vertical"
-        tools:context=".telaCadastroDiarioAlimentacao">
+        tools:context=".activitys.telaCadastroDiarioAlimentacao">
 
         <EditText
             android:id="@+id/et_cuidadorResp"
