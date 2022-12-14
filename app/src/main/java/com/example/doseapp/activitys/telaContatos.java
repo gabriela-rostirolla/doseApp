@@ -29,7 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class telaContatos extends AppCompatActivity implements IdosoCuidadoAdapter.OnItemClick{
+public class telaContatos extends AppCompatActivity implements IdosoCuidadoAdapter.OnItemClick {
 
     private FloatingActionButton fab_addIdosoCuidado;
     private RecyclerView rv_lista;
@@ -90,7 +90,9 @@ public class telaContatos extends AppCompatActivity implements IdosoCuidadoAdapt
                                 Usuario ic = new Usuario();
                                 ic.setNome(document.getString("nome"));
                                 ic.setId(document.getId());
-                                usuarioList.add(ic);
+                                if (!document.getId().equals(userId)) {
+                                    usuarioList.add(ic);
+                                }
                             }
                             contatoAdapter = new ContatoAdapter(usuarioList, telaContatos.this::OnItemClick, telaContatos.this);
                             rv_lista.addItemDecoration(new DividerItemDecoration(telaContatos.this, DividerItemDecoration.VERTICAL));

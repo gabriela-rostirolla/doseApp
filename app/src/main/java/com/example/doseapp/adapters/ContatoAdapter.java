@@ -14,14 +14,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doseapp.R;
+import com.example.doseapp.activitys.telaChat;
+import com.example.doseapp.classes.Decode;
 import com.example.doseapp.models.Alimentacao;
 import com.example.doseapp.models.Atividade;
 import com.example.doseapp.models.Consulta;
 import com.example.doseapp.models.DiarioDeCuidado;
 import com.example.doseapp.models.Medicamento;
+import com.example.doseapp.models.Mensagem;
 import com.example.doseapp.models.Receita;
 import com.example.doseapp.models.Terapia;
 import com.example.doseapp.models.Usuario;
@@ -34,6 +38,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -62,7 +67,33 @@ public class ContatoAdapter extends RecyclerView.Adapter {
         ContatoAdapter.ContatoViewHolder viewHolderClass = (ContatoAdapter.ContatoViewHolder) holder;
         Usuario user = usuarioList.get(position);
         viewHolderClass.tv_nome.setText(user.getNome());
-        viewHolderClass.tv_ultMens.setText("Modelo da ultima mensagem");
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+        firebaseFirestore.collection("Mensagem")
+                .orderBy("data", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Mensagem msg = new Mensagem();
+                                msg.setUsuarioEnv(document.getString("usuarioEnv"));
+                                msg.setUsuarioRec(document.getString("usuarioRec"));
+                                msg.setMensagem(Decode.decode(document.getString("mensagem")));
+                                String aux = user.getId();
+                                if ((aux.equals(msg.getUsuarioEnv()) || aux.equals(msg.getUsuarioRec())) && (userId.equals(msg.getUsuarioRec()) || userId.equals(msg.getUsuarioEnv()))) {
+                                    viewHolderClass.tv_ultMens.setText(Decode.decode(document.getString("mensagem")));
+                                    break;
+                                }else{
+                                    viewHolderClass.tv_ultMens.setText("");
+                                }
+                            }
+                        }
+                    }
+                });
     }
 
     @Override

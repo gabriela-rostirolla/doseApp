@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.doseapp.adapters.IdosoCuidadoAdapter;
 import com.example.doseapp.adapters.MensagemAdapter;
+import com.example.doseapp.classes.Decode;
+import com.example.doseapp.classes.Encode;
 import com.example.doseapp.databinding.ActivityTelaChatBinding;
 import com.example.doseapp.models.IdosoCuidado;
 import com.example.doseapp.models.Mensagem;
@@ -74,6 +76,8 @@ public class telaChat extends AppCompatActivity {
         preencherMensagens();
     }
 
+
+
     private void init() {
         firebaseFirestore = FirebaseFirestore.getInstance();
     }
@@ -91,10 +95,15 @@ public class telaChat extends AppCompatActivity {
                                 Mensagem msg = new Mensagem();
                                 msg.setUsuarioEnv(document.getString("usuarioEnv"));
                                 msg.setUsuarioRec(document.getString("usuarioRec"));
-                                msg.setMensagem(document.getString("mensagem"));
+                                msg.setMensagem(Decode.decode(document.getString("mensagem")));
                                 String aux = getIntent().getStringExtra("idRec");
                                 if ((aux.equals(msg.getUsuarioEnv()) || aux.equals(msg.getUsuarioRec())) && (userId.equals(msg.getUsuarioRec()) || userId.equals(msg.getUsuarioEnv()))) {
                                     list.add(msg);
+                                }
+                                if(list.size() == 0){
+                                    binding.tvNenhumaMsg.setVisibility(View.VISIBLE);
+                                }else{
+                                    binding.tvNenhumaMsg.setVisibility(View.INVISIBLE);
                                 }
                             }
                             adapter = new MensagemAdapter(
@@ -111,9 +120,10 @@ public class telaChat extends AppCompatActivity {
 
     private void salvarMensagem() {
         HashMap<String, Object> map = new HashMap<>();
+        String msg = Encode.encode(binding.etChat.getText().toString());
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         map.put("usuarioEnv", userId);
-        map.put("mensagem", binding.etChat.getText().toString());
+        map.put("mensagem", msg);
         map.put("data", new Date());
         map.put("usuarioRec", getIntent().getStringExtra("idRec"));
 

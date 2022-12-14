@@ -121,6 +121,7 @@
 
     <!--Nenhum registro-->
     <string name="nenhumCadIdoso">Nenhum idoso cadastrado</string>
+    <string name="nenhumaMsg">Nenhuma mensagem foi encontrada</string>
     <string name="nenhumDiaCad">Nenhum Diário de cuidado cadastrado</string>
 
     <!--Campos-->
