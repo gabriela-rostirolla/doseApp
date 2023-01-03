@@ -2,7 +2,9 @@ package com.example.doseapp.activitys;
 
 import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
 
-import androidx.annotation.NonNull;
+import static com.example.doseapp.classes.Main.cadastrarConsulta;
+import static com.example.doseapp.classes.Main.editarConsulta;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,10 +31,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.doseapp.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.example.doseapp.models.Consulta;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -40,10 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -210,30 +207,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
         String profissional = et_profissional.getText().toString();
         String horario = tv_horario.getText().toString();
         String id = getIntent().getStringExtra("id");
-
-        Map<String, Object> consultaMap = new HashMap<>();
-        consultaMap.put("nome", nome);
-        consultaMap.put("data", data);
-        consultaMap.put("endereco", endereco);
-        consultaMap.put("telefone", tel);
-        consultaMap.put("profissional", profissional);
-        consultaMap.put("horario", horario);
-        consultaMap.put("id do idoso", id);
-        consultaMap.put("dia de criacao", new Date());
-        firebaseFirestore.collection("Consultas")
-                .add(consultaMap)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("banco_dados_salvos", "Sucesso ao salvar dados!" + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("erro_banco_dados", "Erro ao salvar dados!", e);
-                    }
-                });
+        cadastrarConsulta(firebaseFirestore, nome, data, endereco, tel, profissional, horario, id);
     }
 
     protected void inicializarComponentes() {
@@ -308,9 +282,6 @@ public class telaCadastroConsulta extends AppCompatActivity {
                 tv_horario.setText(value.getString("horario"));
             }
         });
-
-//        int alarme = sharedPreferences.getInt("id alarme - " + idConsulta, 0);
-//        swt_lembreConsulta.setChecked(alarme != 0);
     }
 
     protected void editarBancoDeDados() {
@@ -321,33 +292,15 @@ public class telaCadastroConsulta extends AppCompatActivity {
         String data = tv_data.getText().toString();
         String horario = tv_horario.getText().toString();
 
-        firebaseFirestore.collection("Consultas").document(idConsulta)
-                .update("nome", nome,
-                        "profissional", profissional,
-                        "endereco", end,
-                        "data", data,
-                        "horario", horario,
-                        "telefone", tel)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("banco_dados_salvos", "Sucesso ao atualizar dados!");
-                        gerarToast(getString(R.string.dadosAtualizados));
-                    }
-                });
+        Consulta consulta = new Consulta();
+        consulta.setNome(nome);
+        consulta.setProfissional(profissional);
+        consulta.setEndereco(end);
+        consulta.setTelefone(tel);
+        consulta.setData(data);
+        consulta.setHorario(horario);
 
-//        if (!swt_lembreConsulta.isChecked()) {
-//            int alarme =  sharedPreferences.getInt("id alarme - " + idConsulta, 0);
-//            if(alarme == 1) {
-//                Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 1);
-//                getContentResolver().delete(eventUri, null, null);
-//                System.out.println("kfaghkrlr");
-//            }
-//        }
-//
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.remove("id alarme - " + idConsulta);
-//        editor.apply();
+        editarConsulta(telaCadastroConsulta.this, firebaseFirestore, idConsulta, consulta);
     }
 
     private void checkPermission(int callbackId, String... permissionsId) {

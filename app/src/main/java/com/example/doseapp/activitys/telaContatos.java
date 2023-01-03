@@ -16,13 +16,16 @@ import android.widget.TextView;
 import com.example.doseapp.R;
 import com.example.doseapp.adapters.ContatoAdapter;
 import com.example.doseapp.adapters.IdosoCuidadoAdapter;
+import com.example.doseapp.classes.Decode;
 import com.example.doseapp.models.IdosoCuidado;
+import com.example.doseapp.models.Mensagem;
 import com.example.doseapp.models.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -90,6 +93,7 @@ public class telaContatos extends AppCompatActivity implements IdosoCuidadoAdapt
                                 Usuario ic = new Usuario();
                                 ic.setNome(document.getString("nome"));
                                 ic.setId(document.getId());
+
                                 if (!document.getId().equals(userId)) {
                                     usuarioList.add(ic);
                                 }

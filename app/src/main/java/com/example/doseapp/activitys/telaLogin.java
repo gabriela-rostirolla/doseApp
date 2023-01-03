@@ -1,5 +1,7 @@
 package com.example.doseapp.activitys;
 
+import static com.example.doseapp.classes.Main.autenticarUsuario;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doseapp.R;
+import com.example.doseapp.classes.Main;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,7 +42,7 @@ public class telaLogin extends AppCompatActivity {
         tv_redefinirSenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redefinirSenha(view);
+                redefinirSenha();
             }
         });
 
@@ -59,7 +62,7 @@ public class telaLogin extends AppCompatActivity {
                 if (email.isEmpty() || senha.isEmpty()) {
                     Toast.makeText(telaLogin.this, getString(R.string.camposVazios), Toast.LENGTH_SHORT).show();
                 } else {
-                    autenticarUsuario(view);
+                    autenticarUsuario(telaLogin.this, email, senha);
                 }
             }
         });
@@ -68,12 +71,13 @@ public class telaLogin extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+//        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (FirebaseAuth.getInstance().getUid() != null) {
             telaPrincipal();
         }
     }
 
-    protected void redefinirSenha(View view) {
+    protected void redefinirSenha() {
         if (et_email.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.emailVazio), Toast.LENGTH_SHORT).show();
         } else {
@@ -83,17 +87,7 @@ public class telaLogin extends AppCompatActivity {
                     .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            FirebaseAuth auth = FirebaseAuth.getInstance();
-                            auth.sendPasswordResetEmail(et_email.getText().toString())
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.d("email_enviado", "Email sent.");
-                                                Toast.makeText(telaLogin.this, getString(R.string.emailEnviado), Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
+                            Main.redefinirSenha(telaLogin.this, et_email.getText().toString());
                         }
                     }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
                         @Override
@@ -111,33 +105,6 @@ public class telaLogin extends AppCompatActivity {
         et_senha = findViewById(R.id.et_senha);
         btn_entrar = findViewById(R.id.btn_entrar);
         tv_redefinirSenha = findViewById(R.id.txt_recuperar_senha);
-    }
-
-    protected void autenticarUsuario(View view) {
-        String email = et_email.getText().toString();
-        String senha = et_senha.getText().toString();
-
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    telaPrincipal();
-                    Toast.makeText(telaLogin.this, getString(R.string.loginFeitoComSucesso), Toast.LENGTH_SHORT).show();
-                } else {
-                    String erro;
-                    try {
-                        throw task.getException();
-                    } catch (FirebaseAuthInvalidUserException exception) {
-                        erro = getString(R.string.emailInex);
-                    } catch (FirebaseAuthInvalidCredentialsException exception) {
-                        erro = getString(R.string.senhaIncorreta);
-                    } catch (Exception exception) {
-                        erro = getString(R.string.falhaAoLogar);
-                    }
-                    Toast.makeText(telaLogin.this, erro, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     protected void telaPrincipal() {

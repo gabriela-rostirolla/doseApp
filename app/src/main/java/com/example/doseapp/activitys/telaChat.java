@@ -3,23 +3,18 @@ package com.example.doseapp.activitys;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.doseapp.adapters.IdosoCuidadoAdapter;
 import com.example.doseapp.adapters.MensagemAdapter;
-import com.example.doseapp.classes.Decode;
-import com.example.doseapp.classes.Encode;
+import com.example.doseapp.classes.Criptografia;
 import com.example.doseapp.databinding.ActivityTelaChatBinding;
-import com.example.doseapp.models.IdosoCuidado;
 import com.example.doseapp.models.Mensagem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,15 +27,16 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.WebSocketListener;
+
 public class telaChat extends AppCompatActivity {
 
-    private RecyclerView rv;
     private ActivityTelaChatBinding binding;
     private List<Mensagem> list;
     private FirebaseFirestore firebaseFirestore;
@@ -61,9 +57,14 @@ public class telaChat extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!binding.etChat.getText().toString().isEmpty()) {
-                    salvarMensagem();
-                    onStart();
-                    binding.etChat.setText("");
+                    try {
+                        salvarMensagem();
+                        onStart();
+                        binding.etChat.setText("");
+                    } catch (Exception e) {
+                        Toast.makeText(telaChat.this, "Erro: " + e, Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -75,8 +76,6 @@ public class telaChat extends AppCompatActivity {
         list = new ArrayList<>();
         preencherMensagens();
     }
-
-
 
     private void init() {
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -93,16 +92,19 @@ public class telaChat extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Mensagem msg = new Mensagem();
+                                String msgDecode = document.getString("mensagem");
+                                msg.setMensagem(msgDecode);
                                 msg.setUsuarioEnv(document.getString("usuarioEnv"));
                                 msg.setUsuarioRec(document.getString("usuarioRec"));
-                                msg.setMensagem(Decode.decode(document.getString("mensagem")));
+                                msg.setId(document.getId());
+
                                 String aux = getIntent().getStringExtra("idRec");
                                 if ((aux.equals(msg.getUsuarioEnv()) || aux.equals(msg.getUsuarioRec())) && (userId.equals(msg.getUsuarioRec()) || userId.equals(msg.getUsuarioEnv()))) {
                                     list.add(msg);
                                 }
-                                if(list.size() == 0){
+                                if (list.size() == 0) {
                                     binding.tvNenhumaMsg.setVisibility(View.VISIBLE);
-                                }else{
+                                } else {
                                     binding.tvNenhumaMsg.setVisibility(View.INVISIBLE);
                                 }
                             }
@@ -118,14 +120,16 @@ public class telaChat extends AppCompatActivity {
                 });
     }
 
-    private void salvarMensagem() {
+    private void salvarMensagem() throws Exception {
         HashMap<String, Object> map = new HashMap<>();
-        String msg = Encode.encode(binding.etChat.getText().toString());
+        String msg = binding.etChat.getText().toString();
+
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         map.put("usuarioEnv", userId);
         map.put("mensagem", msg);
         map.put("data", new Date());
         map.put("usuarioRec", getIntent().getStringExtra("idRec"));
+        map.put("status", "enviado");
 
         firebaseFirestore.collection("Mensagem")
                 .add(map)

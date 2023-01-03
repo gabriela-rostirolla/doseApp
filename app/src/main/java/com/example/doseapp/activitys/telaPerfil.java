@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,35 +44,28 @@ public class telaPerfil extends AppCompatActivity {
         setContentView(R.layout.activity_tela_perfil);
         inicializarComponentes();
 
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.perfil);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        if (userID == null || userID.isEmpty()) {
-            startActivity(new Intent(telaPerfil.this, telaLogin.class));
-            finish();
-        } else {
-            DocumentReference value = banco_dados.collection("Usuarios").document(userID);
-            value.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    String nome = value.getString("nome");
-                    String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                    et_editNome.setText(nome);
-                    et_editEmail.setText(email);
-                    et_editEmail.setEnabled(false);
-                    et_editEmail.setTextColor(Color.GRAY);
-                    btn_editar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            editar_perfil(view);
-                        }
-                    });
-                }
-            });
-        }
+        banco_dados.collection("Usuarios").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                String nome = task.getResult().getString("nome");
+                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                et_editNome.setText(nome);
+                et_editEmail.setText(email);
+                et_editEmail.setEnabled(false);
+                et_editEmail.setTextColor(Color.GRAY);
+                btn_editar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        editar_perfil(view);
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -81,6 +75,7 @@ public class telaPerfil extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -118,7 +113,7 @@ public class telaPerfil extends AppCompatActivity {
     }
 
     protected void editar_perfil(View view) {
-        if (et_editNome.getText().toString().isEmpty() == false) {
+        if (!et_editNome.getText().toString().isEmpty()) {
             firebaseFirestore.collection("Usuarios").document(userID)
                     .update("nome", et_editNome.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {

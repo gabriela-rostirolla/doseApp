@@ -1,9 +1,25 @@
 package com.example.doseapp.models;
 
 public class Mensagem {
-    private String usuarioEnv, usuarioRec, mensagem, data;
+    private String usuarioEnv, usuarioRec, mensagem, data, id, status;
 
     public Mensagem() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getUsuarioEnv() {

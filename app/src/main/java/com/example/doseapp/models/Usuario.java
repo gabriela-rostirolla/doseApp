@@ -5,6 +5,7 @@ public class Usuario {
     private String senha;
     private String nome;
     private String id;
+    private String ultMen;
 
     public Usuario(String email, String senha, String nome) {
         this.email= email;
@@ -13,6 +14,14 @@ public class Usuario {
     }
 
     public Usuario() {
+    }
+
+    public String getUltMen() {
+        return ultMen;
+    }
+
+    public void setUltMen(String ultMen) {
+        this.ultMen = ultMen;
     }
 
     public String getId() {
