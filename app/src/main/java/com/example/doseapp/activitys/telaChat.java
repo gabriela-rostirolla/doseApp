@@ -33,7 +33,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import okio.ByteString;
 
 public class telaChat extends AppCompatActivity {
 
@@ -41,12 +46,63 @@ public class telaChat extends AppCompatActivity {
     private List<Mensagem> list;
     private FirebaseFirestore firebaseFirestore;
     private MensagemAdapter adapter;
+    private OkHttpClient client;
+    private static final int NORMAL_CLASURE_STATUS = 1000;
+
+    private final class EchoWebSocketListener extends WebSocketListener{
+
+        private String msg;
+
+        @Override
+        public void onOpen(WebSocket webSocket, Response response) {
+            webSocket.send(msg);
+//            webSocket.close(NORMAL_CLASURE_STATUS, "Adeus");
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, String text) {
+            output(text);
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, ByteString bytes) {
+            output(bytes.hex());
+        }
+
+        @Override
+        public void onClosing(WebSocket webSocket, int code, String reason) {
+            webSocket.close(NORMAL_CLASURE_STATUS, null);
+            output("cloasing: "+ code+"/"+reason);
+        }
+
+        @Override
+        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+            output("Error: "+ t.getMessage());
+        }
+    }
+
+    private void output (final String txt){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+//                preencherMensagens();
+            }
+        });
+    }
+
+    private void startWebSocket(){
+        Request request = new Request.Builder().url("ws://192.168.1.84:81/").build();
+        EchoWebSocketListener listener = new EchoWebSocketListener();
+        WebSocket ws = client.newWebSocket(request, listener);
+        client.dispatcher().executorService().shutdown();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityTelaChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        client = new OkHttpClient();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -59,10 +115,12 @@ public class telaChat extends AppCompatActivity {
                 if (!binding.etChat.getText().toString().isEmpty()) {
                     try {
                         salvarMensagem();
+                        startWebSocket();
                         onStart();
                         binding.etChat.setText("");
                     } catch (Exception e) {
                         Toast.makeText(telaChat.this, "Erro: " + e, Toast.LENGTH_SHORT).show();
+                        System.out.println(e);
                         e.printStackTrace();
                     }
                 }
@@ -82,6 +140,7 @@ public class telaChat extends AppCompatActivity {
     }
 
     private void preencherMensagens() {
+
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseFirestore.collection("Mensagem")
                 .orderBy("data", Query.Direction.ASCENDING)
