@@ -15,6 +15,7 @@ public class Medicamento {
     private String intervalo;
     private String unidade_intervalo;
     private String horaInicial;
+    private String status;
     private boolean usoContinuo;
     private String dataInicio;
     private String dataFim;
@@ -47,6 +48,14 @@ public class Medicamento {
 
     public void setRecomendacao(String recomendacao) {
         this.recomendacao = recomendacao;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<String> getProxMedicamentos() {

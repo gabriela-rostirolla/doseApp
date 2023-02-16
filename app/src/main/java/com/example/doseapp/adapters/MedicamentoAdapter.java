@@ -34,9 +34,6 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
     private RecyclerView rv;
     private List<Medicamento> medicamentoList;
     private OnItemClick onItemClick;
-    private SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
-    @SuppressLint("SimpleDateFormat")
-    private final SimpleDateFormat formatterData = new SimpleDateFormat("dd/MM/yyyy");
 
     public MedicamentoAdapter(Context context, RecyclerView rv, List<Medicamento> medicamentoList, OnItemClick onItemClick) {
         this.context = context;
@@ -61,15 +58,25 @@ public class MedicamentoAdapter extends RecyclerView.Adapter {
 //            viewHolder.imgBtn_alarme.setImageResource(R.drawable.ic_alarm_off);
 //        }
 
-        if (medicamento.getUnidade_intervalo().equals("h")) {
-            String hr = medicamento.getProxMed();
-            String proxHr[] = hr.split(":");
-            Calendar calendar = Calendar.getInstance();
-            if (calendar.get(Calendar.HOUR_OF_DAY) == Integer.parseInt(proxHr[0]) &&
-                    calendar.get(Calendar.MINUTE) < Integer.parseInt(proxHr[1])) {
-                viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+        //adiantado
+        if (medicamento.getStatus().equals("adiantado")) {
+            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#fofofo"));
+            if (medicamento.getUnidade_intervalo().equals("h")) {
+                String hr = medicamento.getProxMed();
+                String proxHr[] = hr.split(":");
+                Calendar calendar = Calendar.getInstance();
+                //no horario
+                if (calendar.get(Calendar.HOUR_OF_DAY) == Integer.parseInt(proxHr[0]) &&
+                        calendar.get(Calendar.MINUTE) < Integer.parseInt(proxHr[1])) {
+                    viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#32CD32"));
+                }
             }
+        } else if (medicamento.getStatus().equals("administrado")) {
+            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#fofofof"));
+        } else if(medicamento.getStatus().equals("inativo")){
+            viewHolder.v_indicador.setBackgroundColor(Color.parseColor("#757575"));
         }
+
         viewHolder.tv_proximoMed.setText("Próximo às " + medicamento.getProxMed());
         viewHolder.tv_nomeMedicamento.setText(medicamento.getNome());
         viewHolder.tv_dose.setText(medicamento.getDose());

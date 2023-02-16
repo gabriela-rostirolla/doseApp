@@ -279,6 +279,7 @@ public class telaCadastroMedicamento extends AppCompatActivity {
         medicamentoMap.put("id notificacao", id_not);
         String data = String.valueOf(new Date());
         medicamentoMap.put("dia de criacao", data);
+        medicamentoMap.put("status", "adiantado");
 
         firebaseFirestore.collection("Medicamento")
                 .add(medicamentoMap)
