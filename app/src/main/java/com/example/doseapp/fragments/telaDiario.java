@@ -1,4 +1,4 @@
-package com.example.doseapp.activitys;
+package com.example.doseapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

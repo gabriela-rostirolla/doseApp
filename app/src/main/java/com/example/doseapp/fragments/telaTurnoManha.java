@@ -1,4 +1,4 @@
-package com.example.doseapp.activitys;
+package com.example.doseapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.doseapp.R;
+import com.example.doseapp.activitys.telaCadastroDiarioAlimentacao;
+import com.example.doseapp.activitys.telaCadastroDiarioAtividade;
 import com.example.doseapp.adapters.AlimentacaoAdapter;
 import com.example.doseapp.adapters.AtividadeAdapter;
 import com.example.doseapp.models.Alimentacao;
@@ -33,7 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnItemClick {
+public class telaTurnoManha extends Fragment implements AtividadeAdapter.OnItemClick {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -42,7 +44,7 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
     private TextView tv_nenhumCadastro;
     private static String diario_id;
     private Spinner spi_acao;
-    private List<Atividade> atividadeList = new ArrayList<>();
+    private List<Atividade> atividadeList;
     private List<Alimentacao> alimentacaoList = new ArrayList<>();
     private AtividadeAdapter atividadeAdapter;
     private AlimentacaoAdapter alimentacaoAdapter;
@@ -50,11 +52,11 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FloatingActionButton fabAdd;
 
-    public telaTurnoMadrugada() {
+    public telaTurnoManha() {
     }
 
-    public static telaTurnoMadrugada newInstance(String param1, String param2) {
-        telaTurnoMadrugada fragment = new telaTurnoMadrugada();
+    public static telaTurnoManha newInstance(String param1, String param2) {
+        telaTurnoManha fragment = new telaTurnoManha();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -84,33 +86,14 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tela_turno_madrugada, container, false);
+        atividadeList = new ArrayList<>();
+        View v = inflater.inflate(R.layout.fragment_tela_turno_manha, container, false);
         inicializarComponentes(v);
         diario_id = getActivity().getIntent().getStringExtra("diario id");
         String data = getActivity().getIntent().getStringExtra("dia");
+        atividadeList = new ArrayList<>();
+        alimentacaoList = new ArrayList<>();
 
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                if (spi_acao.getSelectedItem().equals("Alimentação"))
-                    intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
-                else if (spi_acao.getSelectedItem().equals("Atividade"))
-                    intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
-                intent.putExtra("turno", "Madrugada");
-                intent.putExtra("dia", data);
-                intent.putExtra("diario id", diario_id);
-                startActivity(intent);
-            }
-        });
-        return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        spi_acao.setSelection(0);
-        atividadeList.clear();
         spi_acao.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -129,18 +112,37 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
+
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                if (spi_acao.getSelectedItem().equals("Alimentação"))
+                    intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
+                else if (spi_acao.getSelectedItem().equals("Atividade"))
+                    intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
+                intent.putExtra("turno", "Manha");
+                intent.putExtra("dia", data);
+                intent.putExtra("diario id", diario_id);
+                startActivity(intent);
+            }
+        });
+        return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        spi_acao.setSelection(0);
     }
 
     protected void listarAtividades() {
-        atividadeList.clear();
-
         rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Diario atividades")
                 .whereEqualTo("diario id", diario_id)
-                .whereEqualTo("turno", "Madrugada")
+                .whereEqualTo("turno", "Manha")
                 .orderBy("dia", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -169,8 +171,10 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
                             } else {
                                 tv_nenhumCadastro.setVisibility(View.INVISIBLE);
                             }
-                            atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList, telaTurnoMadrugada.this::OnItemClick);
-                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList,
+                                    telaTurnoManha.this::OnItemClick);
+                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(
+                                    getActivity(), DividerItemDecoration.VERTICAL));
                             rv_listaDiarios.setHasFixedSize(false);
                             rv_listaDiarios.setAdapter(atividadeAdapter);
                         }
@@ -179,10 +183,11 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
     }
 
     public void listarAlimentacao() {
+        alimentacaoList.clear();
         rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Alimentacao")
                 .whereEqualTo("diario id", diario_id)
-                .whereEqualTo("turno", "Madrugada")
+                .whereEqualTo("turno", "Manha")
                 .orderBy("dia", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -209,8 +214,10 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
                             } else {
                                 tv_nenhumCadastro.setVisibility(View.INVISIBLE);
                             }
-                            alimentacaoAdapter = new AlimentacaoAdapter(getContext(), alimentacaoList, telaTurnoMadrugada.this::OnItemClick);
-                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+                            alimentacaoAdapter = new AlimentacaoAdapter(getContext(), alimentacaoList,
+                                    telaTurnoManha.this::OnItemClick);
+                            rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(),
+                                    DividerItemDecoration.VERTICAL));
                             rv_listaDiarios.setHasFixedSize(false);
                             rv_listaDiarios.setAdapter(alimentacaoAdapter);
                         }
@@ -224,11 +231,11 @@ public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnI
         if (spi_acao.getSelectedItem().equals("Alimentação")) {
             intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
             intent.putExtra("id", alimentacaoList.get(position).getId());
-            intent.putExtra("turno", "Madrugada");
+            intent.putExtra("turno", "Manha");
         } else if (spi_acao.getSelectedItem().equals("Atividade")) {
             intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
             intent.putExtra("id", atividadeList.get(position).getId());
-            intent.putExtra("turno", "Madrugada");
+            intent.putExtra("turno", "Manha");
         }
         startActivity(intent);
     }

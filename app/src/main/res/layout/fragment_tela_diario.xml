@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="@color/light_blue"
         android:orientation="vertical"
-        tools:context=".activitys.telaDiario">
+        tools:context=".fragments.telaDiario">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_listaDiario"

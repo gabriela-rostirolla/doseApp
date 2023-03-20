@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.doseapp.R;
 import com.example.doseapp.adapters.IdosoCuidadoAdapter;
+import com.example.doseapp.fragments.telaContatos;
 import com.example.doseapp.models.IdosoCuidado;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

@@ -1,10 +1,9 @@
-package com.example.doseapp.activitys;
+package com.example.doseapp.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.doseapp.adapters.MensagemAdapter;
-import com.example.doseapp.classes.Criptografia;
-import com.example.doseapp.databinding.ActivityTelaChatBinding;
 import com.example.doseapp.models.Mensagem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,7 +24,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;

@@ -21,16 +21,16 @@
         android:theme="@style/Theme.DoseApp"
         tools:targetApi="31">
         <activity
-            android:name=".activitys.telaContatos"
+            android:name=".fragments.telaContatos"
             android:exported="false" />
         <activity
-            android:name=".activitys.telaChat"
+            android:name=".fragments.telaChat"
             android:exported="false" />
         <activity
             android:name=".activitys.visualizarFotoReceita"
             android:exported="false" />
         <activity
-            android:name=".activitys.telaDiarios"
+            android:name=".fragments.telaDiarios"
             android:exported="false" />
         <activity
             android:name=".activitys.telaCadastroDiarioAtividade"

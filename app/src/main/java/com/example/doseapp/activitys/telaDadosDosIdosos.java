@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.doseapp.R;
+import com.example.doseapp.fragments.telaConsultas;
+import com.example.doseapp.fragments.telaDiario;
+import com.example.doseapp.fragments.telaMedicamentos;
+import com.example.doseapp.fragments.telaReceitas;
+import com.example.doseapp.fragments.telaTerapias;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;

@@ -1,4 +1,4 @@
-package com.example.doseapp.activitys;
+package com.example.doseapp.fragments;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.doseapp.R;
+import com.example.doseapp.fragments.telaTurnoMadrugada;
+import com.example.doseapp.fragments.telaTurnoManha;
+import com.example.doseapp.fragments.telaTurnoNoite;
+import com.example.doseapp.fragments.telaTurnoTarde;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;

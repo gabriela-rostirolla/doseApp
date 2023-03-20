@@ -104,7 +104,7 @@
     <string name="intervMedNaoInform">O intervalo do medicamento não foi informado</string>
     <string name="intervMedMaiorQue24">O intervalo do medicamento informado é maior que 24, use o intervalo em dias</string>
     <string name="intervMedInvalido">O intervalo do medicamento informado é inválido</string>
-    <string name="nomeHospInv">O nome do hospital não conter menos de 3 letras</string>
+    <string name="nomeHospInv">O nome do hospital pode não conter menos de 3 letras</string>
     <string name="hrInicMedNaoInform">O horário inicial do medicamento não foi informado</string>
     <string name="dataInicMedNaoInform">A data inicial do medicamento não foi informada</string>
     <string name="dataFimMedNaoInform">A data final do medicamento não foi informada</string>

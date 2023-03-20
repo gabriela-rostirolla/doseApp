@@ -1,4 +1,4 @@
-package com.example.doseapp.activitys;
+package com.example.doseapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.doseapp.R;
+import com.example.doseapp.activitys.telaCadastroDiarioAlimentacao;
+import com.example.doseapp.activitys.telaCadastroDiarioAtividade;
 import com.example.doseapp.adapters.AlimentacaoAdapter;
 import com.example.doseapp.adapters.AtividadeAdapter;
 import com.example.doseapp.models.Alimentacao;
@@ -33,7 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemClick {
+public class telaTurnoMadrugada extends Fragment implements AtividadeAdapter.OnItemClick {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -50,11 +52,11 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FloatingActionButton fabAdd;
 
-    public telaTurnoNoite() {
+    public telaTurnoMadrugada() {
     }
 
-    public static telaTurnoNoite newInstance(String param1, String param2) {
-        telaTurnoNoite fragment = new telaTurnoNoite();
+    public static telaTurnoMadrugada newInstance(String param1, String param2) {
+        telaTurnoMadrugada fragment = new telaTurnoMadrugada();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -84,7 +86,7 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tela_turno_noite, container, false);
+        View v = inflater.inflate(R.layout.fragment_tela_turno_madrugada, container, false);
         inicializarComponentes(v);
         diario_id = getActivity().getIntent().getStringExtra("diario id");
         String data = getActivity().getIntent().getStringExtra("dia");
@@ -97,7 +99,7 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
                     intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
                 else if (spi_acao.getSelectedItem().equals("Atividade"))
                     intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
-                intent.putExtra("turno", "Noite");
+                intent.putExtra("turno", "Madrugada");
                 intent.putExtra("dia", data);
                 intent.putExtra("diario id", diario_id);
                 startActivity(intent);
@@ -140,7 +142,7 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
         rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Diario atividades")
                 .whereEqualTo("diario id", diario_id)
-                .whereEqualTo("turno", "Noite")
+                .whereEqualTo("turno", "Madrugada")
                 .orderBy("dia", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -169,7 +171,7 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
                             } else {
                                 tv_nenhumCadastro.setVisibility(View.INVISIBLE);
                             }
-                            atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList, telaTurnoNoite.this::OnItemClick);
+                            atividadeAdapter = new AtividadeAdapter(getContext(), atividadeList, telaTurnoMadrugada.this::OnItemClick);
                             rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
                             rv_listaDiarios.setHasFixedSize(false);
                             rv_listaDiarios.setAdapter(atividadeAdapter);
@@ -182,7 +184,7 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
         rv_listaDiarios.setLayoutManager(new LinearLayoutManager(getActivity()));
         firebaseFirestore.collection("Alimentacao")
                 .whereEqualTo("diario id", diario_id)
-                .whereEqualTo("turno", "Noite")
+                .whereEqualTo("turno", "Madrugada")
                 .orderBy("dia", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -209,7 +211,7 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
                             } else {
                                 tv_nenhumCadastro.setVisibility(View.INVISIBLE);
                             }
-                            alimentacaoAdapter = new AlimentacaoAdapter(getContext(), alimentacaoList, telaTurnoNoite.this::OnItemClick);
+                            alimentacaoAdapter = new AlimentacaoAdapter(getContext(), alimentacaoList, telaTurnoMadrugada.this::OnItemClick);
                             rv_listaDiarios.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
                             rv_listaDiarios.setHasFixedSize(false);
                             rv_listaDiarios.setAdapter(alimentacaoAdapter);
@@ -224,11 +226,11 @@ public class telaTurnoNoite extends Fragment implements AtividadeAdapter.OnItemC
         if (spi_acao.getSelectedItem().equals("Alimentação")) {
             intent.setClass(getActivity(), telaCadastroDiarioAlimentacao.class);
             intent.putExtra("id", alimentacaoList.get(position).getId());
-            intent.putExtra("turno", "Noite");
+            intent.putExtra("turno", "Madrugada");
         } else if (spi_acao.getSelectedItem().equals("Atividade")) {
             intent.setClass(getActivity(), telaCadastroDiarioAtividade.class);
             intent.putExtra("id", atividadeList.get(position).getId());
-            intent.putExtra("turno", "Noite");
+            intent.putExtra("turno", "Madrugada");
         }
         startActivity(intent);
     }

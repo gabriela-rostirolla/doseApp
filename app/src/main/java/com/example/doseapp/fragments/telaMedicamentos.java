@@ -1,4 +1,4 @@
-package com.example.doseapp.activitys;
+package com.example.doseapp.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.doseapp.R;
+import com.example.doseapp.activitys.telaCadastroMedicamento;
 import com.example.doseapp.adapters.MedicamentoAdapter;
 import com.example.doseapp.models.Medicamento;
 import com.google.android.gms.tasks.OnCompleteListener;

@@ -1,4 +1,4 @@
-package com.example.doseapp.activitys;
+package com.example.doseapp.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -10,22 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import com.example.doseapp.R;
+import com.example.doseapp.activitys.telaLogin;
 import com.example.doseapp.adapters.ContatoAdapter;
 import com.example.doseapp.adapters.IdosoCuidadoAdapter;
-import com.example.doseapp.classes.Decode;
-import com.example.doseapp.models.IdosoCuidado;
-import com.example.doseapp.models.Mensagem;
 import com.example.doseapp.models.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
