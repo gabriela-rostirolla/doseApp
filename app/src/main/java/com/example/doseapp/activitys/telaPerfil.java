@@ -1,5 +1,6 @@
 package com.example.doseapp.activitys;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -9,8 +10,12 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,12 +36,20 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.io.IOException;
+import java.net.URI;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class telaPerfil extends AppCompatActivity {
     Button btn_editar;
+    CircleImageView img_perfil;
     FirebaseFirestore banco_dados = FirebaseFirestore.getInstance();
     String userID;
     EditText et_editNome, et_editEmail;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+    Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +75,13 @@ public class telaPerfil extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         editar_perfil(view);
+                    }
+                });
+
+                img_perfil.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        selecionarImagem();
                     }
                 });
             }
@@ -110,26 +130,48 @@ public class telaPerfil extends AppCompatActivity {
         et_editNome = findViewById(R.id.et_editNome);
         et_editEmail = findViewById(R.id.et_editEmail);
         btn_editar = findViewById(R.id.btn_editar);
+        img_perfil = findViewById(R.id.img_perfil);
     }
 
     protected void editar_perfil(View view) {
         if (!et_editNome.getText().toString().isEmpty()) {
             firebaseFirestore.collection("Usuarios").document(userID)
-                    .update("nome", et_editNome.getText().toString())
+                    .update("nome", et_editNome.getText().toString(), "imagem", "hello")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            gerarToast("Nome atualizado com sucesso");
+                            gerarToast("Dados atualizados com sucesso");
                             Log.d("documento_atualizado", "DocumentSnapshot successfully updated!");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d("falha_ao_atualizar", "DocumentSnapshot failure updated!");
+                            gerarToast("Falha ao atualizar dados! Erro: "+e );
                         }
                     });
         } else {
             gerarToast("Digite um nome válido");
+        }
+    }
+
+    public void selecionarImagem(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0){
+            uri = data.getData();
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                img_perfil.setImageDrawable(new BitmapDrawable(bitmap));
+            } catch (IOException e) {
+                Toast.makeText(this, "Erro: "+e, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

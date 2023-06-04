@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.doseapp.adapters.MensagemAdapter;
+import com.example.doseapp.databinding.ActivityTelaChatBinding;
 import com.example.doseapp.models.Mensagem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
