@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 public class telaLogin extends AppCompatActivity {
     private TextView txt_fazer_cadastro;
     private EditText et_email, et_senha;
+
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private Button btn_entrar;
     private TextView tv_redefinirSenha;
 
@@ -75,13 +77,14 @@ public class telaLogin extends AppCompatActivity {
     }
 
     protected void autenticarUsuario(String email, String senha) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent();
-                    telaLogin.this.startActivity(intent);
+                    Intent intent = new Intent(telaLogin.this, telaInicial.class);
+                    startActivity(intent);
                     Toast.makeText(telaLogin.this, telaLogin.this.getString(R.string.loginFeitoComSucesso), Toast.LENGTH_SHORT).show();
+                    finish();
 
                 } else {
                     String erro;

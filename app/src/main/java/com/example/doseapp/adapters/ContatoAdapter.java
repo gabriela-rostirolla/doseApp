@@ -4,11 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.doseapp.R;
 import com.example.doseapp.models.Mensagem;
 import com.example.doseapp.models.Usuario;
@@ -26,6 +29,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContatoAdapter extends RecyclerView.Adapter {
 
@@ -52,6 +57,16 @@ public class ContatoAdapter extends RecyclerView.Adapter {
         Usuario user = usuarioList.get(position);
         viewHolderClass.tv_nome.setText(user.getNome());
         viewHolderClass.tv_ultMens.setText(user.getUltMen());
+
+//        try {
+//            Glide.with(context)
+//                    .load(")
+//                    .into(viewHolderClass.imagem_perfil);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//        }
+
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -104,6 +119,7 @@ public class ContatoAdapter extends RecyclerView.Adapter {
 
     public class ContatoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_nome, tv_ultMens, tv_dataMsg;
+        CircleImageView imagem_perfil;
         IdosoCuidadoAdapter.OnItemClick onItemClick;
 
         public ContatoViewHolder(@NonNull View itemView, IdosoCuidadoAdapter.OnItemClick onItemClick) {
@@ -111,6 +127,8 @@ public class ContatoAdapter extends RecyclerView.Adapter {
             tv_nome = itemView.findViewById(R.id.tv_nome);
             tv_ultMens = itemView.findViewById(R.id.tv_ultMens);
             tv_dataMsg = itemView.findViewById(R.id.tv_dataMsg);
+            imagem_perfil = itemView.findViewById(R.id.imgBtn_editar);
+
             this.onItemClick = onItemClick;
             itemView.setOnClickListener(this);
         }

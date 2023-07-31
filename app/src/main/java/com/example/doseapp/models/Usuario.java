@@ -7,13 +7,24 @@ public class Usuario {
     private String id;
     private String ultMen;
 
-    public Usuario(String email, String senha, String nome) {
+    private String imagem_perfil;
+
+    public Usuario(String email, String senha, String nome, String imagem_perfil) {
         this.email= email;
         this.senha = senha;
+        this.imagem_perfil = imagem_perfil;
         this.nome = nome;
     }
 
     public Usuario() {
+    }
+
+    public String getImagem_perfil() {
+        return imagem_perfil;
+    }
+
+    public void setImagem_perfil(String imagem_perfil) {
+        this.imagem_perfil = imagem_perfil;
     }
 
     public String getUltMen() {

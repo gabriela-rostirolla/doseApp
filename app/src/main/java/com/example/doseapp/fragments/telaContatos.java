@@ -89,6 +89,15 @@ public class telaContatos extends AppCompatActivity implements IdosoCuidadoAdapt
                                 ic.setNome(document.getString("nome"));
                                 ic.setId(document.getId());
 
+                                try {
+                                    String imagem_armazenada_bd = document.getString("imagem");
+                                    if (!imagem_armazenada_bd.isEmpty() || imagem_armazenada_bd != null) {
+                                        ic.setImagem_perfil(imagem_armazenada_bd);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
                                 if (!document.getId().equals(userId)) {
                                     usuarioList.add(ic);
                                 }
@@ -106,6 +115,7 @@ public class telaContatos extends AppCompatActivity implements IdosoCuidadoAdapt
     public void OnItemClick(int position) {
         Intent intent = new Intent(telaContatos.this, telaChat.class);
         intent.putExtra("idRec", usuarioList.get(position).getId());
+        intent.putExtra("imagem", usuarioList.get(position).getImagem_perfil());
         intent.putExtra("nome", usuarioList.get(position).getNome());
         startActivity(intent);
     }
