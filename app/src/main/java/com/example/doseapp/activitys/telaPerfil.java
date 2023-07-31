@@ -1,5 +1,8 @@
 package com.example.doseapp.activitys;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,6 +10,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.doseapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,8 +42,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,6 +56,10 @@ public class telaPerfil extends AppCompatActivity {
     String userID;
     EditText et_editNome, et_editEmail;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+    String foto;
+
+    int PICK_IMAGE = 1;
 
     Uri uri;
 
@@ -71,6 +83,15 @@ public class telaPerfil extends AppCompatActivity {
                 et_editEmail.setText(email);
                 et_editEmail.setEnabled(false);
                 et_editEmail.setTextColor(Color.GRAY);
+                try {
+                    String imagem_armazenada_bd = task.getResult().getString("imagem");
+                    if (!imagem_armazenada_bd.isEmpty() || imagem_armazenada_bd!=null){
+                        carregarImagem(imagem_armazenada_bd);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 btn_editar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -93,6 +114,17 @@ public class telaPerfil extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_logout, menu);
         return true;
+    }
+
+    private void selecionarImagem() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        someActivityResultLauncher.launch(intent);
+    }
+
+    private void carregarImagem(String imageUrl) {
+        Glide.with(this)
+                .load(imageUrl)
+                .into(img_perfil);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -136,7 +168,7 @@ public class telaPerfil extends AppCompatActivity {
     protected void editar_perfil(View view) {
         if (!et_editNome.getText().toString().isEmpty()) {
             firebaseFirestore.collection("Usuarios").document(userID)
-                    .update("nome", et_editNome.getText().toString(), "imagem", "hello")
+                    .update("nome", et_editNome.getText().toString(), "imagem", foto)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -146,7 +178,7 @@ public class telaPerfil extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            gerarToast("Falha ao atualizar dados! Erro: "+e );
+                            gerarToast("Falha ao atualizar dados! Erro: " + e);
                         }
                     });
         } else {
@@ -154,26 +186,20 @@ public class telaPerfil extends AppCompatActivity {
         }
     }
 
-    public void selecionarImagem(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 0);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0){
-            uri = data.getData();
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                img_perfil.setImageDrawable(new BitmapDrawable(bitmap));
-            } catch (IOException e) {
-                Toast.makeText(this, "Erro: "+e, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+    private final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // Aqui você pode obter a imagem selecionada
+                    if (data != null) {
+                        Uri imageUri = data.getData();
+                        carregarImagem(String.valueOf(imageUri));
+                        // Chame o método para enviar a imagem para o Firebase Firestore
+                        foto = imageUri.toString();
+                    }
+                }
+            });
 
     public void gerarToast(String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
