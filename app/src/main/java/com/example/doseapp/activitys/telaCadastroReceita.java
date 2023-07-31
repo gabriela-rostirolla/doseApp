@@ -343,6 +343,7 @@ public class telaCadastroReceita extends AppCompatActivity {
         }
     }
 
+    //metodo utilizado para receber a imagem e converter para string
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -358,7 +359,7 @@ public class telaCadastroReceita extends AppCompatActivity {
                             byte[] fotoByte = fotoStream.toByteArray();
                             foto = Base64.encodeToString(fotoByte, Base64.DEFAULT);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Toast.makeText(telaCadastroReceita.this, "erro"+ e.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
