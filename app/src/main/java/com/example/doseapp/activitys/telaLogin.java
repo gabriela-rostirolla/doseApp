@@ -1,7 +1,5 @@
 package com.example.doseapp.activitys;
 
-import static com.example.doseapp.classes.Main.autenticarUsuario;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doseapp.R;
-import com.example.doseapp.classes.Main;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -62,7 +59,7 @@ public class telaLogin extends AppCompatActivity {
                 if (email.isEmpty() || senha.isEmpty()) {
                     Toast.makeText(telaLogin.this, getString(R.string.camposVazios), Toast.LENGTH_SHORT).show();
                 } else {
-                    autenticarUsuario(telaLogin.this, email, senha);
+                    autenticarUsuario( email, senha);
                 }
             }
         });
@@ -77,6 +74,31 @@ public class telaLogin extends AppCompatActivity {
         }
     }
 
+    protected void autenticarUsuario(String email, String senha) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Intent intent = new Intent();
+                    telaLogin.this.startActivity(intent);
+                    Toast.makeText(telaLogin.this, telaLogin.this.getString(R.string.loginFeitoComSucesso), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    String erro;
+                    try {
+                        throw task.getException();
+                    } catch (FirebaseAuthInvalidUserException exception) {
+                        erro = telaLogin.this.getString(R.string.emailInex);
+                    } catch (FirebaseAuthInvalidCredentialsException exception) {
+                        erro = telaLogin.this.getString(R.string.senhaIncorreta);
+                    } catch (Exception exception) {
+                        erro = telaLogin.this.getString(R.string.falhaAoLogar);
+                    }
+                    Toast.makeText(telaLogin.this.getApplicationContext(), erro, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
     protected void redefinirSenha() {
         if (et_email.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.emailVazio), Toast.LENGTH_SHORT).show();
@@ -87,7 +109,7 @@ public class telaLogin extends AppCompatActivity {
                     .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Main.redefinirSenha(telaLogin.this, et_email.getText().toString());
+                            redefinirSenha(et_email.getText().toString());
                         }
                     }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
                         @Override
@@ -111,5 +133,19 @@ public class telaLogin extends AppCompatActivity {
         Intent intent = new Intent(telaLogin.this, telaInicial.class);
         startActivity(intent);
         finish();
+    }
+
+    protected void redefinirSenha(String email) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("email_enviado", "Email Enviado");
+                            Toast.makeText(telaLogin.this.getApplicationContext(), telaLogin.this.getString(R.string.emailEnviado), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

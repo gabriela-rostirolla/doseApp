@@ -2,9 +2,7 @@ package com.example.doseapp.activitys;
 
 import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
 
-import static com.example.doseapp.classes.Main.cadastrarConsulta;
-import static com.example.doseapp.classes.Main.editarConsulta;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +31,10 @@ import android.widget.Toast;
 import com.example.doseapp.R;
 import com.example.doseapp.models.Consulta;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -40,7 +42,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -170,10 +175,6 @@ public class telaCadastroConsulta extends AppCompatActivity {
         }
     }
 
-    protected void atualizarEvento() {
-
-    }
-
     protected void mostrarCalendario(TextView tv) {
         Calendar calendar = Calendar.getInstance();
         int ano = calendar.get(Calendar.YEAR);
@@ -207,7 +208,7 @@ public class telaCadastroConsulta extends AppCompatActivity {
         String profissional = et_profissional.getText().toString();
         String horario = tv_horario.getText().toString();
         String id = getIntent().getStringExtra("id");
-        cadastrarConsulta(firebaseFirestore, nome, data, endereco, tel, profissional, horario, id);
+        cadastrarConsulta(nome, data, endereco, tel, profissional, horario, id);
     }
 
     protected void inicializarComponentes() {
@@ -284,6 +285,35 @@ public class telaCadastroConsulta extends AppCompatActivity {
         });
     }
 
+
+    protected void cadastrarConsulta(String nome, String data,
+                                     String endereco, String tel, String profissional, String horario,
+                                     String id_idoso) {
+        Map<String, Object> consultaMap = new HashMap<>();
+        consultaMap.put("nome", nome);
+        consultaMap.put("data", data);
+        consultaMap.put("endereco", endereco);
+        consultaMap.put("telefone", tel);
+        consultaMap.put("profissional", profissional);
+        consultaMap.put("horario", horario);
+        consultaMap.put("id do idoso", id_idoso);
+        consultaMap.put("dia de criacao", new Date());
+        firebaseFirestore.collection("Consultas")
+                .add(consultaMap)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("banco_dados_salvos", "Sucesso ao salvar dados!" + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("erro_banco_dados", "Erro ao salvar dados!", e);
+                    }
+                });
+    }
+
     protected void editarBancoDeDados() {
         String nome = et_nome.getText().toString();
         String profissional = et_profissional.getText().toString();
@@ -300,7 +330,20 @@ public class telaCadastroConsulta extends AppCompatActivity {
         consulta.setData(data);
         consulta.setHorario(horario);
 
-        editarConsulta(telaCadastroConsulta.this, firebaseFirestore, idConsulta, consulta);
+        firebaseFirestore.collection("Consultas").document(idConsulta)
+                .update("nome", consulta.getNome(),
+                        "profissional", consulta.getProfissional(),
+                        "endereco", consulta.getEndereco(),
+                        "data", consulta.getData(),
+                        "horario", consulta.getHorario(),
+                        "telefone", consulta.getTelefone())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("banco_dados_salvos", "Sucesso ao atualizar dados!");
+                        Toast.makeText(telaCadastroConsulta.this, telaCadastroConsulta.this.getString(R.string.dadosAtualizados), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void checkPermission(int callbackId, String... permissionsId) {
@@ -312,4 +355,5 @@ public class telaCadastroConsulta extends AppCompatActivity {
         if (!permissions)
             ActivityCompat.requestPermissions(this, permissionsId, callbackId);
     }
+
 }

@@ -82,7 +82,6 @@ public class telaCadastroDiarioAtividade extends AppCompatActivity {
             }
         });
 
-
     }
 
     @Override

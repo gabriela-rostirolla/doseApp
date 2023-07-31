@@ -1,7 +1,5 @@
 package com.example.doseapp.activitys;
 
-import static com.example.doseapp.classes.Main.cadastrarUsuario;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,7 +55,8 @@ public class telaCadastro extends AppCompatActivity {
                 } else if (senha.equals(confSenha) == false) {
                     Toast.makeText(telaCadastro.this, getString(R.string.senhasDiferentes), Toast.LENGTH_SHORT).show();
                 } else {
-                    cadastrarUsuario(telaCadastro.this, email, nome, senha, FirebaseAuth.getInstance().getCurrentUser().getUid(), firebaseFirestore);
+                    cadastrarUsuario(email, nome, senha);
+                    finish();
                 }
             }
         });
@@ -81,4 +80,54 @@ public class telaCadastro extends AppCompatActivity {
         et_cadConfirmarSenha = findViewById(R.id.et_cadConfirmarSenha);
         btn_cadastrar = findViewById(R.id.btn_cadastrar);
     }
+
+    private void cadastrarUsuario(String email,String nome,String senha){
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    salvarDadosNoBancoDeDados(firebaseFirestore, email, nome, FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    Toast.makeText(telaCadastro.this, telaCadastro.this.getString(R.string.camposVazios), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(telaCadastro.this.getApplicationContext(), telaInicial.class);
+                    telaCadastro.this.startActivity(intent);
+                } else {
+                    String erro = "";
+                    try {
+                        throw task.getException();
+                    } catch (FirebaseAuthWeakPasswordException exception) {
+                        erro = telaCadastro.this.getString(R.string.senhaInv);
+                    } catch (FirebaseAuthInvalidCredentialsException exception) {
+                        erro = telaCadastro.this.getString(R.string.emailInv);
+                    } catch (FirebaseAuthUserCollisionException exception) {
+                        erro = telaCadastro.this.getString(R.string.contaExistente);
+                    } catch (Exception exception) {
+                        erro = telaCadastro.this.getString(R.string.falhaAoCadastrar);
+                    }
+                    Toast.makeText(telaCadastro.this.getApplicationContext(), erro, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public static void salvarDadosNoBancoDeDados(FirebaseFirestore firebaseFirestore, String email, String nome, String userId) {
+        Map<String, Object> usuario = new HashMap<>();
+        nome = nome.substring(0, 1).toUpperCase().concat(nome.substring(1));
+        usuario.put("nome", nome);
+        usuario.put("email", email);
+
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference documentReference = firebaseFirestore.collection("Usuarios").document(userId);
+        documentReference.set(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("banco_dados", "Dados salvos com sucesso");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("erro_banco_dados", "Erro ao salvar dados" + exception.toString());
+            }
+        });
+    }
+
 }
